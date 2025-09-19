@@ -167,4 +167,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 </script>
-@endsection
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>

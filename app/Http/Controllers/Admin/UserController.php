@@ -94,7 +94,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // Prevent self-deletion
-        if (auth()->id() === $user->id) {
+            if (auth()->user()->id === $user->id) {
             return redirect()->route('admin.users.index')
                 ->with('error', 'You cannot delete your own account.');
         }
