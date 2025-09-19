@@ -1,53 +1,74 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Admin Dashboard') }}
+        </h2>
+    </x-slot>
 
-@section('title', __('messages.admin_dashboard'))
-
-@section('content')
-<div class="container">
-    <h1 class="mb-4">{{ __('messages.admin_dashboard') }}</h1>
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">{{ __('messages.top_recipes') }}</div>
-                <div class="card-body">
-                    <canvas id="topRecipesChart"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">{{ __('messages.ingredient_usage') }}</div>
-                <div class="card-body">
-                    <canvas id="ingredientUsageChart"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">{{ __('messages.expiring_pantry_items') }}</div>
-                <div class="card-body">
-                    <canvas id="expiringPantryChart"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">{{ __('messages.search_trends') }}</div>
-                <div class="card-body">
-                    <canvas id="searchTrendsChart"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 mb-4">
-            <div class="card">
-                <div class="card-header">{{ __('messages.active_users') }}</div>
-                <div class="card-body">
-                    <canvas id="activeUsersChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-medium mb-4">{{ __('Welcome to the admin dashboard!') }}</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                        <!-- User Management -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg mb-2">{{ __('User Management') }}</h4>
+                            <p class="text-gray-600 mb-4">{{ __('Manage user accounts and permissions') }}</p>
+                            <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                {{ __('Manage Users') }}
+                            </a>
+                        </div>
+                        
+                        <!-- Recipe Management -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg mb-2">{{ __('Recipe Management') }}</h4>
+                            <p class="text-gray-600 mb-4">{{ __('Manage recipes and their content') }}</p>
+                            <a href="{{ route('admin.recipes.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                {{ __('Manage Recipes') }}
+                            </a>
+                        </div>
+                        
+                        <!-- Category Management -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg mb-2">{{ __('Category Management') }}</h4>
+                            <p class="text-gray-600 mb-4">{{ __('Manage recipe categories') }}</p>
+                            <a href="{{ route('admin.categories.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                {{ __('Manage Categories') }}
+                            </a>
+                        </div>
+                        
+                        <!-- Ingredient Management -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg mb-2">{{ __('Ingredient Management') }}</h4>
+                            <p class="text-gray-600 mb-4">{{ __('Manage recipe ingredients') }}</p>
+                            <a href="{{ route('admin.ingredients.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                {{ __('Manage Ingredients') }}
+                            </a>
+                        </div>
+                        
+                        <!-- Meal Plan Management -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg mb-2">{{ __('Meal Plan Management') }}</h4>
+                            <p class="text-gray-600 mb-4">{{ __('Manage meal plans') }}</p>
+                            <a href="{{ route('admin.meal-plans.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                {{ __('Manage Meal Plans') }}
+                            </a>
+                        </div>
+                        
+                        <!-- Analytics -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg mb-2">{{ __('Analytics') }}</h4>
+                            <p class="text-gray-600 mb-4">{{ __('View site analytics and reports') }}</p>
+                            <div class="space-y-2">
+                                <a href="{{ route('admin.analytics.top-recipes') }}" class="block text-indigo-600 hover:text-indigo-900">{{ __('Top Recipes') }}</a>
+                                <a href="{{ route('admin.analytics.ingredient-usage') }}" class="block text-indigo-600 hover:text-indigo-900">{{ __('Ingredient Usage') }}</a>
+                                <a href="{{ route('admin.analytics.search-trends') }}" class="block text-indigo-600 hover:text-indigo-900">{{ __('Search Trends') }}</a>
+                                <a href="{{ route('admin.analytics.active-users') }}" class="block text-indigo-600 hover:text-indigo-900">{{ __('Active Users') }}</a>
+                            </div>
+                        </div>
+                    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>

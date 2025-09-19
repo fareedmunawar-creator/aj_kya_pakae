@@ -8,16 +8,32 @@ use Illuminate\Database\Eloquent\Model;
 class Ingredient extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['name','unit'];
-
-    public function recipes() {
-        return $this->belongsToMany(Recipe::class)->withPivot('quantity');
+    
+    protected $fillable = ['name', 'unit'];
+    
+    /**
+     * Get the recipes that use this ingredient.
+     */
+    public function recipes()
+    {
+        return $this->belongsToMany(Recipe::class, 'ingredient_recipe')
+            ->withPivot('quantity', 'unit')
+            ->withTimestamps();
     }
-    public function pantryItems() {
+    
+    /**
+     * Get the pantry items for this ingredient.
+     */
+    public function pantryItems()
+    {
         return $this->hasMany(PantryItem::class);
     }
-    public function substitutions() {
+    
+    /**
+     * Get the substitutions for this ingredient.
+     */
+    public function substitutions()
+    {
         return $this->hasMany(Substitution::class);
     }
 }

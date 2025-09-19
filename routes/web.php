@@ -64,6 +64,15 @@ Route::prefix('admin')
         Route::resource('pantry', PantryController::class)->names('admin.pantry');
         Route::resource('meal-plans', MealPlannerController::class)->names('admin.meal-plans');
         
+        // User management
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->names('admin.users');
+        
+        // Category management
+        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
+        
+        // Ingredient management
+        Route::resource('ingredients', \App\Http\Controllers\Admin\IngredientController::class)->names('admin.ingredients');
+        
         // Analytics routes
         Route::get('/analytics/top-recipes', [AdminAnalyticsController::class, 'topRecipes'])->name('admin.analytics.top-recipes');
         Route::get('/analytics/ingredient-usage', [AdminAnalyticsController::class, 'ingredientUsage'])->name('admin.analytics.ingredient-usage');

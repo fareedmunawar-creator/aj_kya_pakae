@@ -15,6 +15,24 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    
+                    <x-nav-link :href="route('recipes.index')" :active="request()->routeIs('recipes.*')">
+                        {{ __('Recipes') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('mealplanner.index')" :active="request()->routeIs('mealplanner.*')">
+                        {{ __('Meal Planner') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('pantry.index')" :active="request()->routeIs('pantry.*')">
+                        {{ __('Pantry') }}
+                    </x-nav-link>
+                    
+                    @if(auth()->check() && auth()->user()->isAdmin())
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                        {{ __('Admin') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
