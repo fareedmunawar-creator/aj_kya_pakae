@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\PantryController;
-use App\Http\Controllers\MealPlanController;
+use App\Http\Controllers\MealPlannerController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Admin\AdminController; 
@@ -34,12 +34,12 @@ Route::resource('recipes', RecipeController::class);
 Route::resource('pantry', PantryController::class);
 
 // Meal Plans (CRUD)
-Route::resource('meal-plans', MealPlanController::class);
+Route::resource('meal-plans', MealPlannerController::class);
 
 // Meal Planner
-Route::get('/mealplanner', [MealPlanController::class, 'index'])->name('mealplanner.index');
-Route::post('/mealplanner/add/{recipe}', [MealPlanController::class, 'store'])->name('mealplanner.add');
-Route::delete('/mealplanner/remove/{id}', [MealPlanController::class, 'remove'])->name('mealplanner.remove');
+Route::get('/mealplanner', [MealPlannerController::class, 'index'])->name('mealplanner.index');
+Route::post('/mealplanner/add/{recipe}', [MealPlannerController::class, 'add'])->name('mealplanner.add');
+Route::delete('/mealplanner/remove/{id}', [MealPlannerController::class, 'remove'])->name('mealplanner.remove');
 
 // Favorites (toggle only)
 Route::post('/favorites/toggle/{recipe}', [FavoriteController::class, 'toggle'])
@@ -49,29 +49,27 @@ Route::post('/favorites/toggle/{recipe}', [FavoriteController::class, 'toggle'])
 Route::post('/comments', [CommentController::class, 'store'])
     ->name('comments.store');
 
+// Quick Cook
+Route::post('/quick-cook', [QuickCookController::class, 'findRecipes'])->name('quick.cook');
+
 // Admin routes
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->group(function () {
-            Route::get('/', [AdminAnalyticsController::class, 'dashboard'])->name('admin.dashboard');
+        // Dashboard
+        Route::get('/', [AdminAnalyticsController::class, 'dashboard'])->name('admin.dashboard');
         
-        // Example: you can register more admin-only resources here
+        // Admin resources
         Route::resource('recipes', RecipeController::class)->names('admin.recipes');
         Route::resource('pantry', PantryController::class)->names('admin.pantry');
-        Route::resource('meal-plans', MealPlanController::class)->names('admin.meal-plans');
-    });
-
-
-    Route::post('/quick-cook', [QuickCookController::class, 'findRecipes'])->name('quick.cook');
-
-    Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
-        Route::get('/dashboard', [AdminAnalyticsController::class, 'dashboard'])->name('admin.dashboard');
-    
-        Route::get('/analytics/top-recipes', [AdminAnalyticsController::class, 'topRecipes']);
-        Route::get('/analytics/ingredient-usage', [AdminAnalyticsController::class, 'ingredientUsage']);
-        Route::get('/analytics/expiring-pantry', [AdminAnalyticsController::class, 'expiringPantry']);
-        Route::get('/analytics/search-trends', [AdminAnalyticsController::class, 'searchTrends']);
-        Route::get('/analytics/active-users', [AdminAnalyticsController::class, 'activeUsers']);
+        Route::resource('meal-plans', MealPlannerController::class)->names('admin.meal-plans');
+        
+        // Analytics routes
+        Route::get('/analytics/top-recipes', [AdminAnalyticsController::class, 'topRecipes'])->name('admin.analytics.top-recipes');
+        Route::get('/analytics/ingredient-usage', [AdminAnalyticsController::class, 'ingredientUsage'])->name('admin.analytics.ingredient-usage');
+        Route::get('/analytics/expiring-pantry', [AdminAnalyticsController::class, 'expiringPantry'])->name('admin.analytics.expiring-pantry');
+        Route::get('/analytics/search-trends', [AdminAnalyticsController::class, 'searchTrends'])->name('admin.analytics.search-trends');
+        Route::get('/analytics/active-users', [AdminAnalyticsController::class, 'activeUsers'])->name('admin.analytics.active-users');
     });
 // Language Switcher
 Route::get('/language/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');
