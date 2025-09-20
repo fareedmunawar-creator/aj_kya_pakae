@@ -18,7 +18,7 @@ class AdminAnalyticsController extends Controller
     {
         $recipes = Recipe::orderByDesc('views')
             ->take(10)
-            ->get(['name', 'views']);
+            ->get(['title', 'views']);
 
         return response()->json($recipes);
     }

@@ -1,118 +1,155 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-medium mb-4">{{ __('Welcome to the admin dashboard!') }}</h3>
-                    
-                    <!-- Admin Navigation Links -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <!-- User Management -->
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h4 class="font-semibold text-lg mb-2">{{ __('User Management') }}</h4>
-                            <p class="text-gray-600 mb-4">{{ __('Manage user accounts and permissions') }}</p>
-                            <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                                {{ __('Manage Users') }}
-                            </a>
+    <div class="container py-4">
+        <h1 class="mb-4">{{ __('Welcome to the admin dashboard!') }}</h1>
+        
+        <!-- Admin Navigation Links -->
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+            <!-- User Management -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('User Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage user accounts and permissions') }}</p>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-dark">
+                            {{ __('Manage Users') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recipe Management -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Recipe Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage recipes and their content') }}</p>
+                        <a href="{{ route('admin.recipes.index') }}" class="btn btn-dark">
+                            {{ __('Manage Recipes') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category Management -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Category Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage recipe categories') }}</p>
+                        <a href="{{ route('admin.categories.index') }}" class="btn btn-dark">
+                            {{ __('Manage Categories') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ingredient Management -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Ingredient Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage recipe ingredients') }}</p>
+                        <a href="{{ route('admin.ingredients.index') }}" class="btn btn-dark">
+                            {{ __('Manage Ingredients') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Meal Plan Management -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Meal Plan Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage meal plans') }}</p>
+                        <a href="{{ route('admin.meal-plans.index') }}" class="btn btn-dark">
+                            {{ __('Manage Meal Plans') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analytics -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Analytics') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('View site analytics and reports') }}</p>
+                        <div class="d-grid gap-2">
+                            <a href="{{ route('admin.analytics.top-recipes') }}" class="text-primary">{{ __('Top Recipes') }}</a>
+                            <a href="{{ route('admin.analytics.ingredient-usage') }}" class="text-primary">{{ __('Ingredient Usage') }}</a>
+                            <a href="{{ route('admin.analytics.search-trends') }}" class="text-primary">{{ __('Search Trends') }}</a>
+                            <a href="{{ route('admin.analytics.active-users') }}" class="text-primary">{{ __('Active Users') }}</a>
                         </div>
-                        
-                        <!-- Recipe Management -->
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h4 class="font-semibold text-lg mb-2">{{ __('Recipe Management') }}</h4>
-                            <p class="text-gray-600 mb-4">{{ __('Manage recipes and their content') }}</p>
-                            <a href="{{ route('admin.recipes.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                                {{ __('Manage Recipes') }}
-                            </a>
-                        </div>
-                        
-                        <!-- Category Management -->
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h4 class="font-semibold text-lg mb-2">{{ __('Category Management') }}</h4>
-                            <p class="text-gray-600 mb-4">{{ __('Manage recipe categories') }}</p>
-                            <a href="{{ route('admin.categories.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                                {{ __('Manage Categories') }}
-                            </a>
-                        </div>
-                        
-                        <!-- Ingredient Management -->
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h4 class="font-semibold text-lg mb-2">{{ __('Ingredient Management') }}</h4>
-                            <p class="text-gray-600 mb-4">{{ __('Manage recipe ingredients') }}</p>
-                            <a href="{{ route('admin.ingredients.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                                {{ __('Manage Ingredients') }}
-                            </a>
-                        </div>
-                        
-                        <!-- Meal Plan Management -->
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h4 class="font-semibold text-lg mb-2">{{ __('Meal Plan Management') }}</h4>
-                            <p class="text-gray-600 mb-4">{{ __('Manage meal plans') }}</p>
-                            <a href="{{ route('admin.meal-plans.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                                {{ __('Manage Meal Plans') }}
-                            </a>
-                        </div>
-                        
-                        <!-- Analytics -->
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h4 class="font-semibold text-lg mb-2">{{ __('Analytics') }}</h4>
-                            <p class="text-gray-600 mb-4">{{ __('View site analytics and reports') }}</p>
-                            <div class="space-y-2">
-                                <a href="{{ route('admin.analytics.top-recipes') }}" class="block text-indigo-600 hover:text-indigo-900">{{ __('Top Recipes') }}</a>
-                                <a href="{{ route('admin.analytics.ingredient-usage') }}" class="block text-indigo-600 hover:text-indigo-900">{{ __('Ingredient Usage') }}</a>
-                                <a href="{{ route('admin.analytics.search-trends') }}" class="block text-indigo-600 hover:text-indigo-900">{{ __('Search Trends') }}</a>
-                                <a href="{{ route('admin.analytics.active-users') }}" class="block text-indigo-600 hover:text-indigo-900">{{ __('Active Users') }}</a>
+                    </div>
+            </div>
+        </div>
+        
+        <!-- Analytics Charts Section -->
+        <div class="mt-5">
+            <h3 class="mb-4">{{ __('Analytics Overview') }}</h3>
+            
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <!-- Top Recipes Chart -->
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ __('Top Recipes') }}</h5>
+                            <div style="height: 300px;">
+                                <canvas id="topRecipesChart"></canvas>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Analytics Charts Section -->
-                    <div class="mt-10">
-                        <h3 class="text-lg font-medium mb-4">{{ __('Analytics Overview') }}</h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                            <!-- Top Recipes Chart -->
-                            <div class="bg-white p-6 rounded-lg shadow">
-                                <h4 class="font-semibold text-lg mb-2">{{ __('Top Recipes') }}</h4>
-                                <div class="h-64">
-                                    <canvas id="topRecipesChart"></canvas>
-                                </div>
-                            </div>
-                            
-                            <!-- Ingredient Usage Chart -->
-                            <div class="bg-white p-6 rounded-lg shadow">
-                                <h4 class="font-semibold text-lg mb-2">{{ __('Ingredient Usage') }}</h4>
-                                <div class="h-64">
-                                    <canvas id="ingredientUsageChart"></canvas>
-                                </div>
-                            </div>
-                            
-                            <!-- Expiring Pantry Chart -->
-                            <div class="bg-white p-6 rounded-lg shadow">
-                                <h4 class="font-semibold text-lg mb-2">{{ __('Expiring Pantry Items') }}</h4>
-                                <div class="h-64">
-                                    <canvas id="expiringPantryChart"></canvas>
-                                </div>
-                            </div>
-                            
-                            <!-- Search Trends Chart -->
-                            <div class="bg-white p-6 rounded-lg shadow">
-                                <h4 class="font-semibold text-lg mb-2">{{ __('Search Trends') }}</h4>
-                                <div class="h-64">
-                                    <canvas id="searchTrendsChart"></canvas>
-                                </div>
-                            </div>
-                            
-                            <!-- Active Users Chart -->
-                            <div class="bg-white p-6 rounded-lg shadow">
-                                <h4 class="font-semibold text-lg mb-2">{{ __('Active Users') }}</h4>
-                                <div class="h-64">
-                                    <canvas id="activeUsersChart"></canvas>
-                                </div>
+                
+                <!-- Ingredient Usage Chart -->
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ __('Ingredient Usage') }}</h5>
+                            <div style="height: 300px;">
+                                <canvas id="ingredientUsageChart"></canvas>
                             </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Expiring Pantry Chart -->
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ __('Expiring Pantry Items') }}</h5>
+                            <div style="height: 300px;">
+                                <canvas id="expiringPantryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search Trends Chart -->
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ __('Search Trends') }}</h5>
+                            <div style="height: 300px;">
+                                <canvas id="searchTrendsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Active Users Chart -->
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ __('Active Users') }}</h5>
+                            <div style="height: 300px;">
+                                <canvas id="activeUsersChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -212,4 +249,4 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection
