@@ -1,17 +1,14 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Admin Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
+@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-medium mb-4">{{ __('Welcome to the admin dashboard!') }}</h3>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <!-- Admin Navigation Links -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <!-- User Management -->
                         <div class="bg-white p-6 rounded-lg shadow">
                             <h4 class="font-semibold text-lg mb-2">{{ __('User Management') }}</h4>
@@ -69,102 +66,146 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Analytics Charts Section -->
+                    <div class="mt-10">
+                        <h3 class="text-lg font-medium mb-4">{{ __('Analytics Overview') }}</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <!-- Top Recipes Chart -->
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-semibold text-lg mb-2">{{ __('Top Recipes') }}</h4>
+                                <div class="h-64">
+                                    <canvas id="topRecipesChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <!-- Ingredient Usage Chart -->
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-semibold text-lg mb-2">{{ __('Ingredient Usage') }}</h4>
+                                <div class="h-64">
+                                    <canvas id="ingredientUsageChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <!-- Expiring Pantry Chart -->
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-semibold text-lg mb-2">{{ __('Expiring Pantry Items') }}</h4>
+                                <div class="h-64">
+                                    <canvas id="expiringPantryChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <!-- Search Trends Chart -->
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-semibold text-lg mb-2">{{ __('Search Trends') }}</h4>
+                                <div class="h-64">
+                                    <canvas id="searchTrendsChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <!-- Active Users Chart -->
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-semibold text-lg mb-2">{{ __('Active Users') }}</h4>
+                                <div class="h-64">
+                                    <canvas id="activeUsersChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. Top Recipes
-    fetch('/admin/analytics/top-recipes')
-        .then(res => res.json())
-        .then(data => {
-            new Chart(document.getElementById('topRecipesChart'), {
-                type: 'bar',
-                data: {
-                    labels: data.map(r => r.name),
-                    datasets: [{
-                        label: 'Views',
-                        data: data.map(r => r.views),
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
-                    }]
+    // Handle potential errors for each chart
+    const createChart = (elementId, fetchUrl, chartType, dataMapper) => {
+        const canvas = document.getElementById(elementId);
+        if (!canvas) return;
+        
+        fetch(fetchUrl)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    new Chart(canvas, dataMapper(data, chartType));
                 }
+            })
+            .catch(err => {
+                console.error(`Error loading chart ${elementId}:`, err);
             });
-        });
+    };
+    
+    // 1. Top Recipes
+    createChart('topRecipesChart', '/admin/analytics/top-recipes', 'bar', (data, type) => ({
+        type: type,
+        data: {
+            labels: data.map(r => r.name),
+            datasets: [{
+                label: 'Views',
+                data: data.map(r => r.views),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)'
+            }]
+        }
+    }));
 
     // 2. Ingredient Usage
-    fetch('/admin/analytics/ingredient-usage')
-        .then(res => res.json())
-        .then(data => {
-            new Chart(document.getElementById('ingredientUsageChart'), {
-                type: 'pie',
-                data: {
-                    labels: data.map(i => i.name),
-                    datasets: [{
-                        label: 'Usage',
-                        data: data.map(i => i.usage_count),
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                        ]
-                    }]
-                }
-            });
-        });
+    createChart('ingredientUsageChart', '/admin/analytics/ingredient-usage', 'pie', (data, type) => ({
+        type: type,
+        data: {
+            labels: data.map(i => i.name),
+            datasets: [{
+                label: 'Usage',
+                data: data.map(i => i.usage_count),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                ]
+            }]
+        }
+    }));
 
     // 3. Expiring Pantry
-    fetch('/admin/analytics/expiring-pantry')
-        .then(res => res.json())
-        .then(data => {
-            new Chart(document.getElementById('expiringPantryChart'), {
-                type: 'bar',
-                data: {
-                    labels: data.map(i => i.name),
-                    datasets: [{
-                        label: 'Expiry in Days',
-                        data: data.map(i => Math.ceil((new Date(i.expiry_date) - new Date()) / (1000*60*60*24))),
-                        backgroundColor: 'rgba(255, 159, 64, 0.6)'
-                    }]
-                }
-            });
-        });
+    createChart('expiringPantryChart', '/admin/analytics/expiring-pantry', 'bar', (data, type) => ({
+        type: type,
+        data: {
+            labels: data.map(i => i.name),
+            datasets: [{
+                label: 'Expiry in Days',
+                data: data.map(i => Math.ceil((new Date(i.expiry_date) - new Date()) / (1000*60*60*24))),
+                backgroundColor: 'rgba(255, 159, 64, 0.6)'
+            }]
+        }
+    }));
 
     // 4. Search Trends
-    fetch('/admin/analytics/search-trends')
-        .then(res => res.json())
-        .then(data => {
-            new Chart(document.getElementById('searchTrendsChart'), {
-                type: 'line',
-                data: {
-                    labels: data.map(s => s.date),
-                    datasets: [{
-                        label: 'Searches',
-                        data: data.map(s => s.searches),
-                        borderColor: 'rgba(54, 162, 235, 0.9)',
-                        fill: false
-                    }]
-                }
-            });
-        });
+    createChart('searchTrendsChart', '/admin/analytics/search-trends', 'line', (data, type) => ({
+        type: type,
+        data: {
+            labels: data.map(s => s.date),
+            datasets: [{
+                label: 'Searches',
+                data: data.map(s => s.searches),
+                borderColor: 'rgba(54, 162, 235, 0.9)',
+                fill: false
+            }]
+        }
+    }));
 
     // 5. Active Users
-    fetch('/admin/analytics/active-users')
-        .then(res => res.json())
-        .then(data => {
-            new Chart(document.getElementById('activeUsersChart'), {
-                type: 'line',
-                data: {
-                    labels: data.map(u => u.date),
-                    datasets: [{
-                        label: 'Active Users',
-                        data: data.map(u => u.active_users),
-                        borderColor: 'rgba(75, 192, 192, 0.9)',
-                        fill: false
-                    }]
-                }
-            });
-        });
+    createChart('activeUsersChart', '/admin/analytics/active-users', 'line', (data, type) => ({
+        type: type,
+        data: {
+            labels: data.map(u => u.date),
+            datasets: [{
+                label: 'Active Users',
+                data: data.map(u => u.active_users),
+                borderColor: 'rgba(75, 192, 192, 0.9)',
+                fill: false
+            }]
+        }
+    }));
 });
 </script>
                 </div>
