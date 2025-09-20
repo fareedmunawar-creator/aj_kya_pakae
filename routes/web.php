@@ -51,6 +51,7 @@ Route::post('/comments', [CommentController::class, 'store'])
 
 // Quick Cook
 Route::post('/quick-cook', [QuickCookController::class, 'findRecipes'])->name('quick.cook');
+Route::get('/quick-cook', [QuickCookController::class, 'findRecipes'])->name('quick.cook.get');
 
 // Admin routes
 Route::prefix('admin')
