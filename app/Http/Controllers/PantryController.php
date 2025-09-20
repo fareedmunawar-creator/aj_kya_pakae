@@ -25,7 +25,12 @@ class PantryController extends Controller
 
     public function store(Request $request)
     {
-        Auth::user()->pantryItems()->create($request->only('name', 'quantity'));
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'quantity' => 'required|numeric'
+        ]);
+        
+        Auth::user()->pantryItems()->create($validated);
 
         return redirect()->route('pantry.index')->with('success', 'Item added to pantry!');
     }

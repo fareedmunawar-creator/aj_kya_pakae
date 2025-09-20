@@ -66,10 +66,10 @@ class AdminAnalyticsController extends Controller
     public function activeUsers()
     {
         $users = User::select(
-                DB::raw('DATE(last_login_at) as date'),
+                DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as active_users')
             )
-            ->where('last_login_at', '>=', Carbon::now()->subDays(30))
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
             ->groupBy('date')
             ->orderBy('date')
             ->get();
