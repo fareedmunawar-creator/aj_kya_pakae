@@ -185,7 +185,7 @@
                                                 {{ $recipe->title }}
                                             </a>
                                         </td>
-                                        <td>{{ $recipe->views }}</td>
+                                        <td>{{ $recipe->views_count }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
