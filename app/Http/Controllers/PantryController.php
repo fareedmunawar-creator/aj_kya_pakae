@@ -28,8 +28,9 @@ class PantryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string',
-            'quantity' => 'required|numeric'
+            'ingredient_id' => 'required|exists:ingredients,id',
+            'quantity' => 'required|numeric',
+            'expiry_date' => 'nullable|date'
         ]);
         
         Auth::user()->pantryItems()->create($validated);

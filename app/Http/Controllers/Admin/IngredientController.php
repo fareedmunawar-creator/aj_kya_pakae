@@ -18,6 +18,14 @@ class IngredientController extends Controller
     }
 
     /**
+     * Show the form for creating a new ingredient.
+     */
+    public function create()
+    {
+        return view('admin.ingredients.create');
+    }
+
+    /**
      * Store a newly created ingredient in storage.
      */
     public function store(Request $request)

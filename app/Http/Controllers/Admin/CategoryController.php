@@ -16,6 +16,14 @@ class CategoryController extends Controller
         $categories = Category::latest()->paginate(10);
         return view('admin.categories', compact('categories'));
     }
+    
+    /**
+     * Show the form for creating a new category.
+     */
+    public function create()
+    {
+        return view('admin.categories.create');
+    }
 
     /**
      * Store a newly created category in storage.
