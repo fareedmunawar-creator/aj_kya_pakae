@@ -26,7 +26,10 @@ class RecipeController extends Controller
 
     public function store(Request $request)
     {
-        $recipe = Recipe::create($request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty'));
+        $data = $request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty');
+        $data['user_id'] = auth()->id();
+        
+        $recipe = Recipe::create($data);
 
         // Attach ingredients if provided
         if ($request->has('ingredients')) {

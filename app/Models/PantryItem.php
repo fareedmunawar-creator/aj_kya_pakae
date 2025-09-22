@@ -9,7 +9,7 @@ class PantryItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','ingredient_id','quantity','expiry_date'];
+    protected $fillable = ['user_id','ingredient_id','quantity','unit','expiry_date'];
 
     public function user() {
         return $this->belongsTo(User::class);

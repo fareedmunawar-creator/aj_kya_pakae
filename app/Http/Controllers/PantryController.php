@@ -30,6 +30,7 @@ class PantryController extends Controller
         $validated = $request->validate([
             'ingredient_id' => 'required|exists:ingredients,id',
             'quantity' => 'required|numeric',
+            'unit' => 'required|string',
             'expiry_date' => 'nullable|date'
         ]);
         
