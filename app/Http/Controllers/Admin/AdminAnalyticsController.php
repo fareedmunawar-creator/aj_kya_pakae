@@ -87,9 +87,10 @@ class AdminAnalyticsController extends Controller
         $pantryItemCount = PantryItem::count();
         
         // Get top 5 recipes by views
-        $topRecipes = Recipe::orderByDesc('views')
+        $topRecipes = Recipe::withCount('views as views_count')
+            ->orderByDesc('views_count')
             ->take(5)
-            ->get(['id', 'title', 'views']);
+            ->get(['id', 'title']);
             
         // Get recent users
         $recentUsers = User::latest()

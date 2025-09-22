@@ -12,9 +12,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\QuickCookController;
 use App\Http\Controllers\Admin\AdminAnalyticsController;
 
-Route::get('/dashboard', function () {
-    return view('admin/dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [AdminAnalyticsController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
