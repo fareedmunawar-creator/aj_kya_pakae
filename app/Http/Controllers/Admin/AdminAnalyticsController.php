@@ -41,8 +41,8 @@ class AdminAnalyticsController extends Controller
     public function expiringPantry()
     {
         $items = PantryItem::whereDate('expiry_date', '<=', Carbon::now()->addDays(7))
-            ->with('user')
-            ->get(['id','name','expiry_date','user_id']);
+            ->with(['user', 'ingredient'])
+            ->get(['id','ingredient_id','expiry_date','user_id']);
 
         return response()->json($items);
     }
@@ -99,9 +99,9 @@ class AdminAnalyticsController extends Controller
             
         // Get expiring pantry items (next 7 days)
         $expiringItems = PantryItem::whereDate('expiry_date', '<=', Carbon::now()->addDays(7))
-            ->with('user')
+            ->with(['user', 'ingredient'])
             ->take(5)
-            ->get(['id', 'name', 'expiry_date', 'user_id']);
+            ->get(['id', 'ingredient_id', 'expiry_date', 'user_id']);
         
         return view('admin.dashboard', compact(
             'userCount', 
