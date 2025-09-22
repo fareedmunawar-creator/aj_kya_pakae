@@ -29,6 +29,14 @@ class RecipeController extends Controller
         $data = $request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty');
         $data['user_id'] = auth()->id();
         
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('recipes', $imageName, 'public');
+            $data['image_path'] = $path;
+        }
+        
         $recipe = Recipe::create($data);
 
         // Attach ingredients if provided
@@ -54,7 +62,17 @@ class RecipeController extends Controller
 
     public function update(Request $request, Recipe $recipe)
     {
-        $recipe->update($request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty'));
+        $data = $request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty');
+        
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('recipes', $imageName, 'public');
+            $data['image_path'] = $path;
+        }
+        
+        $recipe->update($data);
 
         if ($request->has('ingredients')) {
             $recipe->ingredients()->sync($request->ingredients);

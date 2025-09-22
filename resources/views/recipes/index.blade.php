@@ -62,7 +62,7 @@
             @foreach($recipes as $recipe)
                 <div class="col">
                     <div class="card h-100 shadow-sm recipe-card">
-                        <img src="{{ $recipe->image_url ?? 'https://via.placeholder.com/300x200?text=No+Image' }}" class="card-img-top recipe-img" alt="{{ $recipe->name }}">
+                        <img src="{{ $recipe->image_path ? asset('storage/'.$recipe->image_path) : 'https://via.placeholder.com/300x200?text=No+Image' }}" class="card-img-top recipe-img" alt="{{ $recipe->title }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $recipe->name }}</h5>
                             <p class="card-text">{{ Str::limit($recipe->description, 100) }}</p>
