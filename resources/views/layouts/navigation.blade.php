@@ -37,7 +37,7 @@
                 
                 @auth
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('favorites.*') ? 'active' : '' }}" href="#">
+                    <a class="nav-link {{ request()->routeIs('favorites.*') ? 'active' : '' }}" href="{{ route('favorites.index') }}">
                         {{ __('Favorites') }}
                     </a>
                 </li>
@@ -110,24 +110,6 @@
                     </ul>
                 </li>
             </ul>
-        </div>
-    </div>
-</nav>
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
         </div>
     </div>
 </nav>
