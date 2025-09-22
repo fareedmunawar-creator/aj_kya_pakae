@@ -20,7 +20,9 @@ class PantryController extends Controller
 
     public function create()
     {
-        return view('pantry.create');
+        $ingredients = \App\Models\Ingredient::all();
+        $units = ['g', 'kg', 'ml', 'l', 'cup', 'tbsp', 'tsp', 'piece', 'slice', 'bunch'];
+        return view('pantry.create', compact('ingredients', 'units'));
     }
 
     public function store(Request $request)
@@ -38,7 +40,8 @@ class PantryController extends Controller
     public function edit(PantryItem $pantry)
     {
         $this->authorize('update', $pantry);
-        return view('pantry.edit', compact('pantry'));
+        $ingredients = \App\Models\Ingredient::all();
+        return view('pantry.edit', compact('pantry', 'ingredients'));
     }
 
     public function update(Request $request, PantryItem $pantry)

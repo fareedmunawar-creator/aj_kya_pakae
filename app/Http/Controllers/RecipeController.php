@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use App\Models\Ingredient;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class RecipeController extends Controller
@@ -12,17 +13,20 @@ class RecipeController extends Controller
     {
         $recipes = Recipe::with('ingredients')->latest()->paginate(10);
         $day = $request->query('day');
-        return view('recipes.index', compact('recipes', 'day'));
+        $categories = Category::all();
+        return view('recipes.index', compact('recipes', 'day', 'categories'));
     }
 
     public function create()
     {
-        return view('recipes.create');
+        $categories = Category::all();
+        $ingredients = Ingredient::all();
+        return view('recipes.create', compact('categories', 'ingredients'));
     }
 
     public function store(Request $request)
     {
-        $recipe = Recipe::create($request->only('title', 'description', 'instructions'));
+        $recipe = Recipe::create($request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty'));
 
         // Attach ingredients if provided
         if ($request->has('ingredients')) {
@@ -40,12 +44,14 @@ class RecipeController extends Controller
 
     public function edit(Recipe $recipe)
     {
-        return view('recipes.edit', compact('recipe'));
+        $categories = Category::all();
+        $allIngredients = Ingredient::all();
+        return view('recipes.edit', compact('recipe', 'categories', 'allIngredients'));
     }
 
     public function update(Request $request, Recipe $recipe)
     {
-        $recipe->update($request->only('title', 'description', 'instructions'));
+        $recipe->update($request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty'));
 
         if ($request->has('ingredients')) {
             $recipe->ingredients()->sync($request->ingredients);
