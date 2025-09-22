@@ -6,6 +6,7 @@ use App\Models\MealPlan;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class MealPlannerController extends Controller
 {
@@ -24,7 +25,80 @@ class MealPlannerController extends Controller
         $user = Auth::user();
         $mealPlans = $user->mealPlans()->with('recipes')->get()->groupBy('day');
         
-        return view('mealplanner.index', compact('mealPlans'));
+        $days = [
+            'monday' => 'Monday',
+            'tuesday' => 'Tuesday',
+            'wednesday' => 'Wednesday',
+            'thursday' => 'Thursday',
+            'friday' => 'Friday',
+            'saturday' => 'Saturday',
+            'sunday' => 'Sunday'
+        ];
+        
+        return view('mealplanner.index', compact('mealPlans', 'days'));
+    }
+    
+    /**
+     * Show the form for creating a new meal plan
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', __('messages.error'));
+        }
+        
+        $days = [
+            'monday' => 'Monday',
+            'tuesday' => 'Tuesday',
+            'wednesday' => 'Wednesday',
+            'thursday' => 'Thursday',
+            'friday' => 'Friday',
+            'saturday' => 'Saturday',
+            'sunday' => 'Sunday'
+        ];
+        
+        $recipes = Recipe::all();
+        
+        return view('mealplanner.create', compact('days', 'recipes'));
+    }
+    
+    /**
+     * Show the form for editing a meal plan
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', __('messages.error'));
+        }
+        
+        $mealPlan = MealPlan::findOrFail($id);
+        
+        // Check if the meal plan belongs to the authenticated user
+        if ($mealPlan->user_id !== Auth::id()) {
+            return redirect()->route('mealplanner.index')
+                ->with('error', __('messages.error'));
+        }
+        
+        $days = [
+            'monday' => 'Monday',
+            'tuesday' => 'Tuesday',
+            'wednesday' => 'Wednesday',
+            'thursday' => 'Thursday',
+            'friday' => 'Friday',
+            'saturday' => 'Saturday',
+            'sunday' => 'Sunday'
+        ];
+        
+        $recipes = Recipe::all();
+        
+        return view('mealplanner.edit', compact('mealPlan', 'days', 'recipes'));
     }
 
     /**
