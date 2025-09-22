@@ -80,6 +80,36 @@ class AdminAnalyticsController extends Controller
     // Dashboard view
     public function dashboard()
     {
-        return view('admin.dashboard');
+        // Get counts for dashboard cards
+        $userCount = User::count();
+        $recipeCount = Recipe::count();
+        $ingredientCount = Ingredient::count();
+        $pantryItemCount = PantryItem::count();
+        
+        // Get top 5 recipes by views
+        $topRecipes = Recipe::orderByDesc('views')
+            ->take(5)
+            ->get(['id', 'title', 'views']);
+            
+        // Get recent users
+        $recentUsers = User::latest()
+            ->take(5)
+            ->get(['id', 'name', 'email', 'created_at']);
+            
+        // Get expiring pantry items (next 7 days)
+        $expiringItems = PantryItem::whereDate('expiry_date', '<=', Carbon::now()->addDays(7))
+            ->with('user')
+            ->take(5)
+            ->get(['id', 'name', 'expiry_date', 'user_id']);
+        
+        return view('admin.dashboard', compact(
+            'userCount', 
+            'recipeCount', 
+            'ingredientCount', 
+            'pantryItemCount',
+            'topRecipes',
+            'recentUsers',
+            'expiringItems'
+        ));
     }
 }

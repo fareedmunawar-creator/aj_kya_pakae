@@ -4,16 +4,40 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Ingredient;
+use App\Models\PantryItem;
+use Illuminate\Support\Facades\Auth;
 
 class QuickCookController extends Controller
 {
     public function findRecipes(Request $request)
     {
-        // Get pantry ingredient IDs from user (array)
+        // If it's a GET request, show the form
+        if ($request->isMethod('get')) {
+            // Get all ingredients for the form
+            $ingredients = Ingredient::all();
+            
+            // Get user's pantry items if authenticated
+            $userPantryIngredients = [];
+            if (Auth::check()) {
+                $userPantryIngredients = PantryItem::where('user_id', Auth::id())
+                    ->with('ingredient')
+                    ->get()
+                    ->pluck('ingredient_id')
+                    ->toArray();
+            }
+            
+            return view('recipes.quick-cook', compact('ingredients', 'userPantryIngredients'));
+        }
+        
+        // For POST requests, process the recipe search
         $pantryIngredientIds = $request->input('ingredients', []);
 
         if (empty($pantryIngredientIds)) {
-            return response()->json(['message' => 'No pantry ingredients provided'], 400);
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'No pantry ingredients provided'], 400);
+            }
+            return redirect()->back()->with('error', 'Please select at least one ingredient.');
         }
 
         $recipes = DB::table('recipes')
