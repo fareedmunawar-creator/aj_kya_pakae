@@ -1,125 +1,135 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $mealPlan->name }}
-            </h2>
-            <div>
-                <a href="{{ route('mealplanner.edit', $mealPlan->id) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                    {{ __('Edit Plan') }}
-                </a>
-            </div>
+@extends('layouts.app')
+
+@section('title', $mealPlan->name)
+
+@section('content')
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{ $mealPlan->name }}</h1>
+        <div>
+            <a href="{{ route('mealplanner.edit', $mealPlan->id) }}" class="btn btn-warning">
+                <i class="bi bi-pencil me-1"></i> {{ __('Edit Plan') }}
+            </a>
         </div>
-    </x-slot>
+    </div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <div>
-                                <h3 class="text-lg font-medium">{{ __('Plan Details') }}</h3>
-                                <p class="text-sm text-gray-600">{{ __('From') }} {{ $mealPlan->start_date->format('M d, Y') }} {{ __('to') }} {{ $mealPlan->end_date->format('M d, Y') }}</p>
-                            </div>
-                            <div>
-                                <a href="{{ route('mealplanner.shopping-list', $mealPlan->id) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500">
-                                    {{ __('Generate Shopping List') }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        @foreach($mealDays as $day => $meals)
-                            <div class="border rounded-lg overflow-hidden">
-                                <div class="bg-gray-100 px-4 py-2 font-medium">
-                                    {{ $dayNames[$day] }}
-                                </div>
-                                <div class="p-4">
-                                    <div class="mb-4">
-                                        <h4 class="text-sm font-medium text-gray-700">{{ __('Breakfast') }}</h4>
-                                        @if(isset($meals['breakfast']))
-                                            <div class="mt-1 flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    @if($meals['breakfast']->image)
-                                                        <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $meals['breakfast']->image) }}" alt="{{ $meals['breakfast']->title }}">
-                                                    @else
-                                                        <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                                            </svg>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="ml-3">
-                                                    <a href="{{ route('recipes.show', $meals['breakfast']->id) }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">
-                                                        {{ $meals['breakfast']->title }}
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <p class="text-sm text-gray-500 italic mt-1">{{ __('No recipe selected') }}</p>
-                                        @endif
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <h4 class="text-sm font-medium text-gray-700">{{ __('Lunch') }}</h4>
-                                        @if(isset($meals['lunch']))
-                                            <div class="mt-1 flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    @if($meals['lunch']->image)
-                                                        <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $meals['lunch']->image) }}" alt="{{ $meals['lunch']->title }}">
-                                                    @else
-                                                        <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                                            </svg>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="ml-3">
-                                                    <a href="{{ route('recipes.show', $meals['lunch']->id) }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">
-                                                        {{ $meals['lunch']->title }}
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <p class="text-sm text-gray-500 italic mt-1">{{ __('No recipe selected') }}</p>
-                                        @endif
-                                    </div>
-
-                                    <div>
-                                        <h4 class="text-sm font-medium text-gray-700">{{ __('Dinner') }}</h4>
-                                        @if(isset($meals['dinner']))
-                                            <div class="mt-1 flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    @if($meals['dinner']->image)
-                                                        <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $meals['dinner']->image) }}" alt="{{ $meals['dinner']->title }}">
-                                                    @else
-                                                        <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                                            </svg>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="ml-3">
-                                                    <a href="{{ route('recipes.show', $meals['dinner']->id) }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-900">
-                                                        {{ $meals['dinner']->title }}
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <p class="text-sm text-gray-500 italic mt-1">{{ __('No recipe selected') }}</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h3 class="card-title">{{ __('Plan Details') }}</h3>
+                    <p class="text-muted">
+                        <i class="bi bi-calendar-range me-1"></i>
+                        {{ __('From') }} {{ $mealPlan->start_date->format('M d, Y') }} {{ __('to') }} {{ $mealPlan->end_date->format('M d, Y') }}
+                    </p>
+                </div>
+                <div>
+                    <a href="{{ route('mealplanner.shopping-list', $mealPlan->id) }}" class="btn btn-success">
+                        <i class="bi bi-cart me-1"></i> {{ __('Generate Shopping List') }}
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        @foreach($mealDays as $day => $meals)
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">{{ $dayNames[$day] }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h5 class="card-title text-primary">
+                                <i class="bi bi-sunrise me-2"></i>{{ __('Breakfast') }}
+                            </h5>
+                            @if(isset($meals['breakfast']))
+                                <div class="d-flex align-items-center mt-2">
+                                    <div class="flex-shrink-0">
+                                        @if($meals['breakfast']->image)
+                                            <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
+                                                src="{{ asset('storage/' . $meals['breakfast']->image) }}" 
+                                                alt="{{ $meals['breakfast']->title }}">
+                                        @else
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
+                                                style="width: 40px; height: 40px;">
+                                                <i class="bi bi-egg-fried text-secondary"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="ms-3">
+                                        <a href="{{ route('recipes.show', $meals['breakfast']->id) }}" class="text-decoration-none">
+                                            {{ $meals['breakfast']->title }}
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                <p class="text-muted fst-italic">{{ __('No recipe selected') }}</p>
+                            @endif
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="card-title text-primary">
+                                <i class="bi bi-sun me-2"></i>{{ __('Lunch') }}
+                            </h5>
+                            @if(isset($meals['lunch']))
+                                <div class="d-flex align-items-center mt-2">
+                                    <div class="flex-shrink-0">
+                                        @if($meals['lunch']->image)
+                                            <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
+                                                src="{{ asset('storage/' . $meals['lunch']->image) }}" 
+                                                alt="{{ $meals['lunch']->title }}">
+                                        @else
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
+                                                style="width: 40px; height: 40px;">
+                                                <i class="bi bi-cup-hot text-secondary"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="ms-3">
+                                        <a href="{{ route('recipes.show', $meals['lunch']->id) }}" class="text-decoration-none">
+                                            {{ $meals['lunch']->title }}
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                <p class="text-muted fst-italic">{{ __('No recipe selected') }}</p>
+                            @endif
+                        </div>
+
+                        <div>
+                            <h5 class="card-title text-primary">
+                                <i class="bi bi-moon me-2"></i>{{ __('Dinner') }}
+                            </h5>
+                            @if(isset($meals['dinner']))
+                                <div class="d-flex align-items-center mt-2">
+                                    <div class="flex-shrink-0">
+                                        @if($meals['dinner']->image)
+                                            <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
+                                                src="{{ asset('storage/' . $meals['dinner']->image) }}" 
+                                                alt="{{ $meals['dinner']->title }}">
+                                        @else
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
+                                                style="width: 40px; height: 40px;">
+                                                <i class="bi bi-egg text-secondary"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="ms-3">
+                                        <a href="{{ route('recipes.show', $meals['dinner']->id) }}" class="text-decoration-none">
+                                            {{ $meals['dinner']->title }}
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                <p class="text-muted fst-italic">{{ __('No recipe selected') }}</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+@endsection

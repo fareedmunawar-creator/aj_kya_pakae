@@ -36,9 +36,10 @@
 @endsection
 
 @section('content')
+<div class="container py-4">
     <h1 class="mb-4 text-center animate__animated animate__fadeInDown">{{ __('messages.weekly_meal_planner') }}</h1>
 
-    <div class="row">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
         @php
             $days = [
                 'monday' => __('messages.monday'),
@@ -52,8 +53,8 @@
         @endphp
         
         @foreach($days as $dayKey => $dayName)
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 meal-card">
+            <div class="col">
+                <div class="card h-100 meal-card shadow-sm">
                     <div class="card-header fw-bold day-header">{{ $dayName }}</div>
                     <div class="card-body">
                         @if(isset($mealPlans[$dayKey]) && count($mealPlans[$dayKey]) > 0)
@@ -86,4 +87,5 @@
             </div>
         @endforeach
     </div>
+</div>
 @endsection

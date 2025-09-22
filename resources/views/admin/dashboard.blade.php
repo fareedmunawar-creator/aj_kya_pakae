@@ -1,19 +1,23 @@
 @extends('layouts.app')
 
+@section('title', __('Admin Dashboard'))
+
 @section('content')
     <div class="container py-4">
-        <h1 class="mb-4">{{ __('Welcome to the admin dashboard!') }}</h1>
+        <h1 class="mb-4 text-center">{{ __('Admin Dashboard') }}</h1>
         
         <!-- Admin Navigation Links -->
         <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
             <!-- User Management -->
             <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ __('User Management') }}</h5>
-                        <p class="card-text text-muted mb-3">{{ __('Manage user accounts and permissions') }}</p>
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-dark">
-                            {{ __('Manage Users') }}
+                <div class="card h-100 shadow-sm border-0 hover-shadow">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-people-fill me-2"></i>{{ __('User Management') }}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-text flex-grow-1">{{ __('Manage user accounts and permissions') }}</p>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary mt-auto">
+                            <i class="bi bi-person-gear me-1"></i>{{ __('Manage Users') }}
                         </a>
                     </div>
                 </div>
@@ -21,12 +25,14 @@
             
             <!-- Recipe Management -->
             <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ __('Recipe Management') }}</h5>
-                        <p class="card-text text-muted mb-3">{{ __('Manage recipes and their content') }}</p>
-                        <a href="{{ route('admin.recipes.index') }}" class="btn btn-dark">
-                            {{ __('Manage Recipes') }}
+                <div class="card h-100 shadow-sm border-0 hover-shadow">
+                    <div class="card-header bg-success text-white">
+                        <i class="bi bi-journal-richtext me-2"></i>{{ __('Recipe Management') }}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-text flex-grow-1">{{ __('Manage recipes and their content') }}</p>
+                        <a href="{{ route('admin.recipes.index') }}" class="btn btn-outline-success mt-auto">
+                            <i class="bi bi-journal-check me-1"></i>{{ __('Manage Recipes') }}
                         </a>
                     </div>
                 </div>
@@ -34,12 +40,14 @@
             
             <!-- Category Management -->
             <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ __('Category Management') }}</h5>
-                        <p class="card-text text-muted mb-3">{{ __('Manage recipe categories') }}</p>
-                        <a href="{{ route('admin.categories.index') }}" class="btn btn-dark">
-                            {{ __('Manage Categories') }}
+                <div class="card h-100 shadow-sm border-0 hover-shadow">
+                    <div class="card-header bg-info text-white">
+                        <i class="bi bi-tags-fill me-2"></i>{{ __('Category Management') }}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-text flex-grow-1">{{ __('Manage recipe categories') }}</p>
+                        <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-info mt-auto">
+                            <i class="bi bi-tag me-1"></i>{{ __('Manage Categories') }}
                         </a>
                     </div>
                 </div>
@@ -47,12 +55,14 @@
             
             <!-- Ingredient Management -->
             <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ __('Ingredient Management') }}</h5>
-                        <p class="card-text text-muted mb-3">{{ __('Manage recipe ingredients') }}</p>
-                        <a href="{{ route('admin.ingredients.index') }}" class="btn btn-dark">
-                            {{ __('Manage Ingredients') }}
+                <div class="card h-100 shadow-sm border-0 hover-shadow">
+                    <div class="card-header bg-warning text-dark">
+                        <i class="bi bi-basket-fill me-2"></i>{{ __('Ingredient Management') }}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-text flex-grow-1">{{ __('Manage recipe ingredients') }}</p>
+                        <a href="{{ route('admin.ingredients.index') }}" class="btn btn-outline-warning mt-auto">
+                            <i class="bi bi-basket2 me-1"></i>{{ __('Manage Ingredients') }}
                         </a>
                     </div>
                 </div>

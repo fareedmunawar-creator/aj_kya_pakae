@@ -64,6 +64,7 @@
 @endsection
 
 @section('content')
+<div class="container py-4">
     <div class="row">
         <div class="col-md-6 mb-4">
             <div class="recipe-image rounded overflow-hidden">
@@ -165,4 +166,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
