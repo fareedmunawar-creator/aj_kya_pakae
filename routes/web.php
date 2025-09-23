@@ -45,9 +45,9 @@ Route::delete('/mealplanner/{mealPlan}', [MealPlannerController::class, 'destroy
 Route::post('/mealplanner/add/{recipe}', [MealPlannerController::class, 'add'])->name('mealplanner.add');
 Route::delete('/mealplanner/remove/{id}', [MealPlannerController::class, 'remove'])->name('mealplanner.remove');
 
-// Favorites (toggle only)
-Route::post('/favorites/toggle/{recipe}', [FavoriteController::class, 'toggle'])
-    ->name('favorites.toggle');
+// Favorites
+Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+Route::post('/favorites/toggle/{recipe}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
 
 // Comments (store only)
 Route::post('/comments', [CommentController::class, 'store'])

@@ -53,8 +53,13 @@
                 <ul class="navbar-nav ms-auto">
                     @auth
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{ request()->routeIs('favorites.*') ? 'active' : '' }}">
+                            <a href="{{ route('favorites.toggle', ['recipe' => 0]) }}" class="nav-link {{ request()->routeIs('favorites.*') ? 'active' : '' }}" onclick="event.preventDefault(); window.location.href='/favorites';">
                                 <i class="bi bi-heart me-1"></i> {{ __('messages.favorites') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('quick-cook') }}" class="nav-link {{ request()->routeIs('quick-cook') ? 'active' : '' }}">
+                                <i class="bi bi-lightning-charge me-1"></i> {{ __('Quick Cook') }}
                             </a>
                         </li>
                         <li class="nav-item dropdown">
