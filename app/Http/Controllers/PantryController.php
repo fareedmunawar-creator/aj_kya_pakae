@@ -49,7 +49,15 @@ class PantryController extends Controller
     public function update(Request $request, PantryItem $pantry)
     {
         $this->authorize('update', $pantry);
-        $pantry->update($request->only('name', 'quantity'));
+        
+        $validated = $request->validate([
+            'ingredient_id' => 'required|exists:ingredients,id',
+            'quantity' => 'required|numeric',
+            'unit' => 'required|string',
+            'expiry_date' => 'nullable|date'
+        ]);
+        
+        $pantry->update($validated);
 
         return redirect()->route('pantry.index')->with('success', 'Item updated!');
     }
