@@ -19,15 +19,17 @@ return new class extends Migration
             $table->text('instructions');
             $table->string('image_path')->nullable();
             $table->integer('cooking_time');
-            $table->integer('prep_time')->default(0);
             $table->integer('servings')->nullable();
             $table->enum('difficulty', ['easy', 'medium', 'hard'])->default('medium');
         
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id'); // Explicit
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         
             $table->timestamps();
         });
+        
+        
+        
     }
 
     /**
