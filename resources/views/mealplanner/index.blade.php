@@ -57,22 +57,24 @@
                 <div class="card h-100 meal-card shadow-sm">
                     <div class="card-header fw-bold day-header">{{ $dayName }}</div>
                     <div class="card-body">
-                        @if(isset($mealPlans[$dayKey]) && count($mealPlans[$dayKey]) > 0)
+                        @if(isset($mealPlans) && isset($mealPlans[$dayKey]) && count($mealPlans[$dayKey]) > 0)
                             @foreach($mealPlans[$dayKey] as $index => $meal)
-                                @foreach($meal->recipes as $recipe)
-                                    <div class="recipe-item mb-2 p-2 border-bottom" style="animation-delay: {{ $index * 0.1 }}s">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>{{ $recipe->title }}</span>
-                                            <form action="{{ route('mealplanner.remove', $meal->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                @if($meal->recipes && count($meal->recipes) > 0)
+                                    @foreach($meal->recipes as $recipe)
+                                        <div class="recipe-item mb-2 p-2 border-bottom" style="animation-delay: {{ $index * 0.1 }}s">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>{{ $recipe->title }}</span>
+                                                <form action="{{ route('mealplanner.remove', $meal->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                @endif
                             @endforeach
                         @else
                             <p class="text-muted text-center">{{ __('messages.no_meals_planned') }}</p>

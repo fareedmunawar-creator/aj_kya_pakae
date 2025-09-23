@@ -67,7 +67,7 @@
     <div class="row">
         <div class="col-md-6 mb-4">
             <div class="recipe-image rounded overflow-hidden">
-                <img src="{{ $recipe->image }}" class="img-fluid w-100" alt="{{ $recipe->title }}">
+                <img src="{{ asset('storage/' . $recipe->image) }}" class="img-fluid w-100" alt="{{ $recipe->title }}">
             </div>
         </div>
         <div class="col-md-6 recipe-details">
@@ -77,12 +77,16 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        @foreach($recipe->ingredients as $index => $ingredient)
-                            <li class="list-group-item ingredient-item d-flex justify-content-between align-items-center" style="animation-delay: {{ $index * 0.1 }}s">
-                                <span>{{ $ingredient->name }}</span>
-                                <span class="badge bg-primary rounded-pill">{{ $ingredient->pivot->quantity }}</span>
-                            </li>
-                        @endforeach
+                        @if(isset($recipe->ingredients) && count($recipe->ingredients) > 0)
+                            @foreach($recipe->ingredients as $index => $ingredient)
+                                <li class="list-group-item ingredient-item d-flex justify-content-between align-items-center" style="animation-delay: {{ $index * 0.1 }}s">
+                                    <span>{{ $ingredient->name }}</span>
+                                    <span class="badge bg-primary rounded-pill">{{ $ingredient->pivot->quantity }}</span>
+                                </li>
+                            @endforeach
+                        @else
+                            <li class="list-group-item">{{ __('messages.no_ingredients') ?? 'No ingredients available' }}</li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -91,9 +95,13 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <ol class="list-group list-group-numbered">
-                        @foreach($recipe->steps as $index => $step)
-                            <li class="list-group-item step-item" style="animation-delay: {{ ($index + count($recipe->ingredients)) * 0.1 }}s">{{ $step }}</li>
-                        @endforeach
+                        @if(isset($recipe->steps) && count($recipe->steps) > 0)
+                            @foreach($recipe->steps as $index => $step)
+                                <li class="list-group-item step-item" style="animation-delay: {{ ($index + (isset($recipe->ingredients) ? count($recipe->ingredients) : 0)) * 0.1 }}s">{{ $step }}</li>
+                            @endforeach
+                        @else
+                            <li class="list-group-item">{{ __('messages.no_steps') ?? 'No steps available' }}</li>
+                        @endif
                     </ol>
                 </div>
             </div>
@@ -128,11 +136,11 @@
             <h4 class="section-title"><i class="bi bi-chat-dots me-2"></i>{{ __('messages.comments') }}</h4>
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    @if($recipe->comments->count() > 0)
+                    @if(isset($recipe->comments) && $recipe->comments->count() > 0)
                         @foreach($recipe->comments as $index => $comment)
                             <div class="border p-2 rounded mb-2 ingredient-item" style="animation-delay: {{ $index * 0.1 }}s">
                                 <div class="d-flex justify-content-between">
-                                    <strong>{{ $comment->user->name }}</strong>
+                                    <strong>{{ isset($comment->user) ? $comment->user->name : 'Anonymous' }}</strong>
                                     <div>⭐ {{ $comment->rating }}/5</div>
                                 </div>
                                 <p class="mb-0 mt-1">{{ $comment->content }}</p>
