@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('meal_plans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('recipe_id')->constrained()->onDelete('cascade');
-            $table->date('planned_date');
+            $table->string('day');
             $table->timestamps();
         });
         
