@@ -49,7 +49,7 @@
                                     <div class="flex-shrink-0">
                                         @if($meals['breakfast']->image)
                                             <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
-                                                src="{{ asset('storage/' . $meals['breakfast']->image) }}" 
+                                                src="{{ asset('storage/recipes/' . $meals['breakfast']->image_path) }}" 
                                                 alt="{{ $meals['breakfast']->title }}">
                                         @else
                                             <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
@@ -78,7 +78,7 @@
                                     <div class="flex-shrink-0">
                                         @if($meals['lunch']->image)
                                             <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
-                                                src="{{ asset('storage/' . $meals['lunch']->image) }}" 
+                                                src="{{ asset('storage/recipes/' . $meals['lunch']->image_path) }}" 
                                                 alt="{{ $meals['lunch']->title }}">
                                         @else
                                             <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
@@ -107,7 +107,7 @@
                                     <div class="flex-shrink-0">
                                         @if($meals['dinner']->image)
                                             <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
-                                                src="{{ asset('storage/' . $meals['dinner']->image) }}" 
+                                                src="{{ asset('storage/recipes/' . $meals['dinner']->image_path) }}" 
                                                 alt="{{ $meals['dinner']->title }}">
                                         @else
                                             <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 

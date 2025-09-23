@@ -67,7 +67,7 @@
     <div class="row">
         <div class="col-md-6 mb-4">
             <div class="recipe-image rounded overflow-hidden">
-                <img src="{{ asset('storage/' . $recipe->image) }}" class="img-fluid w-100" alt="{{ $recipe->title }}">
+                <img src="{{ asset('storage/recipes/' . $recipe->image_path) }}" class="img-fluid w-100" alt="{{ $recipe->title }}">
             </div>
         </div>
         <div class="col-md-6 recipe-details">

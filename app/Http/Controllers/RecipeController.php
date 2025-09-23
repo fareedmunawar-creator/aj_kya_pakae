@@ -45,7 +45,7 @@ class RecipeController extends Controller
             $image = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('recipes', $imageName, 'public');
-            $data['image_path'] = $path;
+            $data['image_path'] = $imageName;
         }
         
         $recipe = Recipe::create($data);
@@ -91,7 +91,7 @@ class RecipeController extends Controller
             $image = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('recipes', $imageName, 'public');
-            $data['image_path'] = $path;
+            $data['image_path'] = $imageName;
         }
         
         $recipe->update($data);
