@@ -16,9 +16,11 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
+            $table->text('instructions');
             $table->string('image_path')->nullable();
-            $table->integer('cooking_time')->nullable();
+            $table->integer('cooking_time');
             $table->integer('servings')->nullable();
+            $table->enum('difficulty', ['easy', 'medium', 'hard'])->default('medium');
         
             $table->unsignedBigInteger('user_id'); // Explicit
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

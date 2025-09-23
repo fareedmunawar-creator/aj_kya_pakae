@@ -58,10 +58,10 @@ Route::prefix('admin')
         // Dashboard
         Route::get('/', [AdminAnalyticsController::class, 'dashboard'])->name('admin.dashboard');
         
-        // Admin resources
-        Route::resource('recipes', RecipeController::class)->names('admin.recipes');
-        Route::resource('pantry', PantryController::class)->names('admin.pantry');
-        Route::resource('meal-plans', MealPlannerController::class)->names('admin.meal-plans');
+        // Admin resources - use Admin namespace controllers
+        Route::resource('recipes', \App\Http\Controllers\Admin\RecipeController::class)->names('admin.recipes');
+        Route::resource('pantry', \App\Http\Controllers\Admin\PantryController::class)->names('admin.pantry');
+        Route::resource('meal-plans', \App\Http\Controllers\Admin\MealPlanController::class)->names('admin.meal-plans');
         
         // User management
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->names('admin.users');

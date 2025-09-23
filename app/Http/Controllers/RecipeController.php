@@ -26,7 +26,18 @@ class RecipeController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty');
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'instructions' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'cooking_time' => 'required|integer|min:1',
+            'difficulty' => 'required|string|in:easy,medium,hard',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'servings' => 'nullable|integer|min:1',
+        ]);
+        
+        $data = $request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty', 'servings');
         $data['user_id'] = auth()->id();
         
         // Handle image upload
@@ -62,7 +73,18 @@ class RecipeController extends Controller
 
     public function update(Request $request, Recipe $recipe)
     {
-        $data = $request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty');
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'instructions' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'cooking_time' => 'required|integer|min:1',
+            'difficulty' => 'required|string|in:easy,medium,hard',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'servings' => 'nullable|integer|min:1',
+        ]);
+        
+        $data = $request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty', 'servings');
         
         // Handle image upload
         if ($request->hasFile('image')) {
