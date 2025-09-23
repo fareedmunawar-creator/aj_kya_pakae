@@ -7,6 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
+    public function index()
+    {
+        $user = Auth::user();
+        $favorites = $user->favorites()->with('category', 'user')->paginate(12);
+        
+        return view('favorites.index', compact('favorites'));
+    }
+    
     public function toggle(Recipe $recipe)
     {
         $user = Auth::user();
