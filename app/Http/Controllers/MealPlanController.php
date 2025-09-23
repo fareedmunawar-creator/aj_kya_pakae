@@ -36,17 +36,18 @@ class MealPlanController extends Controller
         return view('mealplans.create');
     }
 
-    public function store(Request $request, Recipe $recipe)
+    public function store(Request $request)
     {
         $request->validate([
-            'day' => 'required|string'
+            'day' => 'required|string',
+            'recipe_id' => 'required|exists:recipes,id'
         ]);
         
         $mealPlan = new MealPlan();
         $mealPlan->user_id = Auth::id();
         $mealPlan->day = $request->day;
         $mealPlan->save();
-        $mealPlan->recipes()->attach($recipe->id);
+        $mealPlan->recipes()->attach($request->recipe_id);
 
         return redirect()->route('mealplanner.index')->with('success', 'Recipe added to meal plan');
     }
@@ -80,9 +81,10 @@ class MealPlanController extends Controller
     public function destroy(MealPlan $mealPlan)
     {
         $this->authorize('delete', $mealPlan);
+        $mealPlan->recipes()->detach();
         $mealPlan->delete();
 
-        return redirect()->route('mealplans.index')->with('success', 'Meal plan deleted!');
+        return redirect()->route('mealplanner.index')->with('success', 'Meal plan deleted!');
     }
 
     public function generateShoppingList(MealPlan $mealPlan)
