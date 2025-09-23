@@ -60,32 +60,31 @@ Route::get('/quick-cook', [QuickCookController::class, 'findRecipes'])->name('qu
 
 // Admin routes
 Route::prefix('admin')
-    ->middleware(['auth', 'admin'])
-    ->group(function () {
-        // Dashboard
-        Route::get('/', [AdminAnalyticsController::class, 'dashboard'])->name('admin.dashboard');
-        
-        // Admin resources - use Admin namespace controllers
-        Route::resource('recipes', \App\Http\Controllers\Admin\RecipeController::class)->names('admin.recipes');
-        Route::resource('pantry', \App\Http\Controllers\Admin\PantryController::class)->names('admin.pantry');
-        Route::resource('meal-plans', \App\Http\Controllers\Admin\MealPlanController::class)->names('admin.meal-plans');
-        
-        // User management
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->names('admin.users');
-        
-        // Category management
-        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
-        
-        // Ingredient management
-        Route::resource('ingredients', \App\Http\Controllers\Admin\IngredientController::class)->names('admin.ingredients');
-        
-        // Analytics routes
-        Route::get('/analytics/top-recipes', [AdminAnalyticsController::class, 'topRecipes'])->name('admin.analytics.top-recipes');
-        Route::get('/analytics/ingredient-usage', [AdminAnalyticsController::class, 'ingredientUsage'])->name('admin.analytics.ingredient-usage');
-        Route::get('/analytics/expiring-pantry', [AdminAnalyticsController::class, 'expiringPantry'])->name('admin.analytics.expiring-pantry');
-        Route::get('/analytics/search-trends', [AdminAnalyticsController::class, 'searchTrends'])->name('admin.analytics.search-trends');
-        Route::get('/analytics/active-users', [AdminAnalyticsController::class, 'activeUsers'])->name('admin.analytics.active-users');
-    });
+->middleware(['auth', 'admin'])
+->group(function () {
+    Route::get('/', [AdminAnalyticsController::class, 'dashboard'])->name('admin.dashboard');
+    
+    // Admin resources - use Admin namespace controllers
+    Route::resource('recipes', \App\Http\Controllers\Admin\RecipeController::class)->names('admin.recipes');
+    Route::resource('pantry', \App\Http\Controllers\Admin\PantryController::class)->names('admin.pantry');
+    Route::resource('meal-plans', \App\Http\Controllers\Admin\MealPlanController::class)->names('admin.meal-plans');
+    
+    // User management
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->names('admin.users');
+    
+    // Category management
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
+    
+    // Ingredient management
+    Route::resource('ingredients', \App\Http\Controllers\Admin\IngredientController::class)->names('admin.ingredients');
+    
+    // Analytics routes
+    Route::get('/analytics/top-recipes', [AdminAnalyticsController::class, 'topRecipes'])->name('admin.analytics.top-recipes');
+    Route::get('/analytics/ingredient-usage', [AdminAnalyticsController::class, 'ingredientUsage'])->name('admin.analytics.ingredient-usage');
+    Route::get('/analytics/expiring-pantry', [AdminAnalyticsController::class, 'expiringPantry'])->name('admin.analytics.expiring-pantry');
+    Route::get('/analytics/search-trends', [AdminAnalyticsController::class, 'searchTrends'])->name('admin.analytics.search-trends');
+    Route::get('/analytics/active-users', [AdminAnalyticsController::class, 'activeUsers'])->name('admin.analytics.active-users');
+});
 // Language Switcher
 Route::get('/language/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');
 
