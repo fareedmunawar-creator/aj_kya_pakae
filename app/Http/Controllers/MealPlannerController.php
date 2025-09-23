@@ -164,4 +164,39 @@ class MealPlannerController extends Controller
         return redirect()->route('mealplanner.index')
             ->with('success', __('messages.success'));
     }
+
+    /**
+     * Generate a shopping list from the user's meal plans
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function shoppingList()
+    {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', __('messages.error'));
+        }
+        
+        $user = Auth::user();
+        $mealPlans = $user->mealPlans()->with('recipes.ingredients')->get();
+        
+        // Collect all ingredients from all recipes in the meal plans
+        $ingredients = collect();
+        foreach ($mealPlans as $mealPlan) {
+            foreach ($mealPlan->recipes as $recipe) {
+                $ingredients = $ingredients->concat($recipe->ingredients);
+            }
+        }
+        
+        // Group ingredients by name and sum quantities
+        $groupedIngredients = $ingredients->groupBy('name')->map(function ($group) {
+            return [
+                'name' => $group->first()->name,
+                'quantity' => $group->sum('pivot.quantity'),
+                'unit' => $group->first()->pivot->unit
+            ];
+        });
+        
+        return view('mealplanner.shopping-list', compact('groupedIngredients'));
+    }
 }

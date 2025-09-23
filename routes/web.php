@@ -44,6 +44,7 @@ Route::put('/mealplanner/{mealPlan}', [MealPlannerController::class, 'update'])-
 Route::delete('/mealplanner/{mealPlan}', [MealPlannerController::class, 'destroy'])->name('mealplanner.destroy');
 Route::post('/mealplanner/add/{recipe}', [MealPlannerController::class, 'add'])->name('mealplanner.add');
 Route::delete('/mealplanner/remove/{id}', [MealPlannerController::class, 'remove'])->name('mealplanner.remove');
+Route::get('/mealplanner/shopping-list', [MealPlannerController::class, 'shoppingList'])->name('mealplanner.shopping-list');
 
 // Favorites
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
