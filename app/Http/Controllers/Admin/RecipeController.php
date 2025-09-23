@@ -24,7 +24,14 @@ class RecipeController extends Controller
         $recipe = Recipe::create($request->only('title', 'description', 'instructions'));
 
         if ($request->has('ingredients')) {
-            $recipe->ingredients()->sync($request->ingredients);
+            // Filter out any empty ingredient IDs to prevent SQL errors
+            $ingredients = array_filter($request->ingredients, function($value) {
+                return !empty($value);
+            });
+            
+            if (!empty($ingredients)) {
+                $recipe->ingredients()->sync($ingredients);
+            }
         }
 
         return redirect()->route('admin.recipes.index')->with('success', 'Recipe created!');
@@ -40,7 +47,14 @@ class RecipeController extends Controller
         $recipe->update($request->only('title', 'description', 'instructions'));
 
         if ($request->has('ingredients')) {
-            $recipe->ingredients()->sync($request->ingredients);
+            // Filter out any empty ingredient IDs to prevent SQL errors
+            $ingredients = array_filter($request->ingredients, function($value) {
+                return !empty($value);
+            });
+            
+            if (!empty($ingredients)) {
+                $recipe->ingredients()->sync($ingredients);
+            }
         }
 
         return redirect()->route('admin.recipes.index')->with('success', 'Recipe updated!');

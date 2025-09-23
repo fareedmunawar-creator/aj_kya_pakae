@@ -44,17 +44,20 @@ class QuickCookController extends Controller
             ->join('ingredient_recipe', 'recipes.id', '=', 'ingredient_recipe.recipe_id')
             ->select(
                 'recipes.id',
-                'recipes.name',
-                'recipes.popularity',
+                'recipes.title',
+                DB::raw('0 as popularity'), // Using 0 as default since popularity column doesn't exist
                 DB::raw('COUNT(CASE WHEN ingredient_recipe.ingredient_id IN (' . implode(',', $pantryIngredientIds) . ') THEN 1 END) as matched_count'),
                 DB::raw('COUNT(ingredient_recipe.ingredient_id) as total_required')
             )
-            ->groupBy('recipes.id', 'recipes.name', 'recipes.popularity')
+            ->groupBy('recipes.id', 'recipes.title')
             ->get()
             ->map(function ($recipe) use ($pantryIngredientIds) {
                 $recipe->match_score = ($recipe->total_required > 0)
                     ? round(($recipe->matched_count / $recipe->total_required) * 100, 2)
                     : 0;
+                
+                // Use title as name for consistency with frontend
+                $recipe->name = $recipe->title;
 
                 // Find missing ingredients
                 $missing = DB::table('ingredient_recipe')

@@ -72,7 +72,7 @@
                     <div class="ingredients-container">
                         <div class="row mb-2 ingredient-row">
                             <div class="col-md-5">
-                                <select class="form-select" name="ingredients[]">
+                                <select class="form-select" name="ingredients[]" required>
                                     <option value="">Select Ingredient</option>
                                     @foreach(\App\Models\Ingredient::all() as $ingredient)
                                         <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>

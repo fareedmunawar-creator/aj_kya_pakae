@@ -71,6 +71,30 @@ class MealPlannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /**
+     * Display the specified meal plan.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', __('messages.error'));
+        }
+        
+        $mealPlan = MealPlan::with('recipes')->findOrFail($id);
+        
+        // Check if the meal plan belongs to the authenticated user
+        if ($mealPlan->user_id !== Auth::id()) {
+            return redirect()->route('mealplanner.index')
+                ->with('error', __('messages.error'));
+        }
+        
+        return view('mealplanner.show', compact('mealPlan'));
+    }
+    
     public function edit($id)
     {
         // Check if user is authenticated
