@@ -41,12 +41,12 @@ class RecipeController extends Controller
         $data['user_id'] = auth()->id();
         
         // Handle image upload
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('recipes', $imageName, 'public');
-            $data['image_path'] = $imageName;
-        }
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        $path = $image->storeAs('recipes', $imageName, 'public');
+        $data['image_path'] = 'recipes/' . $imageName;
+    }
         
         $recipe = Recipe::create($data);
 
@@ -87,12 +87,12 @@ class RecipeController extends Controller
         $data = $request->only('title', 'description', 'instructions', 'category_id', 'cooking_time', 'difficulty', 'servings');
         
         // Handle image upload
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('recipes', $imageName, 'public');
-            $data['image_path'] = $imageName;
-        }
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        $path = $image->storeAs('recipes', $imageName, 'public');
+        $data['image_path'] = 'recipes/' . $imageName;
+    }
         
         $recipe->update($data);
 
