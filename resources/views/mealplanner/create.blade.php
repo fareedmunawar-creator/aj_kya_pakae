@@ -1,46 +1,78 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Meal Plan') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form method="POST" action="{{ route('mealplanner.store') }}">
-                        @csrf
-                        
-                        <div class="mb-4">
-                            <x-input-label for="name" :value="__('Meal Plan Name')" />
-                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+@section('title', __('Create Meal Plan'))
+
+@section('content')
+<div class="container py-4">
+    <!-- Page Header with Breadcrumb -->
+    <div class="row mb-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('mealplanner.index') }}">{{ __('Meal Planner') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('Create Meal Plan') }}</li>
+                </ol>
+            </nav>
+            <h1 class="display-5 fw-bold">{{ __('Create Meal Plan') }}</h1>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form method="POST" action="{{ route('mealplanner.store') }}">
+                @csrf
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">{{ __('Meal Plan Name') }}</label>
+                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus>
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        
-                        <div class="mb-4">
-                            <x-input-label for="start_date" :value="__('Start Date')" />
-                            <x-text-input id="start_date" class="block mt-1 w-full" type="date" name="start_date" :value="old('start_date')" required />
-                            <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="start_date" class="form-label">{{ __('Start Date') }}</label>
+                            <input id="start_date" type="date" class="form-control @error('start_date') is-invalid @enderror" name="start_date" value="{{ old('start_date') }}" required>
+                            @error('start_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        
-                        <div class="mb-4">
-                            <x-input-label for="end_date" :value="__('End Date')" />
-                            <x-text-input id="end_date" class="block mt-1 w-full" type="date" name="end_date" :value="old('end_date')" required />
-                            <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="end_date" class="form-label">{{ __('End Date') }}</label>
+                            <input id="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date') }}" required>
+                            @error('end_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        
-                        <div class="mb-6">
-                            <h3 class="font-medium text-lg mb-2">{{ __('Select Recipes for Your Meal Plan') }}</h3>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                                @foreach($days as $day => $dayName)
-                                    <div class="border rounded-lg p-4">
-                                        <h4 class="font-medium mb-2">{{ $dayName }}</h4>
-                                        
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h3 class="fw-bold fs-4 mb-3">
+                        <i class="bi bi-calendar-check me-2"></i>{{ __('Select Recipes for Your Meal Plan') }}
+                    </h3>
+                    
+                    <div class="row g-4">
+                        @foreach($days as $day => $dayName)
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">{{ $dayName }}</h5>
+                                    </div>
+                                    <div class="card-body">
                                         <div class="mb-3">
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('Breakfast') }}</label>
-                                            <select name="meals[{{ $day }}][breakfast]" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                            <label class="form-label">
+                                                <span class="badge bg-primary me-2">{{ __('Breakfast') }}</span>
+                                            </label>
+                                            <select name="meals[{{ $day }}][breakfast]" class="form-select">
                                                 <option value="">{{ __('Select Recipe') }}</option>
                                                 @foreach($recipes as $recipe)
                                                     <option value="{{ $recipe->id }}">{{ $recipe->title }}</option>
@@ -49,8 +81,10 @@
                                         </div>
                                         
                                         <div class="mb-3">
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('Lunch') }}</label>
-                                            <select name="meals[{{ $day }}][lunch]" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                            <label class="form-label">
+                                                <span class="badge bg-success me-2">{{ __('Lunch') }}</span>
+                                            </label>
+                                            <select name="meals[{{ $day }}][lunch]" class="form-select">
                                                 <option value="">{{ __('Select Recipe') }}</option>
                                                 @foreach($recipes as $recipe)
                                                     <option value="{{ $recipe->id }}">{{ $recipe->title }}</option>
@@ -59,8 +93,10 @@
                                         </div>
                                         
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('Dinner') }}</label>
-                                            <select name="meals[{{ $day }}][dinner]" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                            <label class="form-label">
+                                                <span class="badge bg-info me-2">{{ __('Dinner') }}</span>
+                                            </label>
+                                            <select name="meals[{{ $day }}][dinner]" class="form-select">
                                                 <option value="">{{ __('Select Recipe') }}</option>
                                                 @foreach($recipes as $recipe)
                                                     <option value="{{ $recipe->id }}">{{ $recipe->title }}</option>
@@ -68,21 +104,22 @@
                                             </select>
                                         </div>
                                     </div>
-                                @endforeach
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="flex items-center justify-end mt-4">
-                            <a href="{{ route('mealplanner.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150 mr-3">
-                                {{ __('Cancel') }}
-                            </a>
-                            <x-primary-button>
-                                {{ __('Create Meal Plan') }}
-                            </x-primary-button>
-                        </div>
-                    </form>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
+                
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ route('mealplanner.index') }}" class="btn btn-outline-secondary me-2">
+                        <i class="bi bi-x-circle me-1"></i>{{ __('Cancel') }}
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i>{{ __('Create Meal Plan') }}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

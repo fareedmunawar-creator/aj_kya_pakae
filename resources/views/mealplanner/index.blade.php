@@ -2,92 +2,191 @@
 
 @section('title', __('messages.meal_planner'))
 
-@section('styles')
-<style>
-    .meal-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .meal-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    .recipe-item {
-        opacity: 0;
-        animation: fadeIn 0.5s ease forwards;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .day-header {
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        color: white;
-        border-radius: 5px 5px 0 0;
-    }
-    .add-recipe-btn {
-        transition: all 0.3s ease;
-    }
-    .add-recipe-btn:hover {
-        background-color: #4CAF50;
-        color: white;
-        transform: scale(1.05);
-    }
-</style>
-@endsection
-
 @section('content')
 <div class="container py-4">
-    <h1 class="mb-4 text-center animate__animated animate__fadeInDown">{{ __('messages.weekly_meal_planner') }}</h1>
-
-    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-        @php
-            $days = [
-                'monday' => __('messages.monday'),
-                'tuesday' => __('messages.tuesday'),
-                'wednesday' => __('messages.wednesday'),
-                'thursday' => __('messages.thursday'),
-                'friday' => __('messages.friday'),
-                'saturday' => __('messages.saturday'),
-                'sunday' => __('messages.sunday')
-            ];
-        @endphp
-        
-        @foreach($days as $dayKey => $dayName)
-            <div class="col">
-                <div class="card h-100 meal-card shadow-sm">
-                    <div class="card-header fw-bold day-header">{{ $dayName }}</div>
-                    <div class="card-body">
-                        @if(isset($mealPlans) && isset($mealPlans[$dayKey]) && count($mealPlans[$dayKey]) > 0)
-                            @foreach($mealPlans[$dayKey] as $index => $meal)
-                                @if($meal->recipes && count($meal->recipes) > 0)
-                                    @foreach($meal->recipes as $recipe)
-                                        <div class="recipe-item mb-2 p-2 border-bottom" style="animation-delay: {{ $index * 0.1 }}s">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span>{{ $recipe->title }}</span>
-                                                <form action="{{ route('mealplanner.remove', $meal->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            @endforeach
-                        @else
-                            <p class="text-muted text-center">{{ __('messages.no_meals_planned') }}</p>
-                        @endif
-                        <div class="text-center mt-3">
-                            <a href="{{ route('recipes.index', ['day' => $dayKey]) }}" class="btn btn-sm btn-outline-primary add-recipe-btn">
-                                <i class="bi bi-plus-circle me-1"></i> {{ __('messages.add_recipe') }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <!-- Page Header with Breadcrumb -->
+    <div class="row mb-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.meal_planner') }}</li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="display-5 fw-bold">{{ __('messages.weekly_meal_planner') }}</h1>
+                <a href="{{ route('mealplanner.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1"></i> {{ __('Create Meal Plan') }}
+                </a>
             </div>
-        @endforeach
+        </div>
+    </div>
+
+    <!-- Weekly Calendar View -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">
+                <i class="bi bi-calendar-week me-2"></i>{{ __('Weekly Schedule') }}
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            @php
+                                $days = [
+                                    'monday' => __('messages.monday'),
+                                    'tuesday' => __('messages.tuesday'),
+                                    'wednesday' => __('messages.wednesday'),
+                                    'thursday' => __('messages.thursday'),
+                                    'friday' => __('messages.friday'),
+                                    'saturday' => __('messages.saturday'),
+                                    'sunday' => __('messages.sunday')
+                                ];
+                            @endphp
+                            
+                            @foreach($days as $dayName)
+                                <th class="text-center py-3">{{ $dayName }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Breakfast Row -->
+                        <tr>
+                            @foreach($days as $dayKey => $dayName)
+                                <td class="p-2">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-primary me-2">{{ __('Breakfast') }}</span>
+                                    </div>
+                                    @if(isset($mealPlans) && isset($mealPlans[$dayKey]) && count($mealPlans[$dayKey]) > 0)
+                                        @foreach($mealPlans[$dayKey] as $meal)
+                                            @if($meal->recipes && count($meal->recipes) > 0)
+                                                @foreach($meal->recipes as $recipe)
+                                                    @if($meal->meal_type === 'breakfast')
+                                                        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded mb-1">
+                                                            <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2">{{ $recipe->title }}</a>
+                                                            <form action="{{ route('mealplanner.remove', $meal->id) }}" method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger border-0">
+                                                                    <i class="bi bi-x-circle"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                    <a href="{{ route('recipes.index', ['day' => $dayKey, 'meal_type' => 'breakfast']) }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
+                                        <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
+                        
+                        <!-- Lunch Row -->
+                        <tr>
+                            @foreach($days as $dayKey => $dayName)
+                                <td class="p-2">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-success me-2">{{ __('Lunch') }}</span>
+                                    </div>
+                                    @if(isset($mealPlans) && isset($mealPlans[$dayKey]) && count($mealPlans[$dayKey]) > 0)
+                                        @foreach($mealPlans[$dayKey] as $meal)
+                                            @if($meal->recipes && count($meal->recipes) > 0)
+                                                @foreach($meal->recipes as $recipe)
+                                                    @if($meal->meal_type === 'lunch')
+                                                        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded mb-1">
+                                                            <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2">{{ $recipe->title }}</a>
+                                                            <form action="{{ route('mealplanner.remove', $meal->id) }}" method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger border-0">
+                                                                    <i class="bi bi-x-circle"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                    <a href="{{ route('recipes.index', ['day' => $dayKey, 'meal_type' => 'lunch']) }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
+                                        <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
+                        
+                        <!-- Dinner Row -->
+                        <tr>
+                            @foreach($days as $dayKey => $dayName)
+                                <td class="p-2">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-info me-2">{{ __('Dinner') }}</span>
+                                    </div>
+                                    @if(isset($mealPlans) && isset($mealPlans[$dayKey]) && count($mealPlans[$dayKey]) > 0)
+                                        @foreach($mealPlans[$dayKey] as $meal)
+                                            @if($meal->recipes && count($meal->recipes) > 0)
+                                                @foreach($meal->recipes as $recipe)
+                                                    @if($meal->meal_type === 'dinner')
+                                                        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded mb-1">
+                                                            <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2">{{ $recipe->title }}</a>
+                                                            <form action="{{ route('mealplanner.remove', $meal->id) }}" method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger border-0">
+                                                                    <i class="bi bi-x-circle"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                    <a href="{{ route('recipes.index', ['day' => $dayKey, 'meal_type' => 'dinner']) }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
+                                        <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Shopping List Card -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">
+                <i class="bi bi-cart me-2"></i>{{ __('Shopping List') }}
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">{{ __('Generate a shopping list based on your meal plan for the week.') }}</p>
+            <a href="{{ route('mealplanner.shopping-list') }}" class="btn btn-success">
+                <i class="bi bi-list-check me-1"></i> {{ __('Generate Shopping List') }}
+            </a>
+        </div>
     </div>
 </div>
+
+<script>
+    // Add hover effect to meal plan items
+    document.addEventListener('DOMContentLoaded', function() {
+        const mealItems = document.querySelectorAll('.bg-light.rounded');
+        mealItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.classList.add('shadow-sm');
+            });
+            item.addEventListener('mouseleave', function() {
+                this.classList.remove('shadow-sm');
+            });
+        });
+    });
+</script>
 @endsection
