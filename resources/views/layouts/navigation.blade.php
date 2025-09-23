@@ -44,10 +44,21 @@
                 @endauth
                 
                 @if(auth()->check() && auth()->user()->isAdmin())
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
                         {{ __('Admin') }}
                     </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.recipes.index') }}">{{ __('Recipes') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.recipes.create') }}">{{ __('Add Recipe') }}</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.ingredients.index') }}">{{ __('Ingredients') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.categories.index') }}">{{ __('Categories') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.meal-plans.index') }}">{{ __('Meal Plans') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">{{ __('Users') }}</a></li>
+                    </ul>
                 </li>
                 @endif
             </ul>
