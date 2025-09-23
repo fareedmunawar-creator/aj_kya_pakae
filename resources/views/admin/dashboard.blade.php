@@ -1,23 +1,19 @@
 @extends('layouts.app')
 
-@section('title', __('Admin Dashboard'))
-
 @section('content')
     <div class="container py-4">
-        <h1 class="mb-4 text-center">{{ __('Admin Dashboard') }}</h1>
+        <h1 class="mb-4">{{ __('Welcome to the admin dashboard!') }}</h1>
         
         <!-- Admin Navigation Links -->
         <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
             <!-- User Management -->
             <div class="col">
-                <div class="card h-100 shadow-sm border-0 hover-shadow">
-                    <div class="card-header bg-primary text-white">
-                        <i class="bi bi-people-fill me-2"></i>{{ __('User Management') }}
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text flex-grow-1">{{ __('Manage user accounts and permissions') }}</p>
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary mt-auto">
-                            <i class="bi bi-person-gear me-1"></i>{{ __('Manage Users') }}
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('User Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage user accounts and permissions') }}</p>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-dark">
+                            {{ __('Manage Users') }}
                         </a>
                     </div>
                 </div>
@@ -25,14 +21,12 @@
             
             <!-- Recipe Management -->
             <div class="col">
-                <div class="card h-100 shadow-sm border-0 hover-shadow">
-                    <div class="card-header bg-success text-white">
-                        <i class="bi bi-journal-richtext me-2"></i>{{ __('Recipe Management') }}
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text flex-grow-1">{{ __('Manage recipes and their content') }}</p>
-                        <a href="{{ route('admin.recipes.index') }}" class="btn btn-outline-success mt-auto">
-                            <i class="bi bi-journal-check me-1"></i>{{ __('Manage Recipes') }}
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Recipe Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage recipes and their content') }}</p>
+                        <a href="{{ route('admin.recipes.index') }}" class="btn btn-dark">
+                            {{ __('Manage Recipes') }}
                         </a>
                     </div>
                 </div>
@@ -40,14 +34,12 @@
             
             <!-- Category Management -->
             <div class="col">
-                <div class="card h-100 shadow-sm border-0 hover-shadow">
-                    <div class="card-header bg-info text-white">
-                        <i class="bi bi-tags-fill me-2"></i>{{ __('Category Management') }}
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text flex-grow-1">{{ __('Manage recipe categories') }}</p>
-                        <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-info mt-auto">
-                            <i class="bi bi-tag me-1"></i>{{ __('Manage Categories') }}
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Category Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage recipe categories') }}</p>
+                        <a href="{{ route('admin.categories.index') }}" class="btn btn-dark">
+                            {{ __('Manage Categories') }}
                         </a>
                     </div>
                 </div>
@@ -55,14 +47,12 @@
             
             <!-- Ingredient Management -->
             <div class="col">
-                <div class="card h-100 shadow-sm border-0 hover-shadow">
-                    <div class="card-header bg-warning text-dark">
-                        <i class="bi bi-basket-fill me-2"></i>{{ __('Ingredient Management') }}
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text flex-grow-1">{{ __('Manage recipe ingredients') }}</p>
-                        <a href="{{ route('admin.ingredients.index') }}" class="btn btn-outline-warning mt-auto">
-                            <i class="bi bi-basket2 me-1"></i>{{ __('Manage Ingredients') }}
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Ingredient Management') }}</h5>
+                        <p class="card-text text-muted mb-3">{{ __('Manage recipe ingredients') }}</p>
+                        <a href="{{ route('admin.ingredients.index') }}" class="btn btn-dark">
+                            {{ __('Manage Ingredients') }}
                         </a>
                     </div>
                 </div>
@@ -94,177 +84,6 @@
                             <a href="{{ route('admin.analytics.active-users') }}" class="text-primary">{{ __('Active Users') }}</a>
                         </div>
                     </div>
-            </div>
-        </div>
-        
-        <!-- Statistics Cards Section -->
-        <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
-            <!-- User Count -->
-            <div class="col">
-                <div class="card text-white bg-primary h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-title">{{ __('Total Users') }}</h6>
-                                <h2 class="mb-0">{{ $userCount }}</h2>
-                            </div>
-                            <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Recipe Count -->
-            <div class="col">
-                <div class="card text-white bg-success h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-title">{{ __('Total Recipes') }}</h6>
-                                <h2 class="mb-0">{{ $recipeCount }}</h2>
-                            </div>
-                            <i class="bi bi-journal-richtext fs-1"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Ingredient Count -->
-            <div class="col">
-                <div class="card text-white bg-warning h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-title">{{ __('Total Ingredients') }}</h6>
-                                <h2 class="mb-0">{{ $ingredientCount }}</h2>
-                            </div>
-                            <i class="bi bi-basket-fill fs-1"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Pantry Item Count -->
-            <div class="col">
-                <div class="card text-white bg-info h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="card-title">{{ __('Pantry Items') }}</h6>
-                                <h2 class="mb-0">{{ $pantryItemCount }}</h2>
-                            </div>
-                            <i class="bi bi-box-seam fs-1"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Data Tables Section -->
-        <div class="row g-4 mb-4">
-            <!-- Top Recipes -->
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">{{ __('Top Recipes') }}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>{{ __('Title') }}</th>
-                                        <th>{{ __('Views') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($topRecipes as $recipe)
-                                    <tr>
-                                        <td>
-                                            <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none">
-                                                {{ $recipe->title }}
-                                            </a>
-                                        </td>
-                                        <td>{{ $recipe->views_count }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Recent Users -->
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">{{ __('Recent Users') }}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>{{ __('Name') }}</th>
-                                        <th>{{ __('Email') }}</th>
-                                        <th>{{ __('Joined') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($recentUsers as $user)
-                                    <tr>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->created_at->diffForHumans() }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Expiring Items Section -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">{{ __('Expiring Pantry Items (Next 7 Days)') }}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>{{ __('Item') }}</th>
-                                        <th>{{ __('User') }}</th>
-                                        <th>{{ __('Expiry Date') }}</th>
-                                        <th>{{ __('Days Left') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($expiringItems as $item)
-                                    <tr>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->user->name }}</td>
-                                        <td>{{ $item->expiry_date }}</td>
-                                        <td>
-                                            @php
-                                                $daysLeft = \Carbon\Carbon::parse($item->expiry_date)->diffInDays(\Carbon\Carbon::now());
-                                                $badgeClass = $daysLeft <= 2 ? 'danger' : ($daysLeft <= 5 ? 'warning' : 'success');
-                                            @endphp
-                                            <span class="badge bg-{{ $badgeClass }}">{{ $daysLeft }} days</span>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         

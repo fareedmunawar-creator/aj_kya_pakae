@@ -2,50 +2,88 @@
 
 @section('title', __('messages.recipes'))
 
-@section('content')
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>{{ __('messages.recipes') }}</h1>
-        <a href="{{ route('recipes.create') }}" class="btn btn-success">
-            <i class="bi bi-plus-circle me-1"></i> {{ __('messages.add_recipe') }}
-        </a>
-    </div>
+@section('styles')
+<style>
+    .recipe-card {
+        transition: all 0.3s ease;
+        opacity: 0;
+        animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .recipe-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .recipe-img {
+        transition: all 0.5s ease;
+        overflow: hidden;
+    }
+    .recipe-img img {
+        transition: all 0.5s ease;
+    }
+    .recipe-card:hover .recipe-img img {
+        transform: scale(1.1);
+    }
+    .search-container {
+        animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .search-btn {
+        transition: all 0.3s ease;
+    }
+    .search-btn:hover {
+        transform: scale(1.05);
+    }
+    .page-title {
+        animation: fadeInLeft 0.5s ease;
+    }
+    @keyframes fadeInLeft {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .details-btn {
+        transition: all 0.3s ease;
+        overflow: hidden;
+        position: relative;
+    }
+    .details-btn:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: -100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: all 0.3s ease;
+    }
+    .details-btn:hover:after {
+        left: 100%;
+    }
+</style>
+@endsection
 
-    <!-- Search and Filter Section -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-light">
-            <i class="bi bi-search me-2"></i>{{ __('messages.search_and_filter') }}
-        </div>
+@section('content')
+    <h1 class="mb-4 text-center page-title">{{ __('messages.all_recipes') }}</h1>
+
+    <div class="card shadow-sm mb-4 search-container">
         <div class="card-body">
-            <form action="{{ route('recipes.index') }}" method="GET">
-                <div class="row g-3">
-                    <div class="col-md-4">
+            <form method="GET">
+                <div class="row g-2">
+                    <div class="col-md-9">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" placeholder="{{ __('messages.search_recipes') }}" name="search" value="{{ request('search') }}">
+                            <input type="text" name="search" class="form-control" placeholder="{{ __('messages.search_recipes') }}">
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <select class="form-select" name="category">
-                            <option value="">{{ __('messages.all_categories') }}</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" name="sort">
-                            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>{{ __('messages.newest') }}</option>
-                            <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>{{ __('messages.oldest') }}</option>
-                            <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>{{ __('messages.name_asc') }}</option>
-                            <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>{{ __('messages.name_desc') }}</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="bi bi-funnel-fill me-1"></i>{{ __('messages.apply') }}
+                        <button class="btn btn-primary w-100 search-btn">
+                            <i class="bi bi-search me-1"></i> {{ __('messages.search') }}
                         </button>
                     </div>
                 </div>
@@ -53,72 +91,44 @@
         </div>
     </div>
 
-    @if($recipes->isEmpty())
-        <div class="alert alert-info">
-            <i class="bi bi-info-circle me-2"></i>{{ __('messages.no_recipes_found') }}
-        </div>
-    @else
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @foreach($recipes as $recipe)
-                <div class="col">
-                    <div class="card h-100 shadow-sm recipe-card">
-                        <img src="{{ $recipe->image_path ? asset('storage/'.$recipe->image_path) : 'https://via.placeholder.com/300x200?text=No+Image' }}" class="card-img-top recipe-img" alt="{{ $recipe->title }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $recipe->name }}</h5>
-                            <p class="card-text">{{ Str::limit($recipe->description, 100) }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="badge bg-primary">{{ $recipe->category->name ?? 'Uncategorized' }}</span>
-                                <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ $recipe->created_at->diffForHumans() }}</small>
-                            </div>
-                        </div>
-                        <div class="card-footer bg-transparent">
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ route('recipes.show', $recipe->id) }}" class="btn btn-sm btn-primary">
-                                    <i class="bi bi-eye me-1"></i>{{ __('messages.view') }}
-                                </a>
-                                <div>
-                                @auth
-                                    @if(auth()->user()->id === $recipe->user_id || auth()->user()->is_admin)
-                                        <a href="{{ route('recipes.edit', $recipe->id) }}" class="btn btn-sm btn-warning me-1">
-                                            <i class="bi bi-pencil me-1"></i>{{ __('messages.edit') }}
-                                        </a>
-                                        <form action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ __('messages.confirm_delete') }}')">
-                                                <i class="bi bi-trash me-1"></i>
-                                            </button>
-                                        </form>
-                                    @endif
-                                @endauth
-                                </div>
-                            </div>
-                        </div>
+    <div class="row g-4">
+        @forelse($recipes as $index => $recipe)
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 recipe-card" style="animation-delay: {{ $index * 0.1 }}s">
+                    <div class="recipe-img">
+                        <img src="{{ $recipe->image }}" class="card-img-top" alt="{{ $recipe->title }}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $recipe->title }}</h5>
+                        <p class="card-text small text-muted">{{ Str::limit($recipe->description, 60) }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0 text-center">
+                        @if(isset($day))
+                            <a href="{{ route('recipes.show', ['recipe' => $recipe, 'day' => $day]) }}" class="btn btn-sm btn-outline-primary details-btn">
+                                <i class="bi bi-eye me-1"></i> {{ __('messages.details') }}
+                            </a>
+                        @else
+                            <a href="{{ route('recipes.show', $recipe) }}" class="btn btn-sm btn-outline-primary details-btn">
+                                <i class="bi bi-eye me-1"></i> {{ __('messages.details') }}
+                            </a>
+                        @endif
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @empty
+            <div class="col-12 text-center py-5">
+                <div class="empty-state">
+                    <i class="bi bi-journal-bookmark fs-1 text-muted mb-3"></i>
+                    <h4>{{ __('messages.no_recipes_found') }}</h4>
+                    <p class="text-muted">{{ __('messages.try_different_search') }}</p>
+                </div>
+            </div>
+        @endforelse
+    </div>
 
-        <div class="mt-4 d-flex justify-content-center">
+    @if($recipes->hasPages())
+        <div class="d-flex justify-content-center mt-4">
             {{ $recipes->links() }}
         </div>
     @endif
-</div>
-
-<style>
-    .recipe-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: none;
-    }
-    .recipe-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-    }
-    .recipe-img {
-        height: 200px;
-        object-fit: cover;
-        border-top-left-radius: 0.375rem;
-        border-top-right-radius: 0.375rem;
-    }
-</style>
 @endsection

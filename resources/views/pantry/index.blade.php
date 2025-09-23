@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('My Pantry'))
+@section('title', __('messages.my_pantry'))
 
 @section('styles')
 <style>
@@ -41,23 +41,22 @@
 @endsection
 
 @section('content')
-<div class="container py-4">
-    <h1 class="mb-4 text-center pantry-header">{{ __('My Pantry') }}</h1>
+    <h1 class="mb-4 text-center pantry-header">{{ __('messages.pantry') }}</h1>
 
     <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-success add-item-btn" data-bs-toggle="modal" data-bs-target="#itemModal">
-            <i class="bi bi-plus-circle me-1"></i> {{ __('Add Item') }}
+        <button class="btn btn-primary add-item-btn" data-bs-toggle="modal" data-bs-target="#itemModal">
+            <i class="bi bi-plus-circle me-1"></i> {{ __('messages.add_item') }}
         </button>
     </div>
 
     <div class="card shadow-sm">
         <div class="card-body">
             <table class="table table-hover">
-                <thead class="table-dark">
+                <thead class="table-light">
                     <tr>
-                        <th>{{ __('Item') }}</th>
-                        <th>{{ __('Quantity') }}</th>
-                        <th class="text-center">{{ __('Actions') }}</th>
+                        <th>{{ __('messages.item') }}</th>
+                        <th>{{ __('messages.quantity') }}</th>
+                        <th class="text-center">{{ __('messages.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,13 +65,13 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-primary action-btn me-2" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $item->id }}">
-                            <i class="bi bi-pencil-square"></i> {{ __('Edit') }}
+                        <button class="btn btn-sm btn-warning action-btn me-2" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $item->id }}">
+                            <i class="bi bi-pencil-square"></i> {{ __('messages.edit') }}
                         </button>
                         <form action="{{ route('pantry.destroy', $item) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
                             <button class="btn btn-sm btn-danger action-btn">
-                                <i class="bi bi-trash"></i> {{ __('Delete') }}
+                                <i class="bi bi-trash"></i> {{ __('messages.delete') }}
                             </button>
                         </form>
                     </td>

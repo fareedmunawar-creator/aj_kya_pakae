@@ -64,11 +64,10 @@
 @endsection
 
 @section('content')
-<div class="container py-4">
     <div class="row">
         <div class="col-md-6 mb-4">
             <div class="recipe-image rounded overflow-hidden">
-                <img src="{{ $recipe->image_path ? asset('storage/'.$recipe->image_path) : 'https://via.placeholder.com/800x600?text=No+Image' }}" class="img-fluid w-100" alt="{{ $recipe->title }}">
+                <img src="{{ $recipe->image }}" class="img-fluid w-100" alt="{{ $recipe->title }}">
             </div>
         </div>
         <div class="col-md-6 recipe-details">
@@ -92,13 +91,9 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <ol class="list-group list-group-numbered">
-                        @if(isset($recipe->steps) && is_array($recipe->steps))
-                            @foreach($recipe->steps as $index => $step)
-                                <li class="list-group-item step-item" style="animation-delay: {{ ($index + count($recipe->ingredients)) * 0.1 }}s">{{ $step }}</li>
-                            @endforeach
-                        @else
-                            <li class="list-group-item">{{ __('No steps available') }}</li>
-                        @endif
+                        @foreach($recipe->steps as $index => $step)
+                            <li class="list-group-item step-item" style="animation-delay: {{ ($index + count($recipe->ingredients)) * 0.1 }}s">{{ $step }}</li>
+                        @endforeach
                     </ol>
                 </div>
             </div>
@@ -170,5 +165,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
