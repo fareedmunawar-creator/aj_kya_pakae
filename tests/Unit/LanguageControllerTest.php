@@ -19,23 +19,21 @@ class LanguageControllerTest extends TestCase
     {
         $controller = new LanguageController();
         
-        // Mock the request and session
-        $this->mock(Request::class, function ($mock) {
-            $mock->shouldReceive('back')->once()->andReturn(response());
-        });
-        
         // Test with English locale
-        $controller->switch('en');
+        $response = $controller->switch('en');
+        $this->assertTrue($response->isRedirect());
         $this->assertEquals('en', App::getLocale());
         $this->assertEquals('en', Session::get('locale'));
         
         // Test with Urdu locale
-        $controller->switch('ur');
+        $response = $controller->switch('ur');
+        $this->assertTrue($response->isRedirect());
         $this->assertEquals('ur', App::getLocale());
         $this->assertEquals('ur', Session::get('locale'));
         
         // Test with invalid locale (should default to English)
-        $controller->switch('invalid');
+        $response = $controller->switch('invalid');
+        $this->assertTrue($response->isRedirect());
         $this->assertEquals('en', App::getLocale());
         $this->assertEquals('en', Session::get('locale'));
     }
