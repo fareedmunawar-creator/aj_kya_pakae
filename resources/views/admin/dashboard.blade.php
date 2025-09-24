@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container py-4">
+    <div class="container-fluid py-4">
         <h1 class="mb-4">{{ __('Welcome to the admin dashboard!') }}</h1>
         
         <!-- Admin Navigation Links -->
-        <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4 mb-4">
             <!-- User Management -->
             <div class="col">
                 <div class="card h-100 shadow-sm">

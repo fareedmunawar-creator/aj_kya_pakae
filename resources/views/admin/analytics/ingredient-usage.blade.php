@@ -8,13 +8,17 @@
         <li class="breadcrumb-item active">{{ __('Ingredient Usage') }}</li>
     </ol>
     
-    <div class="card mb-4">
-        <div class="card-header">
-            <i class="fas fa-chart-pie me-1"></i>
-            {{ __('Top 10 Most Used Ingredients') }}
-        </div>
-        <div class="card-body">
-            <canvas id="ingredientUsageChart" width="100%" height="40"></canvas>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie me-1"></i>
+                    {{ __('Top 10 Most Used Ingredients') }}
+                </div>
+                <div class="card-body">
+                    <canvas id="ingredientUsageChart" width="100%" height="40"></canvas>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -24,19 +28,21 @@
             {{ __('Ingredient Usage Data') }}
         </div>
         <div class="card-body">
-            <table id="ingredientUsageTable" class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>{{ __('Ingredient') }}</th>
-                        <th>{{ __('Usage Count') }}</th>
-                    </tr>
-                </thead>
-                <tbody id="ingredientUsageTableBody">
-                    <tr>
-                        <td colspan="2" class="text-center">{{ __('Loading data...') }}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table id="ingredientUsageTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{{ __('Ingredient') }}</th>
+                            <th>{{ __('Usage Count') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ingredientUsageTableBody">
+                        <tr>
+                            <td colspan="2" class="text-center">{{ __('Loading data...') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
