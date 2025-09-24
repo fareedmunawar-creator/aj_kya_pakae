@@ -6,16 +6,18 @@ use App\Models\Recipe;
 use App\Models\Ingredient;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class RecipeController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
     
     public function index(Request $request)
     {
+             if (!Auth::check()) {
+            return redirect()->route('login')->with('error', __('messages.error'));
+        }
         $recipes = Recipe::with('ingredients')->latest()->paginate(10);
         $day = $request->query('day');
         $categories = Category::all();
