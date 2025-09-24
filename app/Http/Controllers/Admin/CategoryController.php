@@ -42,6 +42,14 @@ class CategoryController extends Controller
     }
 
     /**
+     * Show the form for editing the specified category.
+     */
+    public function edit(Category $category)
+    {
+        return view('admin.categories.edit', compact('category'));
+    }
+
+    /**
      * Update the specified category in storage.
      */
     public function update(Request $request, Category $category)

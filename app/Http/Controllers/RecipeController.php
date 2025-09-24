@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class RecipeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index(Request $request)
     {
         $recipes = Recipe::with('ingredients')->latest()->paginate(10);
@@ -19,6 +24,12 @@ class RecipeController extends Controller
 
     public function create()
     {
+        // Only allow admin users to create recipes
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('recipes.index')
+                ->with('error', 'Only administrators can create recipes.');
+        }
+        
         $categories = Category::all();
         $ingredients = Ingredient::all();
         return view('recipes.create', compact('categories', 'ingredients'));
