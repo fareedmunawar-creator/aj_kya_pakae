@@ -68,9 +68,9 @@
                                             @endif
                                         @endforeach
                                     @endif
-                                    <button type="button" class="btn btn-sm btn-outline-secondary w-100 mt-1" data-bs-toggle="modal" data-bs-target="#createMealPlanModal">
+                                    <a href="{{ route('mealplanner.create') }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
                                         <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
-                                    </button>
+                                    </a>
                                 </td>
                             @endforeach
                         </tr>
@@ -102,9 +102,9 @@
                                             @endif
                                         @endforeach
                                     @endif
-                                    <button type="button" class="btn btn-sm btn-outline-secondary w-100 mt-1" data-bs-toggle="modal" data-bs-target="#createMealPlanModal">
+                                    <a href="{{ route('mealplanner.create') }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
                                         <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
-                                    </button>
+                                    </a>
                                 </td>
                             @endforeach
                         </tr>
@@ -136,9 +136,9 @@
                                             @endif
                                         @endforeach
                                     @endif
-                                    <button type="button" class="btn btn-sm btn-outline-secondary w-100 mt-1" data-bs-toggle="modal" data-bs-target="#createMealPlanModal">
+                                    <a href="{{ route('mealplanner.create') }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
                                         <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
-                                    </button>
+                                    </a>
                                 </td>
                             @endforeach
                         </tr>
