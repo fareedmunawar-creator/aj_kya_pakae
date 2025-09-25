@@ -23,7 +23,10 @@ class MealPlannerController extends Controller
         }
         
         $user = Auth::user();
-        $mealPlans = $user->mealPlans()->with('recipes')->get()->groupBy('day');
+        $mealPlans = $user->mealPlans()->with('recipes')->get();
+        
+        // Group meal plans by day for the weekly view
+        $weeklyMealPlans = $mealPlans->groupBy('day');
         
         $days = [
             'monday' => 'Monday',
@@ -35,7 +38,10 @@ class MealPlannerController extends Controller
             'sunday' => 'Sunday'
         ];
         
-        return view('mealplanner.index', compact('mealPlans', 'days'));
+        // Get recipes for the create form
+        $recipes = Recipe::all();
+        
+        return view('mealplanner.index', compact('weeklyMealPlans', 'mealPlans', 'days', 'recipes'));
     }
     
     /**
@@ -109,25 +115,45 @@ class MealPlannerController extends Controller
         }
         
         $request->validate([
-            'day' => 'required|string',
-            'meal_type' => 'required|string',
-            'recipe_id' => 'required|exists:recipes,id',
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'meals' => 'array'
         ]);
         
-        // Create a new meal plan
-        $mealPlan = MealPlan::create([
-            'user_id' => Auth::id(),
-            'day' => $request->day,
-        ]);
+        $userId = Auth::id();
+        $count = 0;
         
-        // Attach the recipe with pivot data
-        $mealPlan->recipes()->attach($request->recipe_id, [
-            'day' => $request->day,
-            'meal_type' => $request->meal_type,
-        ]);
+        // Process each day and meal type
+        if ($request->has('meals')) {
+            foreach ($request->meals as $day => $mealTypes) {
+                foreach ($mealTypes as $mealType => $recipeId) {
+                    if (!empty($recipeId)) {
+                        $mealPlan = new MealPlan();
+                        $mealPlan->user_id = $userId;
+                        $mealPlan->name = $request->name;
+                        $mealPlan->day = $day;
+                        $mealPlan->meal_type = $mealType;
+                        $mealPlan->start_date = $request->start_date;
+                        $mealPlan->end_date = $request->end_date;
+                        $mealPlan->save();
+                        
+                        $mealPlan->recipes()->attach($recipeId, [
+                            'day' => $day,
+                            'meal_type' => $mealType
+                        ]);
+                        $count++;
+                    }
+                }
+            }
+        }
         
-        return redirect()->route('meal-plans.index')
-            ->with('success', __('messages.meal_plan_created'));
+        $message = $count > 0 
+            ? __(':count recipes added to your meal plan', ['count' => $count]) 
+            : __('No recipes were selected');
+            
+        return redirect()->route('mealplanner.index')
+            ->with('success', $message);
     }
     
     public function edit($id)
