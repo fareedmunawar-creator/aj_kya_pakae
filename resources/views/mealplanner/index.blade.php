@@ -15,35 +15,12 @@
             </nav>
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="display-5 fw-bold">{{ __('messages.weekly_meal_planner') }}</h1>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMealPlanModal">
+                <a href="{{ route('mealplanner.create') }}" class="btn btn-primary">
                     <i class="bi bi-plus-lg me-1"></i> {{ __('Create Meal Plan') }}
-                </button>
+                </a>
             </div>
         </div>
     </div>
-    
-    <!-- Create Meal Plan Modal -->
-    <div class="modal fade" id="createMealPlanModal" tabindex="-1" aria-labelledby="createMealPlanModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createMealPlanModalLabel">{{ __('Create Meal Plan') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('mealplanner.store') }}" id="createMealPlanForm">
-                        @csrf
-                        
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">{{ __('Meal Plan Name') }}</label>
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus>
-                                    @error('name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
                             
                             <div class="col-md-4">
                                 <div class="mb-3">
