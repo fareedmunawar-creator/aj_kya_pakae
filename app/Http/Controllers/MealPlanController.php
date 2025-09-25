@@ -33,23 +33,56 @@ class MealPlanController extends Controller
 
     public function create()
     {
-        return view('mealplans.create');
+        $days = [
+            'monday' => __('Monday'),
+            'tuesday' => __('Tuesday'),
+            'wednesday' => __('Wednesday'),
+            'thursday' => __('Thursday'),
+            'friday' => __('Friday'),
+            'saturday' => __('Saturday'),
+            'sunday' => __('Sunday')
+        ];
+        
+        $recipes = \App\Models\Recipe::all();
+        
+        return view('mealplanner.create', compact('days', 'recipes'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'day' => 'required|string',
-            'recipe_id' => 'required|exists:recipes,id'
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'meals' => 'array'
         ]);
         
-        $mealPlan = new MealPlan();
-        $mealPlan->user_id = Auth::id();
-        $mealPlan->day = $request->day;
-        $mealPlan->save();
-        $mealPlan->recipes()->attach($request->recipe_id);
-
-        return redirect()->route('mealplanner.index')->with('success', 'Recipe added to meal plan');
+        $userId = Auth::id();
+        $count = 0;
+        
+        // Process each day and meal type
+        if ($request->has('meals')) {
+            foreach ($request->meals as $day => $mealTypes) {
+                foreach ($mealTypes as $mealType => $recipeId) {
+                    if (!empty($recipeId)) {
+                        $mealPlan = new MealPlan();
+                        $mealPlan->user_id = $userId;
+                        $mealPlan->day = $day;
+                        $mealPlan->meal_type = $mealType;
+                        $mealPlan->save();
+                        
+                        $mealPlan->recipes()->attach($recipeId, ['meal_type' => $mealType]);
+                        $count++;
+                    }
+                }
+            }
+        }
+        
+        $message = $count > 0 
+            ? __(':count recipes added to your meal plan', ['count' => $count]) 
+            : __('No recipes were selected');
+            
+        return redirect()->route('mealplanner.index')->with('success', $message);
     }
 
     public function edit(MealPlan $mealPlan)

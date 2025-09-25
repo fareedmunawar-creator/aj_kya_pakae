@@ -46,10 +46,10 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Fetch top recipes data
@@ -67,16 +67,15 @@
                     data: {
                         labels: titles,
                         datasets: [{
-                            label: '{{ __("Views") }}',
+                            label: '{{ __("Number of Views") }}',
                             data: views,
-                            backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                            borderColor: 'rgba(0, 123, 255, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
                         }]
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: false,
                         scales: {
                             y: {
                                 beginAtZero: true,
