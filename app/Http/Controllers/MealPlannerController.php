@@ -95,6 +95,41 @@ class MealPlannerController extends Controller
         return view('mealplanner.show', compact('mealPlan'));
     }
     
+    /**
+     * Store a newly created meal plan in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', __('messages.error'));
+        }
+        
+        $request->validate([
+            'day' => 'required|string',
+            'meal_type' => 'required|string',
+            'recipe_id' => 'required|exists:recipes,id',
+        ]);
+        
+        // Create a new meal plan
+        $mealPlan = MealPlan::create([
+            'user_id' => Auth::id(),
+            'day' => $request->day,
+        ]);
+        
+        // Attach the recipe with pivot data
+        $mealPlan->recipes()->attach($request->recipe_id, [
+            'day' => $request->day,
+            'meal_type' => $request->meal_type,
+        ]);
+        
+        return redirect()->route('meal-plans.index')
+            ->with('success', __('messages.meal_plan_created'));
+    }
+    
     public function edit($id)
     {
         // Check if user is authenticated
