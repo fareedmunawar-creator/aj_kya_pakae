@@ -53,7 +53,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Fetch top recipes data
-        fetch('/admin/analytics/top-recipes')
+        fetch('/admin/analytics/data/top-recipes')
             .then(response => response.json())
             .then(data => {
                 // Prepare data for chart

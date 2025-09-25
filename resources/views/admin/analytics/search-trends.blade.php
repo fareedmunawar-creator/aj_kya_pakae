@@ -47,7 +47,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Fetch search trends data
-        fetch('/admin/analytics/search-trends')
+        fetch('/admin/analytics/data/search-trends')
             .then(response => response.json())
             .then(data => {
                 // Prepare data for chart

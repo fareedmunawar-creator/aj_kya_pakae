@@ -53,12 +53,12 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Fetch active users data
-        fetch('/admin/analytics/active-users')
+        fetch('/admin/analytics/data/active-users')
             .then(response => response.json())
             .then(data => {
                 // Prepare data for chart
                 const dates = data.map(item => item.date);
-                const counts = data.map(item => item.count);
+                const counts = data.map(item => item.active_users);
                 
                 // Create chart
                 const ctx = document.getElementById('activeUsersChart');
@@ -97,7 +97,7 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${item.date}</td>
-                        <td>${item.count}</td>
+                        <td>${item.active_users}</td>
                     `;
                     tableBody.appendChild(row);
                 });

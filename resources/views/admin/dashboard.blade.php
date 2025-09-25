@@ -78,12 +78,13 @@
                         <h5 class="card-title">{{ __('Analytics') }}</h5>
                         <p class="card-text text-muted mb-3">{{ __('View site analytics and reports') }}</p>
                         <div class="d-grid gap-2">
-                            <a href="{{ route('admin.analytics.top-recipes') }}" class="text-primary">{{ __('Top Recipes') }}</a>
-                            <a href="{{ route('admin.analytics.ingredient-usage') }}" class="text-primary">{{ __('Ingredient Usage') }}</a>
-                            <a href="{{ route('admin.analytics.search-trends') }}" class="text-primary">{{ __('Search Trends') }}</a>
-                            <a href="{{ route('admin.analytics.active-users') }}" class="text-primary">{{ __('Active Users') }}</a>
+                            <a href="{{ route('admin.analytics.top-recipes.view') }}" class="text-primary">{{ __('Top Recipes') }}</a>
+                            <a href="{{ route('admin.analytics.ingredient-usage.view') }}" class="text-primary">{{ __('Ingredient Usage') }}</a>
+                            <a href="{{ route('admin.analytics.search-trends.view') }}" class="text-primary">{{ __('Search Trends') }}</a>
+                            <a href="{{ route('admin.analytics.active-users.view') }}" class="text-primary">{{ __('Active Users') }}</a>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
         

@@ -78,12 +78,29 @@ Route::prefix('admin')
     // Ingredient management
     Route::resource('ingredients', \App\Http\Controllers\Admin\IngredientController::class)->names('admin.ingredients');
     
-    // Analytics routes
-    Route::get('/analytics/top-recipes', [AdminAnalyticsController::class, 'topRecipes'])->name('admin.analytics.top-recipes');
-    Route::get('/analytics/ingredient-usage', [AdminAnalyticsController::class, 'ingredientUsage'])->name('admin.analytics.ingredient-usage');
-    Route::get('/analytics/expiring-pantry', [AdminAnalyticsController::class, 'expiringPantry'])->name('admin.analytics.expiring-pantry');
-    Route::get('/analytics/search-trends', [AdminAnalyticsController::class, 'searchTrends'])->name('admin.analytics.search-trends');
-    Route::get('/analytics/active-users', [AdminAnalyticsController::class, 'activeUsers'])->name('admin.analytics.active-users');
+    // Analytics views
+    Route::view('/analytics/top-recipes', 'admin.analytics.top-recipes')->name('admin.analytics.top-recipes');
+    Route::view('/analytics/ingredient-usage', 'admin.analytics.ingredient-usage')->name('admin.analytics.ingredient-usage');
+    Route::view('/analytics/search-trends', 'admin.analytics.search-trends')->name('admin.analytics.search-trends');
+    Route::view('/analytics/active-users', 'admin.analytics.active-users')->name('admin.analytics.active-users');
+    
+    // Analytics API endpoints
+    Route::get('/analytics/data/top-recipes', [AdminAnalyticsController::class, 'topRecipes'])->name('admin.analytics.data.top-recipes');
+    Route::get('/analytics/data/ingredient-usage', [AdminAnalyticsController::class, 'ingredientUsage'])->name('admin.analytics.data.ingredient-usage');
+    Route::get('/analytics/data/expiring-pantry', [AdminAnalyticsController::class, 'expiringPantry'])->name('admin.analytics.data.expiring-pantry');
+    Route::get('/analytics/data/search-trends', [AdminAnalyticsController::class, 'searchTrends'])->name('admin.analytics.data.search-trends');
+    Route::get('/analytics/data/active-users', [AdminAnalyticsController::class, 'activeUsers'])->name('admin.analytics.data.active-users');
+});
+
+// API routes for admin analytics
+Route::prefix('api/admin')
+->middleware(['auth', 'admin'])
+->group(function () {
+    Route::get('/analytics/top-recipes', [AdminAnalyticsController::class, 'topRecipes']);
+    Route::get('/analytics/ingredient-usage', [AdminAnalyticsController::class, 'ingredientUsage']);
+    Route::get('/analytics/expiring-pantry', [AdminAnalyticsController::class, 'expiringPantry']);
+    Route::get('/analytics/search-trends', [AdminAnalyticsController::class, 'searchTrends']);
+    Route::get('/analytics/active-users', [AdminAnalyticsController::class, 'activeUsers']);
 });
 // Language Switcher
 Route::get('/language/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');

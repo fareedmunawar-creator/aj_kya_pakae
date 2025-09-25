@@ -61,6 +61,15 @@ class RecipeController extends Controller
         $data['image_path'] = 'recipes/' . $imageName;
     }
         
+        // Ensure category_id is set
+        if (!isset($data['category_id'])) {
+            // Get the first category as default
+            $defaultCategory = Category::first();
+            if ($defaultCategory) {
+                $data['category_id'] = $defaultCategory->id;
+            }
+        }
+        
         $recipe = Recipe::create($data);
 
         // Attach ingredients if provided
