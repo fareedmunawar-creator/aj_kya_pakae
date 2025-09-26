@@ -172,36 +172,12 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="unit" class="form-label">{{ __('messages.unit') }}</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-rulers"></i></span>
-                                <select class="form-control" id="unit" name="unit" required>
-                                    <option value="g">g</option>
-                                    <option value="kg">kg</option>
-                                    <option value="ml">ml</option>
-                                    <option value="l">l</option>
-                                    <option value="cup">cup</option>
-                                    <option value="tbsp">tbsp</option>
-                                    <option value="tsp">tsp</option>
-                                    <option value="piece">piece</option>
-                                    <option value="slice">slice</option>
-                                    <option value="bunch">bunch</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3">
                             <label for="expiry_date" class="form-label">{{ __('messages.expiry_date') }}</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                                 <input type="date" class="form-control" id="expiry_date" name="expiry_date">
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">{{ __('messages.notes') }}</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-sticky"></i></span>
-                                <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
-                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
