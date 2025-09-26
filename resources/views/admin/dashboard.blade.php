@@ -71,21 +71,33 @@
                 </div>
             </div>
             
-            <!-- Analytics -->
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ __('Analytics') }}</h5>
-                        <p class="card-text text-muted mb-3">{{ __('View site analytics and reports') }}</p>
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('admin.analytics.top-recipes') }}" class="text-primary">{{ __('Top Recipes') }}</a>
-                            <a href="{{ route('admin.analytics.ingredient-usage') }}" class="text-primary">{{ __('Ingredient Usage') }}</a>
-                            <a href="{{ route('admin.analytics.search-trends') }}" class="text-primary">{{ __('Search Trends') }}</a>
-                            <a href="{{ route('admin.analytics.active-users') }}" class="text-primary">{{ __('Active Users') }}</a>
-                        </div>
-                    </div>
-                </div>
+           <!-- Analytics -->
+<div class="col">
+    <div class="card h-100 shadow-lg border-0 rounded-4">
+        <div class="card-body text-center">
+            <h5 class="card-title fw-bold text-primary mb-2">
+                <i class="bi bi-graph-up-arrow"></i> {{ __('Analytics') }}
+            </h5>
+            <p class="card-text text-muted mb-4">{{ __('View site analytics and reports') }}</p>
+            
+            <div class="d-grid gap-3">
+                <a href="{{ route('admin.analytics.top-recipes') }}" class="btn btn-outline-primary rounded-pill shadow-sm">
+                    <i class="bi bi-star-fill"></i> {{ __('Top Recipes') }}
+                </a>
+                <a href="{{ route('admin.analytics.ingredient-usage') }}" class="btn btn-outline-success rounded-pill shadow-sm">
+                    <i class="bi bi-basket-fill"></i> {{ __('Ingredient Usage') }}
+                </a>
+                <a href="{{ route('admin.analytics.search-trends') }}" class="btn btn-outline-info rounded-pill shadow-sm">
+                    <i class="bi bi-search-heart-fill"></i> {{ __('Search Trends') }}
+                </a>
+                <a href="{{ route('admin.analytics.active-users') }}" class="btn btn-outline-warning rounded-pill shadow-sm">
+                    <i class="bi bi-people-fill"></i> {{ __('Active Users') }}
+                </a>
             </div>
+        </div>
+    </div>
+</div>
+
         </div>
         
         <!-- Analytics Charts Section -->
