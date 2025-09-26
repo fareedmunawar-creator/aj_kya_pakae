@@ -160,23 +160,41 @@ document.addEventListener("DOMContentLoaded", function () {
         const canvas = document.getElementById(elementId);
         if (!canvas) return;
         
+        // Show loading indicator
+        const ctx = canvas.getContext('2d');
+        ctx.font = '14px Arial';
+        ctx.fillStyle = '#666';
+        ctx.textAlign = 'center';
+        ctx.fillText('Loading data...', canvas.width/2, canvas.height/2);
+        
         fetch(fetchUrl)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
             .then(data => {
                 if (data && data.length > 0) {
+                    // Clear the loading text
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
                     new Chart(canvas, dataMapper(data, chartType));
+                } else {
+                    throw new Error('No data available');
                 }
             })
             .catch(err => {
                 console.error(`Error loading chart ${elementId}:`, err);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillText(`Error loading data: ${err.message}`, canvas.width/2, canvas.height/2);
             });
     };
     
     // 1. Top Recipes
-    createChart('topRecipesChart', '/admin/analytics/top-recipes', 'bar', (data, type) => ({
+    createChart('topRecipesChart', '/admin/analytics/data/top-recipes', 'bar', (data, type) => ({
         type: type,
         data: {
-            labels: data.map(r => r.name),
+            labels: data.map(r => r.title),
             datasets: [{
                 label: 'Views',
                 data: data.map(r => r.views),
@@ -186,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }));
 
     // 2. Ingredient Usage
-    createChart('ingredientUsageChart', '/admin/analytics/ingredient-usage', 'pie', (data, type) => ({
+    createChart('ingredientUsageChart', '/admin/analytics/data/ingredient-usage', 'pie', (data, type) => ({
         type: type,
         data: {
             labels: data.map(i => i.name),
@@ -205,10 +223,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }));
 
     // 3. Expiring Pantry
-    createChart('expiringPantryChart', '/admin/analytics/expiring-pantry', 'bar', (data, type) => ({
+    createChart('expiringPantryChart', '/admin/analytics/data/expiring-pantry', 'bar', (data, type) => ({
         type: type,
         data: {
-            labels: data.map(i => i.name),
+            labels: data.map(i => i.ingredient ? i.ingredient.name : 'Unknown'),
             datasets: [{
                 label: 'Expiry in Days',
                 data: data.map(i => Math.ceil((new Date(i.expiry_date) - new Date()) / (1000*60*60*24))),
@@ -218,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }));
 
     // 4. Search Trends
-    createChart('searchTrendsChart', '/admin/analytics/search-trends', 'line', (data, type) => ({
+    createChart('searchTrendsChart', '/admin/analytics/data/search-trends', 'line', (data, type) => ({
         type: type,
         data: {
             labels: data.map(s => s.date),
@@ -232,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }));
 
     // 5. Active Users
-    createChart('activeUsersChart', '/admin/analytics/active-users', 'line', (data, type) => ({
+    createChart('activeUsersChart', '/admin/analytics/data/active-users', 'line', (data, type) => ({
         type: type,
         data: {
             labels: data.map(u => u.date),
