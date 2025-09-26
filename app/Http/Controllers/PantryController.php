@@ -40,14 +40,21 @@ class PantryController extends Controller
 
     public function edit(PantryItem $pantry)
     {
-        $this->authorize('update', $pantry);
+        // Check if the current user owns this pantry item
+        if ($pantry->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $ingredients = \App\Models\Ingredient::all();
         return view('pantry.edit', compact('pantry', 'ingredients'));
     }
 
     public function update(Request $request, PantryItem $pantry)
     {
-        $this->authorize('update', $pantry);
+        // Check if the current user owns this pantry item
+        if ($pantry->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
         
         $validated = $request->validate([
             'ingredient_id' => 'required|exists:ingredients,id',
@@ -62,7 +69,11 @@ class PantryController extends Controller
 
     public function destroy(PantryItem $pantry)
     {
-        $this->authorize('delete', $pantry);
+        // Check if the current user owns this pantry item
+        if ($pantry->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $pantry->delete();
 
         return redirect()->route('pantry.index')->with('success', 'Item deleted!');
