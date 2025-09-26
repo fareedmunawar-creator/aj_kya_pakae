@@ -47,6 +47,22 @@
                         </div>
                     </div>
                     
+                    <div class="d-flex mt-3 mb-3">
+                        <form action="{{ route('recipes.favorite', $recipe->id) }}" method="POST" class="me-2">
+                            @csrf
+                            @if(Auth::check() && Auth::user()->favorites->contains('recipe_id', $recipe->id))
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="bi bi-heart-fill me-1"></i> {{ __('Remove from Favorites') }}
+                                </button>
+                            @else
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="bi bi-heart me-1"></i> {{ __('Add to Favorites') }}
+                                </button>
+                            @endif
+                        </form>
+                    </div>
+                    
                     <form action="{{ route('mealplanner.add', $recipe) }}" method="POST" class="mt-4">
                         @csrf
                         <div class="row g-2">
