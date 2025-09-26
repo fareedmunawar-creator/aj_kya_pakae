@@ -42,6 +42,14 @@ class IngredientController extends Controller
     }
 
     /**
+     * Show the form for editing the specified ingredient.
+     */
+    public function edit(Ingredient $ingredient)
+    {
+        return view('admin.ingredients.edit', compact('ingredient'));
+    }
+
+    /**
      * Update the specified ingredient in storage.
      */
     public function update(Request $request, Ingredient $ingredient)
