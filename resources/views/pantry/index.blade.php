@@ -140,7 +140,7 @@
 
     <!-- Add Item Modal -->
     <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -152,32 +152,35 @@
                 <form action="{{ route('pantry.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="ingredient_id" class="form-label">{{ __('messages.item_name') }}</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-tag"></i></span>
-                                <select class="form-control" id="ingredient_id" name="ingredient_id" required>
-                                    <option value="">{{ __('messages.select_ingredient') }}</option>
-                                    @foreach(\App\Models\Ingredient::all() as $ingredient)
-                                        <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
-                                    @endforeach
-                                </select>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="ingredient_id" class="form-label">{{ __('messages.item_name') }}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                                    <select class="form-select" id="ingredient_id" name="ingredient_id" required>
+                                        <option value="">{{ __('messages.select_ingredient') }}</option>
+                                        @foreach(\App\Models\Ingredient::all() as $ingredient)
+                                            <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="quantity" class="form-label">{{ __('messages.quantity') }}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-123"></i></span>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" value="1" required>
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">{{ __('messages.quantity') }}</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-123"></i></span>
-                                <input type="number" class="form-control" id="quantity" name="quantity" value="1" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expiry_date" class="form-label">{{ __('messages.expiry_date') }}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                    <input type="date" class="form-control" id="expiry_date" name="expiry_date">
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="expiry_date" class="form-label">{{ __('messages.expiry_date') }}</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-calendar"></i></span>
-                                <input type="date" class="form-control" id="expiry_date" name="expiry_date">
-                            </div>
-                        </div>
                         </div>
                     </div>
                     <div class="modal-footer">
