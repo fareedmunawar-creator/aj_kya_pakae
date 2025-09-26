@@ -29,4 +29,8 @@ class Recipe extends Model
     public function views() {
         return $this->hasMany(RecipeView::class);
     }
+    
+    public function media() {
+        return $this->morphMany(Media::class, 'model');
+    }
 }

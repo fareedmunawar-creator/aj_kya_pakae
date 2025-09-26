@@ -20,7 +20,7 @@
 
     <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
-            <form method="POST" action="{{ route('mealplanner.store') }}">
+            <form method="POST" action="{{ route('meal-plans.store') }}">
                 @csrf
                 
                 <div class="row mb-4">
