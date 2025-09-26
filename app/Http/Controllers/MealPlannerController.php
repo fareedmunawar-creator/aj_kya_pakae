@@ -23,7 +23,10 @@ class MealPlannerController extends Controller
         }
         
         $user = Auth::user();
-        $mealPlans = $user->mealPlans()->with('recipes')->get();
+        // Ensure we only get meal plans for the current user
+        $mealPlans = $user->mealPlans()->with(['recipes' => function($query) {
+            $query->with('media'); // Eager load media for recipe images
+        }])->get();
         
         // Group meal plans by day for the weekly view
         $weeklyMealPlans = $mealPlans->groupBy('day');

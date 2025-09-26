@@ -104,7 +104,7 @@
                                                 @if(isset($organizedRecipes[$day][$mealType]))
                                                     <div class="d-flex align-items-center">
                                                         <div class="flex-shrink-0">
-                                                            <img src="{{ $organizedRecipes[$day][$mealType]->image ? asset('storage/' . $organizedRecipes[$day][$mealType]->image) : asset('images/recipe-placeholder.jpg') }}" 
+                                                            <img src="{{ $organizedRecipes[$day][$mealType]->image_path ? asset('storage/' . $organizedRecipes[$day][$mealType]->image_path) : asset('images/recipe-placeholder.jpg') }}" 
                                                                 alt="{{ $organizedRecipes[$day][$mealType]->title }}" 
                                                                 class="rounded" width="40" height="40" style="object-fit: cover;">
                                                         </div>

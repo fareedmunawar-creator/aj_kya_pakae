@@ -47,9 +47,9 @@
                             @if(isset($meals['breakfast']))
                                 <div class="d-flex align-items-center mt-2">
                                     <div class="flex-shrink-0">
-                                        @if($meals['breakfast']->image)
+                                        @if($meals['breakfast']->image_path)
                                             <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
-                                                src="{{ asset('storage/recipes/' . $meals['breakfast']->image_path) }}" 
+                                                src="{{ asset('storage/' . $meals['breakfast']->image_path) }}" 
                                                 alt="{{ $meals['breakfast']->title }}">
                                         @else
                                             <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
@@ -76,9 +76,9 @@
                             @if(isset($meals['lunch']))
                                 <div class="d-flex align-items-center mt-2">
                                     <div class="flex-shrink-0">
-                                        @if($meals['lunch']->image)
+                                        @if($meals['lunch']->image_path)
                                             <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
-                                                src="{{ asset('storage/recipes/' . $meals['lunch']->image_path) }}" 
+                                                src="{{ asset('storage/' . $meals['lunch']->image_path) }}" 
                                                 alt="{{ $meals['lunch']->title }}">
                                         @else
                                             <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
@@ -105,9 +105,9 @@
                             @if(isset($meals['dinner']))
                                 <div class="d-flex align-items-center mt-2">
                                     <div class="flex-shrink-0">
-                                        @if($meals['dinner']->image)
+                                        @if($meals['dinner']->image_path)
                                             <img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" 
-                                                src="{{ asset('storage/recipes/' . $meals['dinner']->image_path) }}" 
+                                                src="{{ asset('storage/' . $meals['dinner']->image_path) }}" 
                                                 alt="{{ $meals['dinner']->title }}">
                                         @else
                                             <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
