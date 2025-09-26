@@ -60,7 +60,7 @@
                                         <div class="avatar-sm bg-light rounded-circle p-2 me-3">
                                             <i class="bi bi-egg-fried text-primary"></i>
                                         </div>
-                                        <span>{{ $item->name }}</span>
+                                        <span>{{ $item->ingredient->name }}</span>
                                     </div>
                                 </td>
                                 <td>
@@ -79,7 +79,7 @@
                                 </td>
                             </tr>
                             
-                            <!-- Edit Modal for {{ $item->name }} -->
+                            <!-- Edit Modal for {{ $item->ingredient->name }} -->
                             <div class="modal fade" id="editItemModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
@@ -94,10 +94,16 @@
                                             @csrf @method('PUT')
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <label for="name{{ $item->id }}" class="form-label">{{ __('messages.item_name') }}</label>
+                                                    <label for="ingredient_id{{ $item->id }}" class="form-label">{{ __('messages.item_name') }}</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="bi bi-tag"></i></span>
-                                                        <input type="text" class="form-control" id="name{{ $item->id }}" name="name" value="{{ $item->name }}" required>
+                                                        <select class="form-select" id="ingredient_id{{ $item->id }}" name="ingredient_id" required>
+                                                            @foreach(\App\Models\Ingredient::all() as $ingredient)
+                                                                <option value="{{ $ingredient->id }}" {{ $item->ingredient_id == $ingredient->id ? 'selected' : '' }}>
+                                                                    {{ $ingredient->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
