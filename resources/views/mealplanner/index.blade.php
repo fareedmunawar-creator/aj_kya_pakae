@@ -68,9 +68,7 @@
                                             @endif
                                         @endforeach
                                     @endif
-                                    <a href="{{ route('mealplanner.create') }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
-                                        <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
-                                    </a>
+
                                 </td>
                             @endforeach
                         </tr>
@@ -102,9 +100,7 @@
                                             @endif
                                         @endforeach
                                     @endif
-                                    <a href="{{ route('mealplanner.create') }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
-                                        <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
-                                    </a>
+
                                 </td>
                             @endforeach
                         </tr>
@@ -136,9 +132,7 @@
                                             @endif
                                         @endforeach
                                     @endif
-                                    <a href="{{ route('mealplanner.create') }}" class="btn btn-sm btn-outline-secondary w-100 mt-1">
-                                        <i class="bi bi-plus-circle me-1"></i> {{ __('Add') }}
-                                    </a>
+
                                 </td>
                             @endforeach
                         </tr>
