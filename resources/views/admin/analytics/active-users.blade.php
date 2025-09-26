@@ -118,7 +118,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Fetch active users data
-        fetch('/admin/analytics/active-users')
+        fetch('/admin/analytics/data/active-users')
             .then(response => response.json())
             .then(data => {
                 // Prepare data for chart
