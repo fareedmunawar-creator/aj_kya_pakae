@@ -42,7 +42,7 @@
                                                     name="ingredients[]" 
                                                     value="{{ $ingredient->id }}" 
                                                     id="ingredient{{ $ingredient->id }}"
-                                                    {{ in_array($ingredient->id, $userPantryIngredients) ? 'data-pantry="true"' : '' }}>
+                                                    data-pantry="{{ in_array($ingredient->id, $userPantryIngredients) ? 'true' : 'false' }}">
                                                 <label class="form-check-label" for="ingredient{{ $ingredient->id }}">
                                                     {{ $ingredient->name }}
                                                 </label>
@@ -105,6 +105,9 @@
                 document.querySelectorAll('.ingredient-checkbox[data-pantry="true"]').forEach(checkbox => {
                     checkbox.checked = true;
                 });
+                
+                // Scroll to the Find Recipes button
+                document.querySelector('button[type="submit"]').scrollIntoView({behavior: 'smooth'});
             });
         }
         
