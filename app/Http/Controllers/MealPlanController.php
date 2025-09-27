@@ -60,18 +60,24 @@ class MealPlanController extends Controller
         $userId = Auth::id();
         $count = 0;
         
+        // Create a single meal plan
+        $mealPlan = new MealPlan();
+        $mealPlan->user_id = $userId;
+        $mealPlan->name = $request->name;
+        $mealPlan->start_date = $request->start_date;
+        $mealPlan->end_date = $request->end_date;
+        $mealPlan->save();
+        
         // Process each day and meal type
         if ($request->has('meals')) {
             foreach ($request->meals as $day => $mealTypes) {
                 foreach ($mealTypes as $mealType => $recipeId) {
                     if (!empty($recipeId)) {
-                        $mealPlan = new MealPlan();
-                        $mealPlan->user_id = $userId;
-                        $mealPlan->day = $day;
-                        $mealPlan->meal_type = $mealType;
-                        $mealPlan->save();
-                        
-                        $mealPlan->recipes()->attach($recipeId, ['meal_type' => $mealType]);
+                        // Attach recipe to the meal plan with day and meal type
+                        $mealPlan->recipes()->attach($recipeId, [
+                            'day' => $day,
+                            'meal_type' => $mealType
+                        ]);
                         $count++;
                     }
                 }
