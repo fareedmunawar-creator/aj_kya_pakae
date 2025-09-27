@@ -105,6 +105,9 @@
                 document.querySelectorAll('.ingredient-checkbox[data-pantry="true"]').forEach(checkbox => {
                     checkbox.checked = true;
                 });
+                
+                // Scroll to the Find Recipes button
+                document.querySelector('button[type="submit"]').scrollIntoView({behavior: 'smooth'});
             });
         }
         
