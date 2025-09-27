@@ -67,7 +67,7 @@ class User extends Authenticatable
         return $this->hasMany(MealPlan::class);
     }
     public function favorites() {
-        return $this->hasMany(Favorite::class);
+        return $this->belongsToMany(Recipe::class, 'favorites', 'user_id', 'recipe_id');
     }
     public function comments() {
         return $this->hasMany(Comment::class);
