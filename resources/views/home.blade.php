@@ -54,7 +54,7 @@
                     <div class="card h-100 recipe-card hover-lift">
                         <div class="card-img-container">
                             @if($recipe->image_path)
-                                <img src="{{ asset($recipe->image_path) }}" class="card-img-top" alt="{{ $recipe->title }}" 
+                                <img src="{{ asset('storage/' . $recipe->image_path) }}" class="card-img-top" alt="{{ $recipe->title }}" 
                                     style="height: 180px; object-fit: cover;">
                             @else
                                 <div class="bg-primary-light d-flex align-items-center justify-content-center" style="height: 180px;">

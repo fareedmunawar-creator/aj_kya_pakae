@@ -56,7 +56,7 @@
                             <x-input-label for="image" :value="__('Recipe Image')" />
                             @if($recipe->image)
                                 <div class="mb-2">
-                                    <img src="{{ asset('storage/' . $recipe->image) }}" alt="{{ $recipe->title }}" class="h-32 w-auto object-cover rounded">
+                                    <img src="{{ asset('storage/' . $recipe->image_path) }}" alt="{{ $recipe->title }}" class="h-32 w-auto object-cover rounded">
                                 </div>
                             @endif
                             <input id="image" type="file" name="image" class="block mt-1 w-full" />
