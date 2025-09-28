@@ -3,7 +3,7 @@
 @section('title', $recipe->title)
 
 @section('content')
-    <div class="row mb-4">
+    <div class="row mb-4 fade-in">
         <div class="col-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -16,32 +16,37 @@
     </div>
 
     <div class="row g-4 mb-5">
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow-sm h-100">
+        <div class="col-lg-6 mb-4 slide-in-up">
+            <div class="card recipe-detail-card h-100">
                 <div class="card-body p-0">
-                    <img src="{{ asset('storage/recipes/' . $recipe->image_path) }}" 
-                         class="img-fluid w-100 rounded" style="max-height: 400px; object-fit: cover;" 
-                         alt="{{ $recipe->title }}">
+                    <div class="recipe-image-container">
+                        <img src="{{ asset('storage/recipes/' . $recipe->image_path) }}" 
+                             class="img-fluid w-100 rounded" style="max-height: 400px; object-fit: cover;" 
+                             alt="{{ $recipe->title }}">
+                        <div class="recipe-image-overlay">
+                            <span class="badge bg-gold">{{ $recipe->category->name ?? 'Uncategorized' }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-header bg-white py-3">
-                    <h1 class="h3 mb-0 text-primary">{{ $recipe->title }}</h1>
+        <div class="col-lg-6 slide-in-up" style="animation-delay: 0.2s;">
+            <div class="card recipe-detail-card h-100">
+                <div class="card-header bg-white py-3 border-bottom-0">
+                    <h1 class="h3 mb-0 gradient-text">{{ $recipe->title }}</h1>
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
-                        <p class="text-muted">{{ $recipe->description }}</p>
+                        <p class="text-secondary">{{ $recipe->description }}</p>
                         <div class="d-flex flex-wrap gap-3 mt-3">
-                            <div class="badge bg-light text-dark p-2">
+                            <div class="badge bg-primary-light text-primary p-2 hover-lift">
                                 <i class="bi bi-clock me-1"></i> {{ $recipe->cooking_time ?? '30' }} min
                             </div>
-                            <div class="badge bg-light text-dark p-2">
+                            <div class="badge bg-secondary-light text-secondary p-2 hover-lift">
                                 <i class="bi bi-people me-1"></i> {{ $recipe->servings ?? '4' }} servings
                             </div>
-                            <div class="badge bg-light text-dark p-2">
+                            <div class="badge bg-accent-light text-accent p-2 hover-lift">
                                 <i class="bi bi-tag me-1"></i> {{ $recipe->category->name ?? 'Uncategorized' }}
                             </div>
                         </div>
@@ -52,11 +57,11 @@
                             @csrf
                             @if(Auth::check() && Auth::user()->favorites->contains('recipe_id', $recipe->id))
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">
+                                <button type="submit" class="btn btn-gold hover-lift">
                                     <i class="bi bi-heart-fill me-1"></i> {{ __('Remove from Favorites') }}
                                 </button>
                             @else
-                                <button type="submit" class="btn btn-outline-danger">
+                                <button type="submit" class="btn btn-outline-gold hover-lift">
                                     <i class="bi bi-heart me-1"></i> {{ __('Add to Favorites') }}
                                 </button>
                             @endif
@@ -67,7 +72,7 @@
                         @csrf
                         <div class="row g-2">
                             <div class="col-sm-8">
-                                <select name="day" class="form-select" required>
+                                <select name="day" class="form-select custom-select" required>
                                     <option value="">{{ __('messages.select_day') }}</option>
                                     @if(request()->has('day'))
                                         <option value="{{ request('day') }}" selected>{{ __('messages.' . request('day')) }}</option>
@@ -83,7 +88,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <button type="submit" class="btn btn-success w-100">
+                                <button type="submit" class="btn btn-primary hover-lift w-100">
                                     <i class="bi bi-calendar-plus me-1"></i> {{ __('messages.add') }}
                                 </button>
                             </div>
