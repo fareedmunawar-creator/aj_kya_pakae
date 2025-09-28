@@ -91,22 +91,82 @@ class MealPlanController extends Controller
         return redirect()->route('mealplanner.index')->with('success', $message);
     }
 
-    public function edit(MealPlan $mealPlan)
+    public function edit($id, Request $request)
     {
+        $mealPlan = MealPlan::findOrFail($id);
         $this->authorize('update', $mealPlan);
-        return view('mealplans.edit', compact('mealPlan'));
+        
+        $day = $request->query('day');
+        $mealType = $request->query('meal_type');
+        
+        $recipes = \App\Models\Recipe::all();
+        $days = [
+            'monday' => __('Monday'),
+            'tuesday' => __('Tuesday'),
+            'wednesday' => __('Wednesday'),
+            'thursday' => __('Thursday'),
+            'friday' => __('Friday'),
+            'saturday' => __('Saturday'),
+            'sunday' => __('Sunday')
+        ];
+        
+        // Get current recipes for this meal plan
+        $mealPlan->load(['recipes' => function($query) use ($day, $mealType) {
+            if ($day && $mealType) {
+                $query->wherePivot('day', $day)->wherePivot('meal_type', $mealType);
+            }
+        }]);
+        
+        $selectedRecipes = [];
+        foreach ($mealPlan->recipes as $recipe) {
+            $pivotDay = $recipe->pivot->day;
+            $pivotMealType = $recipe->pivot->meal_type;
+            $selectedRecipes[$pivotDay][$pivotMealType] = $recipe->id;
+        }
+        
+        return view('mealplanner.edit', compact('mealPlan', 'recipes', 'days', 'selectedRecipes', 'day', 'mealType'));
     }
 
-    public function update(Request $request, MealPlan $mealPlan)
+    public function update(Request $request, $id)
     {
+        $mealPlan = MealPlan::findOrFail($id);
         $this->authorize('update', $mealPlan);
-        $mealPlan->update($request->only('day'));
-
-        if ($request->has('recipes')) {
-            $mealPlan->recipes()->sync($request->recipes);
+        
+        $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'start_date' => 'sometimes|required|date',
+            'end_date' => 'sometimes|required|date|after_or_equal:start_date',
+            'meals' => 'sometimes|array'
+        ]);
+        
+        // Update meal plan details if provided
+        if ($request->has('name')) {
+            $mealPlan->update([
+                'name' => $request->name,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+            ]);
         }
-
-        return redirect()->route('mealplanner.index')->with('success', 'Meal plan updated!');
+        
+        // Update specific meal if provided
+        if ($request->has('meals')) {
+            foreach ($request->meals as $day => $mealTypes) {
+                foreach ($mealTypes as $mealType => $recipeId) {
+                    // Remove existing recipe for this day and meal type
+                    $mealPlan->recipes()->wherePivot('day', $day)->wherePivot('meal_type', $mealType)->detach();
+                    
+                    // Add new recipe if selected
+                    if (!empty($recipeId)) {
+                        $mealPlan->recipes()->attach($recipeId, [
+                            'day' => $day,
+                            'meal_type' => $mealType
+                        ]);
+                    }
+                }
+            }
+        }
+        
+        return redirect()->route('mealplanner.show', $mealPlan->id)->with('success', __('Meal plan updated successfully'));
     }
     
     public function remove($id)
