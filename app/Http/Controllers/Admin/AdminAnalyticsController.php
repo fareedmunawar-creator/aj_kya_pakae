@@ -92,12 +92,7 @@ class AdminAnalyticsController extends Controller
         return response()->json($users);
     }
 
-    // Dashboard view
-    public function dashboard()
-    {
-        // Get counts for dashboard cards
-        $userCount = User::count();
-        $recipeCount = Recipe::count();
+    // Additional dashboard analytics methods can be added here
         $ingredientCount = Ingredient::count();
         $pantryItemCount = PantryItem::count();
         
