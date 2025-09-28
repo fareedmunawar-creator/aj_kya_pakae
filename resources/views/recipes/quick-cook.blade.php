@@ -192,7 +192,7 @@
                                     `}
                                 </div>
                                 <div class="card-footer bg-transparent">
-                                    <a href="/recipes/${recipe.id}" class="btn btn-sm btn-outline-primary">
+                                    <a href="{{ route('recipes.show', '') }}/${recipe.id}" class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye me-1"></i> ${"{{ __('View Recipe') }}"}
                                     </a>
                                 </div>

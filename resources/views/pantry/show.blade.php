@@ -96,7 +96,7 @@
                                     <div class="card h-100 shadow-sm">
                                         <div class="card-img-top" style="height: 160px; overflow: hidden;">
                                             @if($recipe->image_path)
-                                                <img src="{{ asset('storage/recipes/' . $recipe->image_path) }}" alt="{{ $recipe->title }}" class="img-fluid w-100 h-100 object-fit-cover">
+                                                <img src="{{ asset($recipe->image_path) }}" alt="{{ $recipe->title }}" class="img-fluid w-100 h-100 object-fit-cover">
                                             @else
                                                 <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center text-secondary">
                                                     <i class="bi bi-image fs-1"></i>

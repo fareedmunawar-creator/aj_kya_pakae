@@ -109,5 +109,12 @@
     .table tr:hover {
         background-color: rgba(13, 110, 253, 0.05);
     }
+    /* Fix for oversized pagination buttons */
+    .pagination {
+        font-size: 0.9rem;
+    }
+    .pagination .page-link {
+        padding: 0.25rem 0.5rem;
+    }
 </style>
 @endpush

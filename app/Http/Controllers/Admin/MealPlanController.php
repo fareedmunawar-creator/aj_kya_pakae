@@ -76,8 +76,22 @@ class MealPlanController extends Controller
      */
     public function show(MealPlan $mealPlan)
     {
-        $mealPlan->load(['user', 'recipes']);
-        return view('admin.meal-plans.show', compact('mealPlan'));
+        $mealPlan->load(['user', 'recipes' => function($query) {
+            $query->with('category'); // Load additional recipe data
+        }]);
+        
+        // Ensure we have all days and meal types organized
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
+        
+        // Organize recipes by day and meal type
+        $organizedRecipes = [];
+        foreach ($mealPlan->recipes as $recipe) {
+            $pivot = $recipe->pivot;
+            $organizedRecipes[$pivot->day][$pivot->meal_type] = $recipe;
+        }
+        
+        return view('admin.meal-plans.show', compact('mealPlan', 'organizedRecipes', 'days', 'mealTypes'));
     }
 
     /**
