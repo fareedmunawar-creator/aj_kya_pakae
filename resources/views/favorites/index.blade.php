@@ -25,7 +25,7 @@
                 <div class="col">
                     <div class="card h-100 shadow-sm recipe-card border-0 position-relative">
                         <!-- Favorite Button -->
-                        <form action="{{ route('favorites.toggle', $recipe->id) }}" method="POST" class="position-absolute top-0 end-0 m-2">
+                        <form action="{{ route('favorites.toggle', $recipe->id) }}" method="POST" class="position-absolute top-0 end-0 m-2" style="z-index: 10;">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-danger rounded-circle" title="Remove from favorites">
                                 <i class="bi bi-heart-fill"></i>
