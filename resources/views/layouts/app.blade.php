@@ -24,35 +24,35 @@
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm fade-in" style="background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('home') }}">
-                <i class="bi bi-egg-fried me-2"></i>Vision
+            <a class="navbar-brand fw-bold gradient-text pulse" href="{{ route('home') }}">
+                <i class="bi bi-egg-fried me-2 rotate-icon"></i>Vision
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
-                            <i class="bi bi-house-door me-1"></i> {{ __('messages.home') }}
+                        <a href="{{ route('home') }}" class="nav-link nav-link-fancy {{ request()->routeIs('home') ? 'active' : '' }}">
+                            <i class="bi bi-house-door me-1 nav-icon"></i> {{ __('messages.home') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('recipes.index') }}" class="nav-link {{ request()->routeIs('recipes.*') ? 'active' : '' }}">
-                            <i class="bi bi-journal-text me-1"></i> {{ __('messages.recipes') }}
+                        <a href="{{ route('recipes.index') }}" class="nav-link nav-link-fancy {{ request()->routeIs('recipes.*') ? 'active' : '' }}">
+                            <i class="bi bi-journal-text me-1 nav-icon"></i> {{ __('messages.recipes') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('pantry.index') }}" class="nav-link {{ request()->routeIs('pantry.*') ? 'active' : '' }}">
-                            <i class="bi bi-basket me-1"></i> {{ __('messages.pantry') }}
+                        <a href="{{ route('pantry.index') }}" class="nav-link nav-link-fancy {{ request()->routeIs('pantry.*') ? 'active' : '' }}">
+                            <i class="bi bi-basket me-1 nav-icon"></i> {{ __('messages.pantry') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('meal-plans.index') }}" class="nav-link {{ request()->routeIs('meal-plans.*') ? 'active' : '' }}">
-                            <i class="bi bi-calendar-week me-1"></i> {{ __('messages.meal_planner') }}
+                        <a href="{{ route('meal-plans.index') }}" class="nav-link nav-link-fancy {{ request()->routeIs('meal-plans.*') ? 'active' : '' }}">
+                            <i class="bi bi-calendar-week me-1 nav-icon"></i> {{ __('messages.meal_planner') }}
                         </a>
                     </li>
                 </ul>
