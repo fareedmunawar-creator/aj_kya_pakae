@@ -13,6 +13,21 @@ use App\Models\SearchLog;
 
 class AdminAnalyticsController extends Controller
 {
+    /**
+     * Display the admin dashboard
+     *
+     * @return \Illuminate\View\View
+     */
+    public function dashboard()
+    {
+        // Get counts for dashboard stats
+        $recipeCount = Recipe::count();
+        $userCount = User::count();
+        $ingredientCount = Ingredient::count();
+        
+        return view('admin.dashboard', compact('recipeCount', 'userCount', 'ingredientCount'));
+    }
+    
     // 1. Top 10 recipes by views
     public function topRecipes()
     {

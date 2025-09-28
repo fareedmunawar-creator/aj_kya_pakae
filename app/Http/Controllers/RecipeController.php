@@ -15,10 +15,22 @@ class RecipeController extends Controller
     
     public function index(Request $request)
     {
-             if (!Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('login')->with('error', __('messages.error'));
         }
-        $recipes = Recipe::with('ingredients')->latest()->paginate(10);
+        
+        $query = Recipe::with('ingredients')->latest();
+        
+        // Handle search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('description', 'like', '%' . $searchTerm . '%');
+            });
+        }
+        
+        $recipes = $query->paginate(10);
         $day = $request->query('day');
         $categories = Category::all();
         return view('recipes.index', compact('recipes', 'day', 'categories'));
