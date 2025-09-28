@@ -88,7 +88,7 @@
                             <tr>
                                 <td>{{ $recipe->id }}</td>
                                 <td>
-                                    <img src="{{ $recipe->image ? asset('storage/' . $recipe->image) : asset('images/recipe-placeholder.jpg') }}" 
+                                    <img src="{{ asset('storage/' . $recipe->image_path) }}" 
                                          alt="{{ $recipe->title }}" class="img-thumbnail" width="60">
                                 </td>
                                 <td>{{ $recipe->title }}</td>
