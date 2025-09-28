@@ -3,6 +3,12 @@
 @section('title', __('messages.recipes'))
 
 @section('content')
+<style>
+    a.btn {
+    position: relative;
+    z-index: 10;
+}
+</style>
     <div class="row mb-4 fade-in">
         <div class="col-12">
             <div class="d-sm-flex align-items-center justify-content-between">
@@ -43,9 +49,8 @@
             <div class="col slide-in-up" style="animation-delay: {{ 0.2 + ($key % 8) * 0.1 }}s;">
                 <div class="card recipe-card h-100 hover-lift">
                     <div class="card-img-container">
-                        <img src="{{ asset('storage/' . $recipe->image_path) }}" alt="Recipe Image" width="200">
-                             class="card-img-top" 
-                             alt="{{ $recipe->title }}">
+                       <img src="{{ asset('storage/' . $recipe->image_path) }}" alt="Recipe Image" width="300">
+
                         <div class="card-img-overlay d-flex flex-column justify-content-between">
                             <div class="d-flex justify-content-end">
                                 <span class="badge bg-primary-light text-primary">
@@ -79,7 +84,7 @@
                                         <i class="bi bi-eye me-1"></i> {{ __('messages.details') }}
                                     </a>
                                 @else
-                                    <a href="{{ route('recipes.show', $recipe->id) }}" class="btn btn-sm btn-primary hover-lift">
+                                    <a href="{{ route('recipes.show', ['recipe' => $recipe->id]) }}" class="btn btn-sm btn-primary hover-lift">
                                         <i class="bi bi-eye me-1"></i> {{ __('messages.details') }}
                                     </a>
                                 @endif

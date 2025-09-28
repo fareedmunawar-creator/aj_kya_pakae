@@ -20,7 +20,7 @@
             <div class="card recipe-detail-card h-100">
                 <div class="card-body p-0">
                     <div class="recipe-image-container">
-                        <img src="{{ asset($recipe->image_path) }}" 
+                        <img src="{{ asset('storage/' . $recipe->image_path) }}" 
                              class="img-fluid w-100 rounded" style="max-height: 400px; object-fit: cover;" 
                              alt="{{ $recipe->title }}">
                         <div class="recipe-image-overlay">

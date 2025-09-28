@@ -34,8 +34,8 @@
                         
                         <!-- Recipe Image -->
                         <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none">
-                            @if($recipe->image)
-                                <img src="{{ asset('storage/' . $recipe->image) }}" class="card-img-top recipe-img" alt="{{ $recipe->title }}">
+                            @if($recipe->image_path)
+                                <img src="{{ asset('storage/' . $recipe->image_path) }}" class="card-img-top recipe-img" alt="{{ $recipe->title }}">
                             @else
                                 <div class="card-img-top recipe-img bg-light d-flex align-items-center justify-content-center">
                                     <i class="bi bi-image text-secondary" style="font-size: 3rem;"></i>
