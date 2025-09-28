@@ -113,21 +113,21 @@
                 <h4 class="fw-bold">{{ __('Meal Planning') }}</h4>
                 <p class="text-muted">{{ __('Plan your meals for the week and generate shopping lists automatically') }}</p>
                 <div class="mt-auto">
-                    <a href="{{ route('mealplanner.index') }}" class="btn btn-outline-success btn-sm">
+                    <a href="{{ route('mealplanner.index') }}" class="btn btn-outline-primary btn-sm hover-lift">
                         {{ __('Plan Meals') }} <i class="bi bi-arrow-right ms-1"></i>
                     </a>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm text-center p-4">
-                <div class="mb-3">
-                    <i class="bi bi-heart text-danger" style="font-size: 2.5rem;"></i>
+            <div class="card h-100 feature-card text-center p-4 hover-lift">
+                <div class="feature-icon mb-3">
+                    <i class="bi bi-heart"></i>
                 </div>
                 <h4 class="fw-bold">{{ __('Save Favorites') }}</h4>
                 <p class="text-muted">{{ __('Save your favorite recipes for quick access anytime') }}</p>
                 <div class="mt-auto">
-                    <a href="{{ route('favorites.index') }}" class="btn btn-outline-danger btn-sm">
+                    <a href="{{ route('favorites.index') }}" class="btn btn-outline-primary btn-sm hover-lift">
                         {{ __('View Favorites') }} <i class="bi bi-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -136,11 +136,11 @@
     </div>
     
     <!-- Quick Cook CTA -->
-    <div class="card bg-primary text-white border-0 shadow">
+    <div class="card cta-card border-0 shadow slide-in-up" style="animation-delay: 0.6s;">
         <div class="card-body p-5 text-center">
-            <h3 class="fw-bold mb-3">{{ __('Not sure what to cook?') }}</h3>
+            <h3 class="fw-bold mb-3 gradient-text">{{ __('Not sure what to cook?') }}</h3>
             <p class="lead mb-4">{{ __('Let us suggest recipes based on what you have in your pantry') }}</p>
-            <a href="{{ route('quick.cook') }}" class="btn btn-lg btn-light">
+            <a href="{{ route('quick.cook') }}" class="btn btn-lg btn-gold hover-lift pulse">
                 <i class="bi bi-lightning-charge me-2"></i>{{ __('messages.quick_cook') }}
             </a>
         </div>
