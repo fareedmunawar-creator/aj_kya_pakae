@@ -60,7 +60,7 @@
                                         <div class="avatar-sm bg-light rounded-circle p-2 me-3">
                                             <i class="bi bi-egg-fried text-primary"></i>
                                         </div>
-                                        <span>{{ $item->name }}</span>
+                                        <span>{{ $item->ingredient->name }}</span>
                                     </div>
                                 </td>
                                 <td>
@@ -79,7 +79,7 @@
                                 </td>
                             </tr>
                             
-                            <!-- Edit Modal for {{ $item->name }} -->
+                            <!-- Edit Modal for {{ $item->ingredient->name }} -->
                             <div class="modal fade" id="editItemModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">

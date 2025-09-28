@@ -68,32 +68,7 @@
                         </form>
                     </div>
                     
-                    <form action="{{ route('mealplanner.add', $recipe) }}" method="POST" class="mt-4">
-                        @csrf
-                        <div class="row g-2">
-                            <div class="col-sm-8">
-                                <select name="day" class="form-select custom-select" required>
-                                    <option value="">{{ __('messages.select_day') }}</option>
-                                    @if(request()->has('day'))
-                                        <option value="{{ request('day') }}" selected>{{ __('messages.' . request('day')) }}</option>
-                                    @else
-                                        <option value="monday">{{ __('messages.monday') }}</option>
-                                        <option value="tuesday">{{ __('messages.tuesday') }}</option>
-                                        <option value="wednesday">{{ __('messages.wednesday') }}</option>
-                                        <option value="thursday">{{ __('messages.thursday') }}</option>
-                                        <option value="friday">{{ __('messages.friday') }}</option>
-                                        <option value="saturday">{{ __('messages.saturday') }}</option>
-                                        <option value="sunday">{{ __('messages.sunday') }}</option>
-                                    @endif
-                                </select>
-                            </div>
-                            <div class="col-sm-4">
-                                <button type="submit" class="btn btn-primary hover-lift w-100">
-                                    <i class="bi bi-calendar-plus me-1"></i> {{ __('messages.add') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <!-- Meal planner add form removed as requested -->
                 </div>
             </div>
         </div>

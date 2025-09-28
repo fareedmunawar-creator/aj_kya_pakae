@@ -2,6 +2,18 @@
 
 @section('title', __('Ingredient Management'))
 
+@push('styles')
+<style>
+    /* Fix for oversized pagination buttons */
+    .pagination {
+        font-size: 0.9rem;
+    }
+    .pagination .page-link {
+        padding: 0.25rem 0.5rem;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
