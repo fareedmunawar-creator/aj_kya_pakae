@@ -57,11 +57,11 @@
                             @csrf
                             @if(Auth::check() && Auth::user()->favorites->contains('recipe_id', $recipe->id))
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-gold hover-lift">
+                                <button type="submit" class="btn btn-gold">
                                     <i class="bi bi-heart-fill me-1"></i> {{ __('Remove from Favorites') }}
                                 </button>
                             @else
-                                <button type="submit" class="btn btn-outline-gold hover-lift">
+                                <button type="submit" class="btn btn-outline-gold">
                                     <i class="bi bi-heart me-1"></i> {{ __('Add to Favorites') }}
                                 </button>
                             @endif
