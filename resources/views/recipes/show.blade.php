@@ -100,20 +100,20 @@
     </div>
     
     <div class="row g-4 mb-5">
-        <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-header bg-white py-3">
-                    <h2 class="h5 mb-0">
+        <div class="col-md-6 slide-in-up" style="animation-delay: 0.3s;">
+            <div class="card recipe-detail-card h-100">
+                <div class="card-header bg-white py-3 border-bottom-0">
+                    <h2 class="h5 mb-0 section-title">
                         <i class="bi bi-basket me-2 text-primary"></i>{{ __('messages.ingredients') }}
                     </h2>
                 </div>
                 <div class="card-body p-0">
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush ingredient-list">
                         @if(isset($recipe->ingredients) && count($recipe->ingredients) > 0)
                             @foreach($recipe->ingredients as $ingredient)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <li class="list-group-item d-flex justify-content-between align-items-center hover-lift">
                                     <span>{{ $ingredient->name }}</span>
-                                    <span class="badge bg-primary rounded-pill">{{ $ingredient->pivot->quantity }}</span>
+                                    <span class="badge bg-primary-light text-primary rounded-pill">{{ $ingredient->pivot->quantity }} {{ $ingredient->pivot->unit ?? '' }}</span>
                                 </li>
                             @endforeach
                         @else
@@ -127,18 +127,18 @@
             </div>
         </div>
         
-        <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-header bg-white py-3">
-                    <h2 class="h5 mb-0">
+        <div class="col-md-6 slide-in-up" style="animation-delay: 0.4s;">
+            <div class="card recipe-detail-card h-100">
+                <div class="card-header bg-white py-3 border-bottom-0">
+                    <h2 class="h5 mb-0 section-title">
                         <i class="bi bi-list-ol me-2 text-primary"></i>{{ __('messages.steps') }}
                     </h2>
                 </div>
                 <div class="card-body">
                     @if(isset($recipe->steps) && count($recipe->steps) > 0)
-                        <ol class="list-group list-group-numbered">
+                        <ol class="list-group list-group-numbered instruction-list">
                             @foreach($recipe->steps as $step)
-                                <li class="list-group-item border-0 ps-0">{{ $step }}</li>
+                                <li class="list-group-item border-0 ps-0 hover-lift">{{ $step }}</li>
                             @endforeach
                         </ol>
                     @else
