@@ -265,7 +265,7 @@
                     <div class="card recipe-card hover-lift h-100">
                         <div class="card-img-container">
                             @if($relatedRecipe->image_path)
-                                <img src="{{ asset('storage/recipes/' . $relatedRecipe->image_path) }}" 
+                                <img src="{{ asset($relatedRecipe->image_path) }}" 
                                     class="card-img-top" alt="{{ $relatedRecipe->title }}" 
                                     style="height: 180px; object-fit: cover;">
                             @else
