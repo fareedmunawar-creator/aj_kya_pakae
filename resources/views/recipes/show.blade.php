@@ -152,11 +152,11 @@
         </div>
     </div>
     
-    <div class="row mb-5">
+    <div class="row mb-5 slide-in-up" style="animation-delay: 0.5s;">
         <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white py-3">
-                    <h2 class="h5 mb-0">
+            <div class="card recipe-detail-card">
+                <div class="card-header bg-white py-3 border-bottom-0">
+                    <h2 class="h5 mb-0 section-title">
                         <i class="bi bi-chat-dots me-2 text-primary"></i>{{ __('messages.comments') }}
                     </h2>
                 </div>
@@ -164,7 +164,7 @@
                     @if(isset($recipe->comments) && $recipe->comments->count() > 0)
                         <div class="mb-4">
                             @foreach($recipe->comments as $comment)
-                                <div class="card mb-3 border-0 shadow-sm">
+                                <div class="card mb-3 border-0 shadow-sm hover-lift">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between mb-2">
                                             <div class="d-flex align-items-center">
@@ -193,18 +193,18 @@
                         </div>
                     @endif
                     
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm hover-lift">
                         <div class="card-body">
-                            <h5 class="mb-3">{{ __('messages.leave_comment') }}</h5>
+                            <h5 class="mb-3 gradient-text">{{ __('messages.leave_comment') }}</h5>
                             <form action="{{ route('comments.store', $recipe) }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
-                                    <textarea name="content" class="form-control" rows="3" placeholder="{{ __('messages.your_comment') }}" required></textarea>
+                                    <textarea name="content" class="form-control custom-input" rows="3" placeholder="{{ __('messages.your_comment') }}" required></textarea>
                                 </div>
                                 <div class="row g-3 align-items-center">
                                     <div class="col-md-6">
                                         <label class="form-label mb-0">{{ __('messages.rating') }}</label>
-                                        <select name="rating" class="form-select" required>
+                                        <select name="rating" class="form-select custom-select" required>
                                             <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
                                             <option value="4">⭐⭐⭐⭐ (4/5)</option>
                                             <option value="3">⭐⭐⭐ (3/5)</option>
@@ -213,7 +213,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary hover-lift">
                                             <i class="bi bi-send me-1"></i> {{ __('messages.post_comment') }}
                                         </button>
                                     </div>
@@ -225,4 +225,79 @@
             </div>
         </div>
     </div>
+    
+    <!-- Nutrition Information -->
+    @if(isset($recipe->nutrition) && count($recipe->nutrition) > 0)
+        <div class="row mb-5 slide-in-up" style="animation-delay: 0.6s;">
+            <div class="col-12">
+                <div class="card recipe-detail-card">
+                    <div class="card-header bg-white py-3 border-bottom-0">
+                        <h2 class="h5 mb-0 section-title">
+                            <i class="bi bi-pie-chart me-2 text-primary"></i>{{ __('messages.nutrition_info') }}
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            @foreach($recipe->nutrition as $key => $value)
+                                <div class="col-6 col-md-3">
+                                    <div class="nutrition-card text-center p-3 rounded hover-lift">
+                                        <h6 class="text-uppercase text-accent small mb-2">{{ $key }}</h6>
+                                        <p class="h4 mb-0 gradient-text">{{ $value }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    
+    <!-- Related Recipes -->
+    @if(isset($relatedRecipes) && count($relatedRecipes) > 0)
+        <div class="row mb-5 slide-in-up" style="animation-delay: 0.7s;">
+            <div class="col-12 mb-4">
+                <h2 class="h4 mb-0 section-title">{{ __('messages.you_might_also_like') }}</h2>
+            </div>
+            
+            @foreach($relatedRecipes as $relatedRecipe)
+                <div class="col-md-6 col-lg-3 mb-4" style="animation-delay: {{ $loop->index * 0.1 + 0.8 }}s;">
+                    <div class="card recipe-card hover-lift h-100">
+                        <div class="card-img-container">
+                            @if($relatedRecipe->image_path)
+                                <img src="{{ asset('storage/recipes/' . $relatedRecipe->image_path) }}" 
+                                    class="card-img-top" alt="{{ $relatedRecipe->title }}" 
+                                    style="height: 180px; object-fit: cover;">
+                            @else
+                                <div class="bg-primary-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                    <i class="bi bi-image text-primary" style="font-size: 3rem;"></i>
+                                </div>
+                            @endif
+                            <div class="card-img-overlay d-flex align-items-end">
+                                <span class="badge bg-primary-light text-primary mb-2">
+                                    <i class="bi bi-clock me-1"></i>{{ $relatedRecipe->cooking_time ?? '30' }} min
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">{{ $relatedRecipe->title }}</h5>
+                            <p class="card-text text-muted small mb-3">
+                                <span class="badge bg-secondary-light text-secondary me-2">
+                                    <i class="bi bi-bar-chart me-1"></i>{{ $relatedRecipe->difficulty ?? 'Medium' }}
+                                </span>
+                                @if($relatedRecipe->category)
+                                <span class="badge bg-accent-light text-accent">
+                                    {{ $relatedRecipe->category->name ?? '' }}
+                                </span>
+                                @endif
+                            </p>
+                            <a href="{{ route('recipes.show', $relatedRecipe) }}" class="btn btn-sm btn-primary stretched-link">
+                                <i class="bi bi-eye me-1"></i>{{ __('messages.view') }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 @endsection
