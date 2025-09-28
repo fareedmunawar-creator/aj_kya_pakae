@@ -5,18 +5,18 @@
 @section('content')
 <div class="container py-4">
     <!-- Page Header with Breadcrumb -->
-    <div class="row mb-4">
+    <div class="row mb-4 fade-in">
         <div class="col">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}" class="nav-link-fancy">{{ __('Home') }}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ __('messages.meal_planner') }}</li>
                 </ol>
             </nav>
             <div class="d-flex justify-content-between align-items-center">
-                <h1 class="display-5 fw-bold">{{ __('messages.weekly_meal_planner') }}</h1>
-                <a href="{{ route('mealplanner.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg me-1"></i> {{ __('Create Meal Plan') }}
+                <h1 class="display-5 fw-bold gradient-text slide-in-left">{{ __('messages.weekly_meal_planner') }}</h1>
+                <a href="{{ route('mealplanner.create') }}" class="btn btn-gold hover-lift slide-in-right">
+                    <i class="bi bi-plus-lg me-1 rotate-icon"></i> {{ __('Create Meal Plan') }}
                 </a>
             </div>
         </div>
@@ -24,10 +24,10 @@
     <!-- Weekly Meal Planner Content -->
 
     <!-- Weekly Calendar View -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-white py-3">
-            <h5 class="mb-0">
-                <i class="bi bi-calendar-week me-2"></i>{{ __('Weekly Schedule') }}
+    <div class="card border-0 shadow-lg rounded-4 mb-4 slide-in-up">
+        <div class="card-header bg-gradient-light py-3 rounded-top-4">
+            <h5 class="mb-0 gradient-text">
+                <i class="bi bi-calendar-week me-2 pulse"></i>{{ __('Weekly Schedule') }}
             </h5>
         </div>
         <div class="card-body p-0">
