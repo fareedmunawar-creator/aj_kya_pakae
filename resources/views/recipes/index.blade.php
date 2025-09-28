@@ -3,6 +3,12 @@
 @section('title', __('messages.recipes'))
 
 @section('content')
+<style>
+    a.btn {
+    position: relative;
+    z-index: 10;
+}
+</style>
     <div class="row mb-4 fade-in">
         <div class="col-12">
             <div class="d-sm-flex align-items-center justify-content-between">
@@ -78,7 +84,7 @@
                                         <i class="bi bi-eye me-1"></i> {{ __('messages.details') }}
                                     </a>
                                 @else
-                                    <a href="{{ route('recipes.show', $recipe->id) }}" class="btn btn-sm btn-primary hover-lift">
+                                    <a href="{{ route('recipes.show', ['recipe' => $recipe->id]) }}" class="btn btn-sm btn-primary hover-lift">
                                         <i class="bi bi-eye me-1"></i> {{ __('messages.details') }}
                                     </a>
                                 @endif
