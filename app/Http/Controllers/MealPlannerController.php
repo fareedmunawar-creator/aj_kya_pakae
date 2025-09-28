@@ -97,10 +97,21 @@ class MealPlannerController extends Controller
             $query->with('category'); // Load additional recipe data
         }])->findOrFail($id);
         
+        // Define days and meal types
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
+        
+        // Organize recipes by day and meal type
+        $organizedMeals = [];
+        foreach ($mealPlan->recipes as $recipe) {
+            $pivot = $recipe->pivot;
+            $organizedMeals[$pivot->day][$pivot->meal_type] = $recipe;
+        }
+        
         // Check if the meal plan belongs to the authenticated user
         if ($mealPlan->user_id !== Auth::id()) {
             return redirect()->route('mealplanner.index')
-                ->with('error', __('messages.error'));
+                ->with('error', __('messages.unauthorized'));
         }
         
         // Ensure we have all days and meal types organized
