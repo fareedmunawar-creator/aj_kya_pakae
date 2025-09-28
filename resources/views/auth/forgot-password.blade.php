@@ -100,11 +100,15 @@
     </style>
 
     <div class="auth-card">
+        <div class="floating-circle circle-1"></div>
+        <div class="floating-circle circle-2"></div>
+        <div class="floating-circle circle-3"></div>
+        
         <div class="auth-header">
-            <h4 class="mb-0 animated-element">{{ __('Reset Password') }}</h4>
+            <h4 class="mb-0 float">{{ __('Reset Password') }}</h4>
         </div>
         <div class="auth-body">
-            <div class="alert alert-info animated-element delay-1">
+            <div class="mb-4 text-muted animated-element delay-1">
                 {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
             </div>
 
@@ -115,16 +119,19 @@
                 @csrf
 
                 <!-- Email Address -->
-                <div class="mb-3 animated-element delay-2">
-                    <x-input-label for="email" :value="__('Email')" />
+                <div class="mb-4 animated-element delay-2">
+                    <x-input-label for="email" :value="__('Email')" class="mb-2 fw-bold" />
                     <x-text-input id="email" class="auth-input" type="email" name="email" :value="old('email')" required autofocus />
-                    <x-input-error :messages="$errors->get('email')" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center animated-element delay-3">
-                    <a href="{{ route('login') }}" class="auth-link">{{ __('Back to login') }}</a>
-                    <button type="submit" class="auth-btn">
-                        {{ __('Email Password Reset Link') }}
+                    <a class="auth-link" href="{{ route('login') }}">
+                        {{ __('Back to login') }}
+                    </a>
+
+                    <button type="submit" class="auth-btn pulse">
+                        {{ __('Send Reset Link') }}
                     </button>
                 </div>
             </form>

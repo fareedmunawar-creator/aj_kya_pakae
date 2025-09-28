@@ -1,4 +1,6 @@
-<x-guest-layout>
+@extends('layouts.app')
+
+@section('content')
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -276,4 +278,4 @@
             </form>
         </div>
     </div>
-</x-guest-layout>
+@endsection
