@@ -108,6 +108,6 @@ Route::prefix('api/admin')
 Route::get('/language/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');
 
 // About Page
-Route::view('/about', 'about')->name('about');
+Route::view('/about', 'about')->name('about.index');
 
 require __DIR__.'/auth.php';

@@ -41,6 +41,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('about.index') }}" class="nav-link nav-link-fancy {{ request()->routeIs('about.*') ? 'active' : '' }}">
+                            <i class="bi bi-calendar-week me-1 nav-icon"></i> {{ __('About') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('recipes.index') }}" class="nav-link nav-link-fancy {{ request()->routeIs('recipes.*') ? 'active' : '' }}">
                             <i class="bi bi-journal-text me-1 nav-icon"></i> {{ __('messages.recipes') }}
                         </a>

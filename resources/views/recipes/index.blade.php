@@ -43,7 +43,7 @@
             <div class="col slide-in-up" style="animation-delay: {{ 0.2 + ($key % 8) * 0.1 }}s;">
                 <div class="card recipe-card h-100 hover-lift">
                     <div class="card-img-container">
-                        <img src="{{ asset('storage/recipes/' . $recipe->image_path) }}" 
+                        <img src="{{ asset($recipe->image_path) }}" 
                              class="card-img-top" 
                              alt="{{ $recipe->title }}">
                         <div class="card-img-overlay d-flex flex-column justify-content-between">
@@ -79,7 +79,7 @@
                                         <i class="bi bi-eye me-1"></i> {{ __('messages.details') }}
                                     </a>
                                 @else
-                                    <a href="{{ route('recipes.show', $recipe) }}" class="btn btn-sm btn-primary hover-lift">
+                                    <a href="{{ route('recipes.show', $recipe->id) }}" class="btn btn-sm btn-primary hover-lift">
                                         <i class="bi bi-eye me-1"></i> {{ __('messages.details') }}
                                     </a>
                                 @endif

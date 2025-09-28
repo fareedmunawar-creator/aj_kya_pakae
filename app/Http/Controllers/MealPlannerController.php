@@ -93,7 +93,9 @@ class MealPlannerController extends Controller
             return redirect()->route('login')->with('error', __('messages.error'));
         }
         
-        $mealPlan = MealPlan::with('recipes')->findOrFail($id);
+        $mealPlan = MealPlan::with(['recipes' => function($query) {
+            $query->with('category'); // Load additional recipe data
+        }])->findOrFail($id);
         
         // Check if the meal plan belongs to the authenticated user
         if ($mealPlan->user_id !== Auth::id()) {
@@ -101,7 +103,25 @@ class MealPlannerController extends Controller
                 ->with('error', __('messages.error'));
         }
         
-        return view('mealplanner.show', compact('mealPlan'));
+        // Ensure we have all days and meal types organized
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
+        
+        // Organize recipes by day and meal type
+        $organizedMeals = [];
+        foreach ($days as $day) {
+            foreach ($mealTypes as $mealType) {
+                $organizedMeals[$day][$mealType] = null;
+            }
+        }
+        
+        // Fill in the organized meals with actual recipes
+        foreach ($mealPlan->recipes as $recipe) {
+            $pivot = $recipe->pivot;
+            $organizedMeals[$pivot->day][$pivot->meal_type] = $recipe;
+        }
+        
+        return view('mealplanner.show', compact('mealPlan', 'organizedMeals', 'days', 'mealTypes'));
     }
     
     /**

@@ -53,8 +53,8 @@
                 <div class="col-md-6 col-lg-3" style="animation-delay: {{ $loop->index * 0.1 + 0.3 }}s;">
                     <div class="card h-100 recipe-card hover-lift">
                         <div class="card-img-container">
-                            @if($recipe->image)
-                                <img src="{{ $recipe->image }}" class="card-img-top" alt="{{ $recipe->title }}" 
+                            @if($recipe->image_path)
+                                <img src="{{ asset($recipe->image_path) }}" class="card-img-top" alt="{{ $recipe->title }}" 
                                     style="height: 180px; object-fit: cover;">
                             @else
                                 <div class="bg-primary-light d-flex align-items-center justify-content-center" style="height: 180px;">
@@ -79,7 +79,7 @@
                                 </span>
                                 @endif
                             </p>
-                            <a href="{{ route('recipes.show', $recipe) }}" class="btn btn-sm btn-primary stretched-link">
+                            <a href="{{ route('recipes.show', $recipe->id) }}" class="btn btn-sm btn-primary stretched-link">
                                 <i class="bi bi-eye me-1"></i>{{ __('messages.view') }}
                             </a>
                         </div>
