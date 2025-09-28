@@ -43,9 +43,8 @@
             <div class="col slide-in-up" style="animation-delay: {{ 0.2 + ($key % 8) * 0.1 }}s;">
                 <div class="card recipe-card h-100 hover-lift">
                     <div class="card-img-container">
-                        <img src="{{ asset($recipe->image_path) }}" 
-                             class="card-img-top" 
-                             alt="{{ $recipe->title }}">
+                       <img src="{{ asset('storage/' . $recipe->image_path) }}" alt="Recipe Image" width="300">
+
                         <div class="card-img-overlay d-flex flex-column justify-content-between">
                             <div class="d-flex justify-content-end">
                                 <span class="badge bg-primary-light text-primary">
