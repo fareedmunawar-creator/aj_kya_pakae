@@ -24,8 +24,34 @@ class AdminAnalyticsController extends Controller
         $recipeCount = Recipe::count();
         $userCount = User::count();
         $ingredientCount = Ingredient::count();
+        $pantryItemCount = PantryItem::count();
         
-        return view('admin.dashboard', compact('recipeCount', 'userCount', 'ingredientCount'));
+        // Get top 5 recipes by views
+        $topRecipes = Recipe::withCount('views as views_count')
+            ->orderByDesc('views_count')
+            ->take(5)
+            ->get(['id', 'title']);
+            
+        // Get recent users
+        $recentUsers = User::latest()
+            ->take(5)
+            ->get(['id', 'name', 'email', 'created_at']);
+            
+        // Get expiring pantry items (next 7 days)
+        $expiringItems = PantryItem::whereDate('expiry_date', '<=', Carbon::now()->addDays(7))
+            ->with(['user', 'ingredient'])
+            ->take(5)
+            ->get(['id', 'ingredient_id', 'expiry_date', 'user_id']);
+        
+        return view('admin.dashboard', compact(
+            'userCount', 
+            'recipeCount', 
+            'ingredientCount', 
+            'pantryItemCount',
+            'topRecipes',
+            'recentUsers',
+            'expiringItems'
+        ));
     }
     
     // 1. Top 10 recipes by views
@@ -90,37 +116,5 @@ class AdminAnalyticsController extends Controller
             ->get();
 
         return response()->json($users);
-    }
-
-    // Additional dashboard analytics methods can be added here
-        $ingredientCount = Ingredient::count();
-        $pantryItemCount = PantryItem::count();
-        
-        // Get top 5 recipes by views
-        $topRecipes = Recipe::withCount('views as views_count')
-            ->orderByDesc('views_count')
-            ->take(5)
-            ->get(['id', 'title']);
-            
-        // Get recent users
-        $recentUsers = User::latest()
-            ->take(5)
-            ->get(['id', 'name', 'email', 'created_at']);
-            
-        // Get expiring pantry items (next 7 days)
-        $expiringItems = PantryItem::whereDate('expiry_date', '<=', Carbon::now()->addDays(7))
-            ->with(['user', 'ingredient'])
-            ->take(5)
-            ->get(['id', 'ingredient_id', 'expiry_date', 'user_id']);
-        
-        return view('admin.dashboard', compact(
-            'userCount', 
-            'recipeCount', 
-            'ingredientCount', 
-            'pantryItemCount',
-            'topRecipes',
-            'recentUsers',
-            'expiringItems'
-        ));
     }
 }
