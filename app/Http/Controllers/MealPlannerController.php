@@ -47,17 +47,21 @@ class MealPlannerController extends Controller
         
         $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
         
-        // Group meal plans by day for the weekly view
-        $weeklyMealPlans = [];
+        // Group recipes by day and meal type for the weekly view
+        $selectedRecipes = [];
         if ($activeMealPlan) {
+            foreach ($days as $dayKey => $dayName) {
+                $selectedRecipes[$dayKey] = [];
+                foreach ($mealTypes as $mealType) {
+                    $selectedRecipes[$dayKey][$mealType] = [];
+                }
+            }
+            
             // Organize recipes by day and meal type
             foreach ($activeMealPlan->recipes as $recipe) {
                 $pivot = $recipe->pivot;
                 if (isset($pivot->day) && isset($pivot->meal_type)) {
-                    if (!isset($weeklyMealPlans[$pivot->day])) {
-                        $weeklyMealPlans[$pivot->day] = [];
-                    }
-                    $weeklyMealPlans[$pivot->day][] = $activeMealPlan;
+                    $selectedRecipes[$pivot->day][$pivot->meal_type][] = $recipe;
                 }
             }
         }
@@ -68,11 +72,11 @@ class MealPlannerController extends Controller
         // Check which route was used to access this method
         if (request()->route()->getName() === 'meal-plans.index') {
             // For the meal-plans.index route, use the same view as mealplanner.index
-            return view('mealplanner.index', compact('weeklyMealPlans', 'mealPlans', 'days', 'recipes', 'activeMealPlan'));
+            return view('mealplanner.index', compact('selectedRecipes', 'mealPlans', 'days', 'recipes', 'activeMealPlan', 'mealTypes'));
         }
         
         // For the mealplanner.index route
-        return view('mealplanner.index', compact('weeklyMealPlans', 'mealPlans', 'days', 'recipes', 'activeMealPlan'));
+        return view('mealplanner.index', compact('selectedRecipes', 'mealPlans', 'days', 'recipes', 'activeMealPlan', 'mealTypes'));
     }
     
     /**
