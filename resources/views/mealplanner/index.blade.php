@@ -72,17 +72,11 @@
                                     <div class="d-flex align-items-center mb-2">
                                         <span class="badge bg-primary me-2">{{ __('Breakfast') }}</span>
                                     </div>
-                                    @if(isset($weeklyMealPlans) && isset($weeklyMealPlans[$dayKey]) && count($weeklyMealPlans[$dayKey]) > 0)
-                                        @foreach($weeklyMealPlans[$dayKey] as $meal)
-                                            @if($meal->recipes && count($meal->recipes) > 0)
-                                                @foreach($meal->recipes as $recipe)
-                                                    @if($recipe->pivot->meal_type === 'breakfast')
-                                                        <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
-                                                            <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                            @endif
+                                    @if(isset($selectedRecipes) && isset($selectedRecipes[$dayKey]['breakfast']) && count($selectedRecipes[$dayKey]['breakfast']) > 0)
+                                        @foreach($selectedRecipes[$dayKey]['breakfast'] as $recipe)
+                                            <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
+                                                <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
+                                            </div>
                                         @endforeach
                                     @endif
                                 </td>
