@@ -109,24 +109,11 @@
                                     <div class="d-flex align-items-center mb-2">
                                         <span class="badge bg-info me-2">{{ __('Dinner') }}</span>
                                     </div>
-                                    @if(isset($weeklyMealPlans) && isset($weeklyMealPlans[$dayKey]) && count($weeklyMealPlans[$dayKey]) > 0)
-                                        @foreach($weeklyMealPlans[$dayKey] as $meal)
-                                            @if($meal->recipes && count($meal->recipes) > 0)
-                                                @foreach($meal->recipes as $recipe)
-                                                    @if($recipe->pivot->meal_type === 'dinner')
-                                                        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded mb-1">
-                                                            <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2">{{ $recipe->title }}</a>
-                                                            <form action="{{ route('mealplanner.remove', $meal->id) }}" method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-outline-danger border-0">
-                                                                    <i class="bi bi-x-circle"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                            @endif
+                                    @if(isset($selectedRecipes) && isset($selectedRecipes[$dayKey]['dinner']) && count($selectedRecipes[$dayKey]['dinner']) > 0)
+                                        @foreach($selectedRecipes[$dayKey]['dinner'] as $recipe)
+                                            <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
+                                                <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
+                                            </div>
                                         @endforeach
                                     @endif
 
