@@ -34,12 +34,7 @@ class MealPlannerController extends Controller
             return $mealPlan->start_date <= $today && $mealPlan->end_date >= $today;
         });
         
-        // Group meal plans by day for the weekly view
-        $weeklyMealPlans = [];
-        if ($activeMealPlan) {
-            $weeklyMealPlans = $mealPlans->where('id', $activeMealPlan->id)->groupBy('day');
-        }
-        
+        // Define days and meal types
         $days = [
             'monday' => 'Monday',
             'tuesday' => 'Tuesday',
@@ -49,6 +44,23 @@ class MealPlannerController extends Controller
             'saturday' => 'Saturday',
             'sunday' => 'Sunday'
         ];
+        
+        $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
+        
+        // Group meal plans by day for the weekly view
+        $weeklyMealPlans = [];
+        if ($activeMealPlan) {
+            // Organize recipes by day and meal type
+            foreach ($activeMealPlan->recipes as $recipe) {
+                $pivot = $recipe->pivot;
+                if (isset($pivot->day) && isset($pivot->meal_type)) {
+                    if (!isset($weeklyMealPlans[$pivot->day])) {
+                        $weeklyMealPlans[$pivot->day] = [];
+                    }
+                    $weeklyMealPlans[$pivot->day][] = $activeMealPlan;
+                }
+            }
+        }
         
         // Get recipes for the create form
         $recipes = Recipe::all();
@@ -252,19 +264,16 @@ class MealPlannerController extends Controller
             ->with('success', $message);
     }
     
-    public function edit($id)
+    public function edit(MealPlan $mealPlan)
     {
         // Check if user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', __('messages.error'));
         }
         
-        $mealPlan = MealPlan::findOrFail($id);
-        
-        // Check if the meal plan belongs to the authenticated user
+        // Ensure the meal plan belongs to the current user
         if ($mealPlan->user_id !== Auth::id()) {
-            return redirect()->route('mealplanner.index')
-                ->with('error', __('messages.error'));
+            return redirect()->route('mealplanner.index')->with('error', 'You do not have permission to edit this meal plan.');
         }
         
         $days = [
@@ -279,16 +288,21 @@ class MealPlannerController extends Controller
         
         $recipes = Recipe::all();
         
+        // Get the meal plan recipes
+        $mealPlanRecipes = $mealPlan->recipes;
+        
         // Initialize day and mealType variables to prevent undefined variable errors
         $day = request()->query('day', null);
         $mealType = request()->query('meal_type', null);
         
-        // Get current recipes for this meal plan
-        $mealPlan->load(['recipes' => function($query) use ($day, $mealType) {
-            if ($day && $mealType) {
-                $query->wherePivot('day', $day)->wherePivot('meal_type', $mealType);
-            }
-        }]);
+        // Ensure dates are Carbon instances
+        if (is_string($mealPlan->start_date)) {
+            $mealPlan->start_date = Carbon::parse($mealPlan->start_date);
+        }
+        
+        if (is_string($mealPlan->end_date)) {
+            $mealPlan->end_date = Carbon::parse($mealPlan->end_date);
+        }
         
         // Organize recipes by day and meal type
         $selectedRecipes = [];
@@ -298,7 +312,9 @@ class MealPlannerController extends Controller
             $selectedRecipes[$pivotDay][$pivotMealType] = $recipe->id;
         }
         
-        return view('mealplanner.edit', compact('mealPlan', 'days', 'recipes', 'day', 'mealType', 'selectedRecipes'));
+        $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
+        
+        return view('mealplanner.edit', compact('mealPlan', 'days', 'recipes', 'day', 'mealType', 'selectedRecipes', 'mealPlanRecipes', 'mealTypes'));
     }
 
     /**
