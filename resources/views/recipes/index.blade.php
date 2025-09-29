@@ -7,6 +7,10 @@
     a.btn {
     position: relative;
     z-index: 10;
+    
+}
+.badge{
+    margin-left:20px;
 }
 </style>
     <div class="row mb-4 fade-in">
