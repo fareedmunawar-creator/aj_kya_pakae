@@ -47,12 +47,43 @@
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label for="end_date" class="form-label">{{ __('End Date') }}</label>
-                            <input id="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date') }}" required>
+                            <input id="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date') }}" required readonly>
+                            <small class="text-muted">{{ __('Automatically set to one week from start date') }}</small>
                             @error('end_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
+                    
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const startDateInput = document.getElementById('start_date');
+                            const endDateInput = document.getElementById('end_date');
+                            
+                            // Function to calculate end date (7 days from start date)
+                            function updateEndDate() {
+                                if (startDateInput.value) {
+                                    const startDate = new Date(startDateInput.value);
+                                    const endDate = new Date(startDate);
+                                    endDate.setDate(startDate.getDate() + 6); // 7 days total (start day + 6)
+                                    
+                                    // Format the date as YYYY-MM-DD for the input
+                                    const year = endDate.getFullYear();
+                                    const month = String(endDate.getMonth() + 1).padStart(2, '0');
+                                    const day = String(endDate.getDate()).padStart(2, '0');
+                                    endDateInput.value = `${year}-${month}-${day}`;
+                                }
+                            }
+                            
+                            // Set initial end date if start date already has a value
+                            if (startDateInput.value) {
+                                updateEndDate();
+                            }
+                            
+                            // Update end date whenever start date changes
+                            startDateInput.addEventListener('change', updateEndDate);
+                        });
+                    </script>
                 </div>
                 
                 <div class="mb-4">

@@ -75,17 +75,25 @@ class MealPlannerController extends Controller
             return redirect()->route('login')->with('error', __('messages.error'));
         }
         
-        // Check if user already has an active meal plan
+        // Check if user already has an active meal plan or any future meal plan
         $today = Carbon::today();
-        $existingActivePlan = MealPlan::where('user_id', Auth::id())
+        $existingPlan = MealPlan::where('user_id', Auth::id())
             ->where(function($query) use ($today) {
+                // Check for active plans (current date falls between start and end dates)
                 $query->where('start_date', '<=', $today)
-                      ->where('end_date', '>=', $today);
+                      ->where('end_date', '>=', $today)
+                      // Or check for future plans (start date is in the future)
+                      ->orWhere('start_date', '>', $today);
             })->first();
             
-        if ($existingActivePlan) {
-            return redirect()->route('mealplanner.index')
-                ->with('error', __('You already have an active meal plan. Please wait until it ends or delete it before creating a new one.'));
+        if ($existingPlan) {
+            if ($existingPlan->start_date <= $today && $existingPlan->end_date >= $today) {
+                return redirect()->route('mealplanner.index')
+                    ->with('error', __('You already have an active meal plan. Please wait until it ends or delete it before creating a new one.'));
+            } else {
+                return redirect()->route('mealplanner.index')
+                    ->with('error', __('You already have a scheduled meal plan. Please delete it before creating a new one.'));
+            }
         }
         
         $days = [
@@ -186,17 +194,25 @@ class MealPlannerController extends Controller
         $userId = Auth::id();
         $startDate = Carbon::parse($request->start_date);
         
-        // Check if user already has an active meal plan
+        // Check if user already has an active meal plan or any future meal plan
         $today = Carbon::today();
-        $existingActivePlan = MealPlan::where('user_id', $userId)
+        $existingPlan = MealPlan::where('user_id', $userId)
             ->where(function($query) use ($today) {
+                // Check for active plans (current date falls between start and end dates)
                 $query->where('start_date', '<=', $today)
-                      ->where('end_date', '>=', $today);
+                      ->where('end_date', '>=', $today)
+                      // Or check for future plans (start date is in the future)
+                      ->orWhere('start_date', '>', $today);
             })->first();
             
-        if ($existingActivePlan) {
-            return redirect()->route('mealplanner.index')
-                ->with('error', __('You already have an active meal plan. Please wait until it ends or delete it before creating a new one.'));
+        if ($existingPlan) {
+            if ($existingPlan->start_date <= $today && $existingPlan->end_date >= $today) {
+                return redirect()->route('mealplanner.index')
+                    ->with('error', __('You already have an active meal plan. Please wait until it ends or delete it before creating a new one.'));
+            } else {
+                return redirect()->route('mealplanner.index')
+                    ->with('error', __('You already have a scheduled meal plan. Please delete it before creating a new one.'));
+            }
         }
         
         // Calculate end date (7 days from start date)
@@ -263,7 +279,26 @@ class MealPlannerController extends Controller
         
         $recipes = Recipe::all();
         
-        return view('mealplanner.edit', compact('mealPlan', 'days', 'recipes'));
+        // Initialize day and mealType variables to prevent undefined variable errors
+        $day = request()->query('day', null);
+        $mealType = request()->query('meal_type', null);
+        
+        // Get current recipes for this meal plan
+        $mealPlan->load(['recipes' => function($query) use ($day, $mealType) {
+            if ($day && $mealType) {
+                $query->wherePivot('day', $day)->wherePivot('meal_type', $mealType);
+            }
+        }]);
+        
+        // Organize recipes by day and meal type
+        $selectedRecipes = [];
+        foreach ($mealPlan->recipes as $recipe) {
+            $pivotDay = $recipe->pivot->day;
+            $pivotMealType = $recipe->pivot->meal_type;
+            $selectedRecipes[$pivotDay][$pivotMealType] = $recipe->id;
+        }
+        
+        return view('mealplanner.edit', compact('mealPlan', 'days', 'recipes', 'day', 'mealType', 'selectedRecipes'));
     }
 
     /**

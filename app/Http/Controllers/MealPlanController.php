@@ -10,25 +10,34 @@ class MealPlanController extends Controller
 {
     public function index()
     {
-        $plans = Auth::user()->mealPlans()->with('recipes')->get();
+        $plans = Auth::user()->mealPlans()->with(['recipes' => function($query) {
+            $query->with('media'); // Eager load media for recipe images
+        }])->get();
         
-        $mealPlans = [
-            'monday' => [],
-            'tuesday' => [],
-            'wednesday' => [],
-            'thursday' => [],
-            'friday' => [],
-            'saturday' => [],
-            'sunday' => []
-        ];
+        // Define days and meal types
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
         
-        foreach ($plans as $plan) {
-            if (isset($plan->day)) {
-                $mealPlans[strtolower($plan->day)][] = $plan;
+        // Get the active meal plan (most recent one)
+        $activeMealPlan = $plans->sortByDesc('created_at')->first();
+        
+        // Organize recipes by day and meal type
+        $weeklyMealPlans = [];
+        
+        if ($activeMealPlan) {
+            // Organize recipes by day and meal type
+            foreach ($activeMealPlan->recipes as $recipe) {
+                $pivot = $recipe->pivot;
+                if (isset($pivot->day) && isset($pivot->meal_type)) {
+                    if (!isset($weeklyMealPlans[$pivot->day])) {
+                        $weeklyMealPlans[$pivot->day] = [];
+                    }
+                    $weeklyMealPlans[$pivot->day][] = $activeMealPlan;
+                }
             }
         }
         
-        return view('mealplanner.index', compact('mealPlans'));
+        return view('mealplanner.index', compact('weeklyMealPlans', 'days', 'mealTypes', 'activeMealPlan'));
     }
 
     public function create()
