@@ -24,12 +24,21 @@ class MealPlannerController extends Controller
         
         $user = Auth::user();
         // Ensure we only get meal plans for the current user
-        $mealPlans = $user->mealPlans()->with(['recipes' => function($query) {
+        $mealPlans = MealPlan::where('user_id', Auth::id())->with(['recipes' => function($query) {
             $query->with('media'); // Eager load media for recipe images
-        }])->get();
+        }])->latest()->get();
+        
+        // Check if user has an active meal plan
+        $today = Carbon::today();
+        $activeMealPlan = $mealPlans->first(function($mealPlan) use ($today) {
+            return $mealPlan->start_date <= $today && $mealPlan->end_date >= $today;
+        });
         
         // Group meal plans by day for the weekly view
-        $weeklyMealPlans = $mealPlans->groupBy('day');
+        $weeklyMealPlans = [];
+        if ($activeMealPlan) {
+            $weeklyMealPlans = $mealPlans->where('id', $activeMealPlan->id)->groupBy('day');
+        }
         
         $days = [
             'monday' => 'Monday',
@@ -44,7 +53,14 @@ class MealPlannerController extends Controller
         // Get recipes for the create form
         $recipes = Recipe::all();
         
-        return view('mealplanner.index', compact('weeklyMealPlans', 'mealPlans', 'days', 'recipes'));
+        // Check which route was used to access this method
+        if (request()->route()->getName() === 'meal-plans.index') {
+            // For the meal-plans.index route, use the same view as mealplanner.index
+            return view('mealplanner.index', compact('weeklyMealPlans', 'mealPlans', 'days', 'recipes', 'activeMealPlan'));
+        }
+        
+        // For the mealplanner.index route
+        return view('mealplanner.index', compact('weeklyMealPlans', 'mealPlans', 'days', 'recipes', 'activeMealPlan'));
     }
     
     /**
@@ -57,6 +73,19 @@ class MealPlannerController extends Controller
         // Check if user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', __('messages.error'));
+        }
+        
+        // Check if user already has an active meal plan
+        $today = Carbon::today();
+        $existingActivePlan = MealPlan::where('user_id', Auth::id())
+            ->where(function($query) use ($today) {
+                $query->where('start_date', '<=', $today)
+                      ->where('end_date', '>=', $today);
+            })->first();
+            
+        if ($existingActivePlan) {
+            return redirect()->route('mealplanner.index')
+                ->with('error', __('You already have an active meal plan. Please wait until it ends or delete it before creating a new one.'));
         }
         
         $days = [
@@ -151,19 +180,36 @@ class MealPlannerController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
             'meals' => 'array'
         ]);
         
         $userId = Auth::id();
+        $startDate = Carbon::parse($request->start_date);
+        
+        // Check if user already has an active meal plan
+        $today = Carbon::today();
+        $existingActivePlan = MealPlan::where('user_id', $userId)
+            ->where(function($query) use ($today) {
+                $query->where('start_date', '<=', $today)
+                      ->where('end_date', '>=', $today);
+            })->first();
+            
+        if ($existingActivePlan) {
+            return redirect()->route('mealplanner.index')
+                ->with('error', __('You already have an active meal plan. Please wait until it ends or delete it before creating a new one.'));
+        }
+        
+        // Calculate end date (7 days from start date)
+        $endDate = $startDate->copy()->addDays(6);
+        
         $count = 0;
         
         // Create a single meal plan
         $mealPlan = new MealPlan();
         $mealPlan->user_id = $userId;
         $mealPlan->name = $request->name;
-        $mealPlan->start_date = $request->start_date;
-        $mealPlan->end_date = $request->end_date;
+        $mealPlan->start_date = $startDate;
+        $mealPlan->end_date = $endDate;
         $mealPlan->save();
         
         // Process each day and meal type

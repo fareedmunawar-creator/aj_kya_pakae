@@ -15,14 +15,38 @@
             </nav>
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="display-5 fw-bold gradient-text slide-in-left">{{ __('messages.weekly_meal_planner') }}</h1>
+                @if(!isset($activeMealPlan))
                 <a href="{{ route('mealplanner.create') }}" class="btn btn-gold hover-lift slide-in-right">
                     <i class="bi bi-plus-lg me-1 rotate-icon"></i> {{ __('Create Meal Plan') }}
                 </a>
+                @endif
             </div>
         </div>
     </div>
-    <!-- Weekly Meal Planner Content -->
-
+    
+    @if(isset($activeMealPlan))
+    <div class="alert alert-info mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1">{{ $activeMealPlan->name }}</h5>
+                <p class="mb-0">{{ __('Active from') }} {{ \Carbon\Carbon::parse($activeMealPlan->start_date)->format('M d, Y') }} {{ __('to') }} {{ \Carbon\Carbon::parse($activeMealPlan->end_date)->format('M d, Y') }}</p>
+            </div>
+            <div>
+                <a href="{{ route('mealplanner.edit', $activeMealPlan->id) }}" class="btn btn-sm btn-outline-primary me-2">
+                    <i class="bi bi-pencil"></i> {{ __('Edit') }}
+                </a>
+                <form action="{{ route('mealplanner.destroy', $activeMealPlan->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this meal plan?') }}')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i> {{ __('Delete') }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endif
+    
     <!-- Weekly Calendar View -->
     <div class="card border-0 shadow-lg rounded-4 mb-4 slide-in-up">
         <div class="card-header bg-gradient-light py-3 rounded-top-4">
@@ -55,20 +79,12 @@
                                                     @if($recipe->pivot->meal_type === 'breakfast')
                                                         <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
                                                             <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
-                                                            <form action="{{ route('mealplanner.remove', $meal->id) }}" method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-outline-danger border-0 pulse">
-                                                                    <i class="bi bi-x-circle"></i>
-                                                                </button>
-                                                            </form>
                                                         </div>
                                                     @endif
                                                 @endforeach
                                             @endif
                                         @endforeach
                                     @endif
-
                                 </td>
                             @endforeach
                         </tr>
