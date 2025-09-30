@@ -196,8 +196,11 @@
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Modal Fix Script -->
+    <script src="{{ asset('js/modal-fix.js') }}"></script>
     
     @stack('scripts')
 </body>
