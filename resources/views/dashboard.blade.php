@@ -58,6 +58,38 @@
                         </div>
                     </div>
                 </div>
+                
+                @if(isset($topRecipes) && $topRecipes->count() > 0)
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">{{ __('Top Recipes') }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ __('Title') }}</th>
+                                                <th>{{ __('Views') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($topRecipes as $recipe)
+                                            <tr>
+                                                <td>{{ $recipe->title }}</td>
+                                                <td>{{ $recipe->views_count }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             @else
                 <!-- Regular User Dashboard Content -->
                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4">
