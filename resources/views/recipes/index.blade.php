@@ -19,9 +19,11 @@
                 <h1 class="h2 mb-3 mb-sm-0 gradient-text">
                     <i class="bi bi-journal-text me-2 text-primary"></i>{{ __('messages.all_recipes') }}
                 </h1>
+                        @if(auth()->user()->role === 'admin')
                 <a href="{{ route('recipes.create') }}" class="btn btn-gold hover-lift">
                     <i class="bi bi-plus-circle me-1"></i> {{ __('messages.add_recipe') }}
                 </a>
+                @endif
             </div>
             <hr>
         </div>
