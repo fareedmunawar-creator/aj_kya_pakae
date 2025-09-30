@@ -117,6 +117,17 @@
                                         @endforeach
                                     @endif
 
+                                    <div class="d-flex align-items-center mb-2 mt-3">
+                                        <span class="badge bg-warning me-2">{{ __('Snack') }}</span>
+                                    </div>
+                                    @if(isset($selectedRecipes) && isset($selectedRecipes[$dayKey]['snack']) && count($selectedRecipes[$dayKey]['snack']) > 0)
+                                        @foreach($selectedRecipes[$dayKey]['snack'] as $recipe)
+                                            <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
+                                                <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
+                                            </div>
+                                        @endforeach
+                                    @endif
+
                                 </td>
                             @endforeach
                         </tr>
