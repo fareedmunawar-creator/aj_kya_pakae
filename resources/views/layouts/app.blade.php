@@ -90,6 +90,12 @@
                                             <i class="bi bi-speedometer2 me-2 text-success"></i>{{ __('messages.admin') }}
                                         </a>
                                     </li>
+                                @else
+                                 <li>
+                                        <a class="dropdown-item hover-lift" href="{{ route('dashboard') }}">
+                                            <i class="bi bi-speedometer2 me-2 text-success"></i>{{ __('Dashboard') }}
+                                        </a>
+                                    </li>
                                 @endif
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
