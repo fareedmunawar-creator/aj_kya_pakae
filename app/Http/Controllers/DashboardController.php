@@ -52,9 +52,28 @@ class DashboardController extends Controller
                 'expiringItems'
             ));
         } else {
-            // For regular users, just return the dashboard view
-            // The view will handle showing the appropriate content based on role
-            return view('dashboard');
+            // Regular user dashboard
+            $userId = auth()->id();
+            
+            // Get user's meal plans
+            $mealPlans = \App\Models\MealPlan::where('user_id', $userId)
+                ->with('recipes')
+                ->orderBy('day')
+                ->get();
+                
+            // Get user's favorite recipes
+            $favoriteRecipes = \App\Models\Recipe::whereHas('favorites', function($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })->take(5)->get();
+            
+            // Get user's pantry items that are expiring soon
+            $pantryItems = PantryItem::where('user_id', $userId)
+                ->whereDate('expiry_date', '<=', Carbon::now()->addDays(7))
+                ->with('ingredient')
+                ->orderBy('expiry_date')
+                ->get();
+            
+            return view('dashboard', compact('mealPlans', 'favoriteRecipes', 'pantryItems'));
         }
     }
 }
