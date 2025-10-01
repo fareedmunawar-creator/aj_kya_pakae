@@ -15,6 +15,11 @@ class CommentController extends Controller
             'rating' => 'nullable|integer|min:1|max:5',
         ]);
 
+        // Ensure we have a valid recipe
+        if (!$recipe || !$recipe->id) {
+            return back()->with('error', 'Invalid recipe.');
+        }
+
         $recipe->comments()->create([
             'user_id' => Auth::id(),
             'content' => $request->content,
