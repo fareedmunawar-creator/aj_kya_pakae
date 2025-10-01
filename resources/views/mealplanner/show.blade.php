@@ -28,7 +28,7 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-        @foreach($mealDays as $day => $meals)
+        @foreach($organizedMeals as $day => $meals)
             <div class="col slide-in-up" style="animation-delay: {{ $loop->index * 0.1 }}s">
                 <div class="card h-100 shadow-sm meal-plan-card">
                     <div class="card-header bg-white py-3">
