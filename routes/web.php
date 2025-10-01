@@ -32,7 +32,7 @@ Route::resource('recipes', RecipeController::class);
 Route::resource('pantry', PantryController::class);
 
 // Meal Plans (CRUD)
-Route::resource('meal-plans', MealPlannerController::class);
+// Removed duplicate resource route to avoid conflicts with individual routes below
 
 // Meal Planner
 Route::get('/mealplanner', [MealPlannerController::class, 'index'])->name('mealplanner.index');
