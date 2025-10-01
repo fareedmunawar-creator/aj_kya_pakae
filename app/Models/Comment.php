@@ -9,7 +9,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','recipe_id','content'];
+    protected $fillable = ['user_id','recipe_id','content','rating'];
 
     public function user() {
         return $this->belongsTo(User::class);

@@ -11,13 +11,14 @@ class CommentController extends Controller
     public function store(Request $request, Recipe $recipe)
     {
         $request->validate([
-            'comment' => 'required|string',
+            'content' => 'required|string',
             'rating' => 'nullable|integer|min:1|max:5',
         ]);
 
         $recipe->comments()->create([
             'user_id' => Auth::id(),
-            'comment' => $request->comment,
+            'content' => $request->content,
+            'recipe_id' => $recipe->id,
             'rating' => $request->rating,
         ]);
 
