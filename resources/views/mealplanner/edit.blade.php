@@ -30,7 +30,7 @@
                     <div class="col-md-4">
                         <div class="form-group mb-4">
                             <label for="start_date" class="form-label">{{ __('Start Date') }}</label>
-                            <input id="start_date" class="form-control" type="date" name="start_date" value="{{ old('start_date', $mealPlan->start_date->format('Y-m-d')) }}" required />
+                            <input id="start_date" class="form-control" type="date" name="start_date" value="{{ old('start_date', $mealPlan->start_date instanceof \DateTime ? $mealPlan->start_date->format('Y-m-d') : $mealPlan->start_date) }}" required />
                             @error('start_date')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
@@ -40,7 +40,7 @@
                     <div class="col-md-4">
                         <div class="form-group mb-4">
                             <label for="end_date" class="form-label">{{ __('End Date') }}</label>
-                            <input id="end_date" class="form-control" type="date" name="end_date" value="{{ old('end_date', $mealPlan->end_date->format('Y-m-d')) }}" required />
+                            <input id="end_date" class="form-control" type="date" name="end_date" value="{{ old('end_date', $mealPlan->end_date instanceof \DateTime ? $mealPlan->end_date->format('Y-m-d') : $mealPlan->end_date) }}" required />
                             @error('end_date')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
