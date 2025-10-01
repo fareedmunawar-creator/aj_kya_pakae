@@ -397,24 +397,21 @@ class MealPlannerController extends Controller
     }
 
     /**
-     * Remove a meal plan
+     * Remove the specified meal plan from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\MealPlan  $mealPlan
      * @return \Illuminate\Http\Response
      */
-    public function remove($id)
+    public function destroy(MealPlan $mealPlan)
     {
         // Check if user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', __('messages.error'));
         }
         
-        $mealPlan = MealPlan::findOrFail($id);
-        
-        // Check if the meal plan belongs to the authenticated user
-        if ($mealPlan->user_id !== Auth::id()) {
-            return redirect()->route('mealplanner.index')
-                ->with('error', __('messages.error'));
+        // Ensure the meal plan belongs to the current user or user is admin
+        if ($mealPlan->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
+            return redirect()->route('mealplanner.index')->with('error', 'You do not have permission to delete this meal plan.');
         }
         
         // Detach all recipes and delete the meal plan
@@ -422,7 +419,7 @@ class MealPlannerController extends Controller
         $mealPlan->delete();
         
         return redirect()->route('mealplanner.index')
-            ->with('success', __('messages.success'));
+            ->with('success', __('Meal plan deleted successfully!'));
     }
 
     /**
