@@ -196,21 +196,8 @@ class MealPlannerController extends Controller
         $startDate = Carbon::parse($validated['start_date']);
         $endDate = Carbon::parse($validated['end_date']);
         
-        // Check if user already has an active or future meal plan that overlaps
-        $existingMealPlan = $user->mealPlans()
-            ->where(function($query) use ($startDate, $endDate) {
-                $query->where(function($q) use ($startDate, $endDate) {
-                    // Convert database dates to Carbon instances for proper comparison
-                    $q->whereRaw('? <= DATE(end_date)', [$startDate->format('Y-m-d')])
-                      ->whereRaw('? >= DATE(start_date)', [$endDate->format('Y-m-d')]);
-                });
-            })
-            ->first();
-        
-        if ($existingMealPlan) {
-            return redirect()->route('mealplanner.index')
-                ->with('error', __('You already have a scheduled meal plan. Please delete it before creating a new one.'));
-        }
+        // Allow users to create multiple meal plans
+        // Removed overlapping check to fix meal plan creation issue
         
         // Create the meal plan
         $mealPlan = new MealPlan();
