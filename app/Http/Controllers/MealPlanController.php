@@ -15,7 +15,15 @@ class MealPlanController extends Controller
         }])->get();
         
         // Define days and meal types
-        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $days = [
+            'monday' => __('Monday'),
+            'tuesday' => __('Tuesday'),
+            'wednesday' => __('Wednesday'),
+            'thursday' => __('Thursday'),
+            'friday' => __('Friday'),
+            'saturday' => __('Saturday'),
+            'sunday' => __('Sunday')
+        ];
         $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
         
         // Get the active meal plan (most recent one)
@@ -25,8 +33,14 @@ class MealPlanController extends Controller
         $organizedRecipes = [];
         
         if ($activeMealPlan) {
+            // Debug the active meal plan
+            \Log::info('Active Meal Plan ID: ' . $activeMealPlan->id);
+            \Log::info('Recipe Count: ' . $activeMealPlan->recipes->count());
+            
             foreach ($activeMealPlan->recipes as $recipe) {
                 $pivot = $recipe->pivot;
+                \Log::info('Recipe: ' . $recipe->title . ', Day: ' . $pivot->day . ', Meal Type: ' . $pivot->meal_type);
+                
                 if (isset($pivot->day) && isset($pivot->meal_type)) {
                     if (!isset($organizedRecipes[$pivot->day])) {
                         $organizedRecipes[$pivot->day] = [];
