@@ -196,13 +196,13 @@ class MealPlannerController extends Controller
         $startDate = Carbon::parse($validated['start_date']);
         $endDate = Carbon::parse($validated['end_date']);
         
-        // Check if user already has an active or future meal plan
+        // Check if user already has an active or future meal plan that overlaps
         $existingMealPlan = $user->mealPlans()
             ->where(function($query) use ($startDate, $endDate) {
                 $query->where(function($q) use ($startDate, $endDate) {
-                    // New meal plan overlaps with existing meal plan
-                    $q->where('start_date', '<=', $endDate)
-                      ->where('end_date', '>=', $startDate);
+                    // Convert database dates to Carbon instances for proper comparison
+                    $q->whereRaw('? <= DATE(end_date)', [$startDate->format('Y-m-d')])
+                      ->whereRaw('? >= DATE(start_date)', [$endDate->format('Y-m-d')]);
                 });
             })
             ->first();
