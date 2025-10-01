@@ -22,17 +22,19 @@ class MealPlanController extends Controller
         $activeMealPlan = $plans->sortByDesc('created_at')->first();
         
         // Organize recipes by day and meal type
-        $weeklyMealPlans = [];
+        $organizedRecipes = [];
         
         if ($activeMealPlan) {
-            // Organize recipes by day and meal type
             foreach ($activeMealPlan->recipes as $recipe) {
                 $pivot = $recipe->pivot;
                 if (isset($pivot->day) && isset($pivot->meal_type)) {
-                    if (!isset($weeklyMealPlans[$pivot->day])) {
-                        $weeklyMealPlans[$pivot->day] = [];
+                    if (!isset($organizedRecipes[$pivot->day])) {
+                        $organizedRecipes[$pivot->day] = [];
                     }
-                    $weeklyMealPlans[$pivot->day][] = $activeMealPlan;
+                    if (!isset($organizedRecipes[$pivot->day][$pivot->meal_type])) {
+                        $organizedRecipes[$pivot->day][$pivot->meal_type] = [];
+                    }
+                    $organizedRecipes[$pivot->day][$pivot->meal_type][] = $recipe;
                 }
             }
         }
@@ -40,7 +42,7 @@ class MealPlanController extends Controller
         // Pass $plans as $mealPlans to the view
         $mealPlans = $plans;
         
-        return view('mealplanner.index', compact('weeklyMealPlans', 'days', 'mealTypes', 'activeMealPlan', 'mealPlans'));
+        return view('mealplanner.index', compact('organizedRecipes', 'days', 'mealTypes', 'activeMealPlan', 'mealPlans'));
     }
 
     public function create()
@@ -194,15 +196,16 @@ class MealPlanController extends Controller
         $this->authorize('delete', $mealPlan);
         $mealPlan->delete();
 
-        return redirect()->route('mealplans.index')->with('success', 'Meal plan deleted!');
+        return redirect()->route('mealplanner.index')->with('success', 'Meal plan deleted!');
     }
 
     public function generateShoppingList(MealPlan $mealPlan)
     {
+        $this->authorize('view', $mealPlan);
         $mealPlan->load('recipes.ingredients');
         $ingredients = $mealPlan->recipes->flatMap->ingredients->groupBy('id');
 
-        return view('mealplans.shopping-list', compact('mealPlan', 'ingredients'));
+        return view('mealplanner.shopping-list', compact('mealPlan', 'ingredients'));
     }
     
     public function show(MealPlan $mealPlan)

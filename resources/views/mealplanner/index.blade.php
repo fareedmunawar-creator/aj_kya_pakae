@@ -72,8 +72,8 @@
                                     <div class="d-flex align-items-center mb-2">
                                         <span class="badge bg-primary me-2">{{ __('Breakfast') }}</span>
                                     </div>
-                                    @if(isset($selectedRecipes) && isset($selectedRecipes[$dayKey]['breakfast']) && count($selectedRecipes[$dayKey]['breakfast']) > 0)
-                                        @foreach($selectedRecipes[$dayKey]['breakfast'] as $recipe)
+                                    @if(isset($organizedRecipes) && isset($organizedRecipes[$dayKey]['breakfast']) && count($organizedRecipes[$dayKey]['breakfast']) > 0)
+                                        @foreach($organizedRecipes[$dayKey]['breakfast'] as $recipe)
                                             <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
                                                 <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
                                             </div>
@@ -90,8 +90,8 @@
                                     <div class="d-flex align-items-center mb-2">
                                         <span class="badge bg-success me-2">{{ __('Lunch') }}</span>
                                     </div>
-                                    @if(isset($selectedRecipes) && isset($selectedRecipes[$dayKey]['lunch']) && count($selectedRecipes[$dayKey]['lunch']) > 0)
-                                        @foreach($selectedRecipes[$dayKey]['lunch'] as $recipe)
+                                    @if(isset($organizedRecipes) && isset($organizedRecipes[$dayKey]['lunch']) && count($organizedRecipes[$dayKey]['lunch']) > 0)
+                                        @foreach($organizedRecipes[$dayKey]['lunch'] as $recipe)
                                             <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
                                                 <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
                                             </div>
@@ -109,8 +109,8 @@
                                     <div class="d-flex align-items-center mb-2">
                                         <span class="badge bg-info me-2">{{ __('Dinner') }}</span>
                                     </div>
-                                    @if(isset($selectedRecipes) && isset($selectedRecipes[$dayKey]['dinner']) && count($selectedRecipes[$dayKey]['dinner']) > 0)
-                                        @foreach($selectedRecipes[$dayKey]['dinner'] as $recipe)
+                                    @if(isset($organizedRecipes) && isset($organizedRecipes[$dayKey]['dinner']) && count($organizedRecipes[$dayKey]['dinner']) > 0)
+                                        @foreach($organizedRecipes[$dayKey]['dinner'] as $recipe)
                                             <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
                                                 <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
                                             </div>
@@ -120,8 +120,8 @@
                                     <div class="d-flex align-items-center mb-2 mt-3">
                                         <span class="badge bg-warning me-2">{{ __('Snack') }}</span>
                                     </div>
-                                    @if(isset($selectedRecipes) && isset($selectedRecipes[$dayKey]['snack']) && count($selectedRecipes[$dayKey]['snack']) > 0)
-                                        @foreach($selectedRecipes[$dayKey]['snack'] as $recipe)
+                                    @if(isset($organizedRecipes) && isset($organizedRecipes[$dayKey]['snack']) && count($organizedRecipes[$dayKey]['snack']) > 0)
+                                        @foreach($organizedRecipes[$dayKey]['snack'] as $recipe)
                                             <div class="d-flex justify-content-between align-items-center p-2 bg-gradient-light rounded-3 shadow-sm mb-2 hover-lift fade-in">
                                                 <a href="{{ route('recipes.show', $recipe->id) }}" class="text-decoration-none text-truncate me-2 nav-link-fancy">{{ $recipe->title }}</a>
                                             </div>

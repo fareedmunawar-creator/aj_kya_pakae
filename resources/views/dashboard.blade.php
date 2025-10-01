@@ -114,7 +114,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ __('Meal Planner') }}</h5>
                                 <p class="card-text text-muted mb-3">{{ __('Plan your meals for the week') }}</p>
-                                <a href="{{ route('meal-plans.index') }}" class="btn btn-primary">
+                                <a href="{{ route('mealplanner.index') }}" class="btn btn-primary">
                                     {{ __('View Meal Plans') }}
                                 </a>
                             </div>
@@ -141,7 +141,7 @@
                         <div class="card shadow-sm">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">{{ __('Your Meal Plans') }}</h5>
-                                <a href="{{ route('meal-plans.create') }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('mealplanner.create') }}" class="btn btn-sm btn-primary">
                                     <i class="bi bi-plus-circle"></i> {{ __('Add New') }}
                                 </a>
                             </div>
@@ -188,10 +188,10 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group btn-group-sm">
-                                                        <a href="{{ route('meal-plans.edit', $mealPlan->id) }}" class="btn btn-sm btn-primary">
+                                                        <a href="{{ route('mealplanner.edit', $mealPlan->id) }}" class="btn btn-sm btn-primary">
                                                             <i class="fas fa-edit"></i> Edit
                                                         </a>
-                                                        <a href="{{ route('meal-plans.show', $mealPlan->id) }}" class="btn btn-sm btn-info">
+                                                        <a href="{{ route('mealplanner.show', $mealPlan->id) }}" class="btn btn-sm btn-info">
                                                             <i class="fas fa-eye"></i> View
                                                         </a>
                                                     </div>
