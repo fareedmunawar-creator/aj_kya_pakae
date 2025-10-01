@@ -37,7 +37,10 @@ class MealPlanController extends Controller
             }
         }
         
-        return view('mealplanner.index', compact('weeklyMealPlans', 'days', 'mealTypes', 'activeMealPlan'));
+        // Pass $plans as $mealPlans to the view
+        $mealPlans = $plans;
+        
+        return view('mealplanner.index', compact('weeklyMealPlans', 'days', 'mealTypes', 'activeMealPlan', 'mealPlans'));
     }
 
     public function create()
