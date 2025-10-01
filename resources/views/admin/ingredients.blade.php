@@ -11,6 +11,10 @@
     .pagination .page-link {
         padding: 0.25rem 0.5rem;
     }
+    .pagination .page-item .page-link {
+        border-radius: 0.2rem;
+        margin: 0 2px;
+    }
 </style>
 @endpush
 

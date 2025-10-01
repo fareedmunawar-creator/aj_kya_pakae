@@ -2,6 +2,21 @@
 
 @section('title', __('Category Management'))
 
+@push('styles')
+<style>
+    .pagination {
+        font-size: 0.9rem;
+    }
+    .pagination .page-link {
+        padding: 0.25rem 0.5rem;
+    }
+    .pagination .page-item .page-link {
+        border-radius: 0.2rem;
+        margin: 0 2px;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
