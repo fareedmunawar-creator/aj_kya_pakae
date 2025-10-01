@@ -20,7 +20,7 @@
                     <h3 class="card-title text-white">{{ __('Plan Details') }}</h3>
                     <p class="mb-0">
                         <i class="bi bi-calendar-range me-1"></i>
-                        {{ __('From') }} {{ $mealPlan->start_date instanceof \DateTime ? $mealPlan->start_date->format('M d, Y') : $mealPlan->start_date }} {{ __('to') }} {{ $mealPlan->end_date instanceof \DateTime ? $mealPlan->end_date->format('M d, Y') : $mealPlan->end_date }}
+                        {{ __('From') }} {{ $mealPlan->start_date->format('M d, Y') }} {{ __('to') }} {{ $mealPlan->end_date->format('M d, Y') }}
                     </p>
                 </div>
             </div>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-        @foreach($organizedMeals as $day => $meals)
+        @foreach($mealDays as $day => $meals)
             <div class="col slide-in-up" style="animation-delay: {{ $loop->index * 0.1 }}s">
                 <div class="card h-100 shadow-sm meal-plan-card">
                     <div class="card-header bg-white py-3">
@@ -40,7 +40,7 @@
                                 <h5 class="card-title">
                                     <span class="meal-type-badge meal-type-breakfast">{{ __('Breakfast') }}</span>
                                 </h5>
-                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => 'breakfast']) }}" 
+                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => 'breakfast']) }}" 
                                    class="meal-edit-btn" title="{{ __('Edit Breakfast') }}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
@@ -75,7 +75,7 @@
                                 <h5 class="card-title">
                                     <span class="meal-type-badge meal-type-lunch">{{ __('Lunch') }}</span>
                                 </h5>
-                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => 'lunch']) }}" 
+                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => 'lunch']) }}" 
                                    class="meal-edit-btn" title="{{ __('Edit Lunch') }}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
@@ -110,7 +110,7 @@
                                 <h5 class="card-title">
                                     <span class="meal-type-badge meal-type-dinner">{{ __('Dinner') }}</span>
                                 </h5>
-                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => 'dinner']) }}" 
+                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => 'dinner']) }}" 
                                    class="meal-edit-btn" title="{{ __('Edit Dinner') }}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
@@ -145,7 +145,7 @@
                                 <h5 class="card-title">
                                     <span class="meal-type-badge meal-type-snack">{{ __('Snack') }}</span>
                                 </h5>
-                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => 'snack']) }}" 
+                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => 'snack']) }}" 
                                    class="meal-edit-btn" title="{{ __('Edit Snack') }}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>

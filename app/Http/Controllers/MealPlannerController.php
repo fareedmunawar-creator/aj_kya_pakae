@@ -276,7 +276,7 @@ class MealPlannerController extends Controller
         }
         
         // Ensure the meal plan belongs to the current user
-        if ($mealPlan->user_id !== Auth::id()) {
+        if ($mealPlan->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
             return redirect()->route('mealplanner.index')->with('error', 'You do not have permission to edit this meal plan.');
         }
         
@@ -335,8 +335,8 @@ class MealPlannerController extends Controller
             return redirect()->route('login')->with('error', __('messages.error'));
         }
         
-        // Ensure the meal plan belongs to the current user
-        if ($mealPlan->user_id !== Auth::id()) {
+        // Ensure the meal plan belongs to the current user or user is admin
+        if ($mealPlan->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
             return redirect()->route('mealplanner.index')->with('error', 'You do not have permission to edit this meal plan.');
         }
         
