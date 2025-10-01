@@ -201,4 +201,28 @@ class MealPlanController extends Controller
 
         return view('mealplans.shopping-list', compact('mealPlan', 'ingredients'));
     }
+    
+    public function show(MealPlan $mealPlan)
+    {
+        $this->authorize('view', $mealPlan);
+        
+        $mealPlan->load(['recipes' => function($query) {
+            $query->with('category', 'media');
+        }]);
+        
+        // Define days and meal types
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
+        
+        // Organize recipes by day and meal type
+        $organizedRecipes = [];
+        foreach ($mealPlan->recipes as $recipe) {
+            $pivot = $recipe->pivot;
+            if (isset($pivot->day) && isset($pivot->meal_type)) {
+                $organizedRecipes[$pivot->day][$pivot->meal_type] = $recipe;
+            }
+        }
+        
+        return view('mealplanner.show', compact('mealPlan', 'organizedRecipes', 'days', 'mealTypes'));
+    }
 }

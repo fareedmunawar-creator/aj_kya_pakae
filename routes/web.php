@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\PantryController;
-use App\Http\Controllers\MealPlannerController;
+use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Admin\AdminController; 
@@ -32,16 +32,16 @@ Route::resource('recipes', RecipeController::class);
 Route::resource('pantry', PantryController::class);
 
 // Meal Planner
-Route::get('/mealplanner', [MealPlannerController::class, 'index'])->name('mealplanner.index');
-Route::get('/mealplanner/create', [MealPlannerController::class, 'create'])->name('mealplanner.create');
-Route::post('/mealplanner', [MealPlannerController::class, 'store'])->name('mealplanner.store');
-Route::get('/mealplanner/shopping-list', [MealPlannerController::class, 'shoppingList'])->name('mealplanner.shopping-list');
-Route::get('/mealplanner/{mealPlan}', [MealPlannerController::class, 'show'])->name('mealplanner.show');
-Route::get('/mealplanner/{mealPlan}/edit', [MealPlannerController::class, 'edit'])->name('mealplanner.edit');
-Route::put('/mealplanner/{mealPlan}', [MealPlannerController::class, 'update'])->name('mealplanner.update');
-Route::delete('/mealplanner/{mealPlan}', [MealPlannerController::class, 'destroy'])->name('mealplanner.destroy');
-Route::post('/mealplanner/add/{recipe}', [MealPlannerController::class, 'add'])->name('mealplanner.add');
-Route::delete('/mealplanner/remove/{id}', [MealPlannerController::class, 'remove'])->name('mealplanner.remove');
+Route::get('/mealplanner', [MealPlanController::class, 'index'])->name('mealplanner.index');
+Route::get('/mealplanner/create', [MealPlanController::class, 'create'])->name('mealplanner.create');
+Route::post('/mealplanner', [MealPlanController::class, 'store'])->name('mealplanner.store');
+Route::get('/mealplanner/shopping-list', [MealPlanController::class, 'generateShoppingList'])->name('mealplanner.shopping-list');
+Route::get('/mealplanner/{mealPlan}', [MealPlanController::class, 'show'])->name('mealplanner.show');
+Route::get('/mealplanner/{mealPlan}/edit', [MealPlanController::class, 'edit'])->name('mealplanner.edit');
+Route::put('/mealplanner/{mealPlan}', [MealPlanController::class, 'update'])->name('mealplanner.update');
+Route::delete('/mealplanner/{mealPlan}', [MealPlanController::class, 'destroy'])->name('mealplanner.destroy');
+Route::post('/mealplanner/add/{recipe}', [MealPlanController::class, 'add'])->name('mealplanner.add');
+Route::delete('/mealplanner/remove/{id}', [MealPlanController::class, 'remove'])->name('mealplanner.remove');
 
 // Favorites
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
