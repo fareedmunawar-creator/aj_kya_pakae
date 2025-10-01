@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('meal-plans.index') }}" class="nav-link nav-link-fancy {{ request()->routeIs('meal-plans.*') ? 'active' : '' }}">
+                        <a href="{{ route('mealplanner.index') }}" class="nav-link nav-link-fancy {{ request()->routeIs('mealplanner.*') ? 'active' : '' }}">
                             <i class="bi bi-calendar-week me-1 nav-icon"></i> {{ __('messages.meal_planner') }}
                         </a>
                     </li>
@@ -173,7 +173,7 @@
                         <li class="mb-2"><a href="{{ route('home') }}" class="footer-link hover-lift"><i class="bi bi-chevron-right me-1"></i>Home</a></li>
                         <li class="mb-2"><a href="{{ route('recipes.index') }}" class="footer-link hover-lift"><i class="bi bi-chevron-right me-1"></i>Recipes</a></li>
                         <li class="mb-2"><a href="{{ route('pantry.index') }}" class="footer-link hover-lift"><i class="bi bi-chevron-right me-1"></i>Pantry</a></li>
-                        <li class="mb-2"><a href="{{ route('meal-plans.index') }}" class="footer-link hover-lift"><i class="bi bi-chevron-right me-1"></i>Meal Planner</a></li>
+                        <li class="mb-2"><a href="{{ route('mealplanner.index') }}" class="footer-link hover-lift"><i class="bi bi-chevron-right me-1"></i>Meal Planner</a></li>
                         <li class="mb-2"><a href="/about" class="footer-link hover-lift"><i class="bi bi-chevron-right me-1"></i>About Us</a></li>
                     </ul>
                 </div>
