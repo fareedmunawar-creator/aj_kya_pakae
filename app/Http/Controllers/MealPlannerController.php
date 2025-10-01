@@ -51,12 +51,18 @@ class MealPlannerController extends Controller
         $selectedRecipes = [];
         
         if ($activeMealPlan) {
+            // Initialize the structure for all days and meal types
             foreach ($days as $dayKey => $dayName) {
                 foreach ($mealTypes as $mealTypeKey => $mealTypeName) {
-                    $selectedRecipes[$dayKey][$mealTypeKey] = $activeMealPlan->recipes()
-                        ->wherePivot('day', $dayKey)
-                        ->wherePivot('meal_type', $mealTypeKey)
-                        ->get();
+                    $selectedRecipes[$dayKey][$mealTypeKey] = [];
+                }
+            }
+            
+            // Fill in the recipes from the active meal plan
+            foreach ($activeMealPlan->recipes as $recipe) {
+                $pivot = $recipe->pivot;
+                if (isset($pivot->day) && isset($pivot->meal_type)) {
+                    $selectedRecipes[$pivot->day][$pivot->meal_type][] = $recipe;
                 }
             }
         }
