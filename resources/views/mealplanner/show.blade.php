@@ -20,7 +20,7 @@
                     <h3 class="card-title text-white">{{ __('Plan Details') }}</h3>
                     <p class="mb-0">
                         <i class="bi bi-calendar-range me-1"></i>
-                        {{ __('From') }} {{ $mealPlan->start_date->format('M d, Y') }} {{ __('to') }} {{ $mealPlan->end_date->format('M d, Y') }}
+                        {{ __('From') }} {{ $mealPlan->start_date instanceof \DateTime ? $mealPlan->start_date->format('M d, Y') : $mealPlan->start_date }} {{ __('to') }} {{ $mealPlan->end_date instanceof \DateTime ? $mealPlan->end_date->format('M d, Y') : $mealPlan->end_date }}
                     </p>
                 </div>
             </div>
