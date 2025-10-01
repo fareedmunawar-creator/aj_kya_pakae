@@ -320,6 +320,70 @@ class MealPlannerController extends Controller
         
         return view('mealplanner.edit', compact('mealPlan', 'days', 'recipes', 'day', 'mealType', 'selectedRecipes', 'mealPlanRecipes', 'mealTypes'));
     }
+    
+    /**
+     * Update the specified meal plan in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\MealPlan  $mealPlan
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, MealPlan $mealPlan)
+    {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', __('messages.error'));
+        }
+        
+        // Ensure the meal plan belongs to the current user
+        if ($mealPlan->user_id !== Auth::id()) {
+            return redirect()->route('mealplanner.index')->with('error', 'You do not have permission to edit this meal plan.');
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'meals' => 'array'
+        ]);
+        
+        // Calculate end date (7 days from start date)
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = $startDate->copy()->addDays(6);
+        
+        // Update meal plan details
+        $mealPlan->name = $request->name;
+        $mealPlan->start_date = $startDate;
+        $mealPlan->end_date = $endDate;
+        $mealPlan->save();
+        
+        // Clear existing recipe assignments
+        $mealPlan->recipes()->detach();
+        
+        $count = 0;
+        
+        // Process each day and meal type
+        if ($request->has('meals')) {
+            foreach ($request->meals as $day => $mealTypes) {
+                foreach ($mealTypes as $mealType => $recipeId) {
+                    if (!empty($recipeId)) {
+                        // Attach recipe to the meal plan with day and meal type
+                        $mealPlan->recipes()->attach($recipeId, [
+                            'day' => $day,
+                            'meal_type' => $mealType
+                        ]);
+                        $count++;
+                    }
+                }
+            }
+        }
+        
+        $message = $count > 0 
+            ? __(':count recipes updated in your meal plan', ['count' => $count]) 
+            : __('No recipes were selected');
+            
+        return redirect()->route('mealplanner.show', $mealPlan->id)
+            ->with('success', $message);
+    }
 
     /**
      * Add a recipe to the meal planner
