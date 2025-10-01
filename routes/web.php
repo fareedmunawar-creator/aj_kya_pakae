@@ -31,10 +31,6 @@ Route::resource('recipes', RecipeController::class);
 // Pantry (CRUD)
 Route::resource('pantry', PantryController::class);
 
-// Meal Plans (CRUD)
-// Add back the meal-plans route but point it to the correct controller method
-Route::post('/mealplanner', [MealPlannerController::class, 'store']);
-
 // Meal Planner
 Route::get('/mealplanner', [MealPlannerController::class, 'index'])->name('mealplanner.index');
 Route::get('/mealplanner/create', [MealPlannerController::class, 'create'])->name('mealplanner.create');
