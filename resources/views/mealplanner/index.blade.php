@@ -137,6 +137,77 @@
         </div>
     </div>
     
+    <!-- All Meal Plans Section -->
+    <div class="card border-0 shadow-lg rounded-4 mb-4 slide-in-up">
+        <div class="card-header bg-gradient-light py-3 rounded-top-4">
+            <h5 class="mb-0 gradient-text">
+                <i class="bi bi-list-check me-2 pulse"></i>{{ __('Your Meal Plans') }}
+            </h5>
+        </div>
+        <div class="card-body">
+            @if($mealPlans->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>{{ __('Name') }}</th>
+                                <th>{{ __('Start Date') }}</th>
+                                <th>{{ __('End Date') }}</th>
+                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($mealPlans as $plan)
+                                @php
+                                    $today = \Carbon\Carbon::today();
+                                    $startDate = $plan->start_date instanceof \Carbon\Carbon ? $plan->start_date : \Carbon\Carbon::parse($plan->start_date);
+                                    $endDate = $plan->end_date instanceof \Carbon\Carbon ? $plan->end_date : \Carbon\Carbon::parse($plan->end_date);
+                                    
+                                    if($startDate->lte($today) && $endDate->gte($today)) {
+                                        $status = 'Active';
+                                        $statusClass = 'success';
+                                    } elseif($startDate->gt($today)) {
+                                        $status = 'Upcoming';
+                                        $statusClass = 'info';
+                                    } else {
+                                        $status = 'Past';
+                                        $statusClass = 'secondary';
+                                    }
+                                @endphp
+                                <tr>
+                                    <td>{{ $plan->name }}</td>
+                                    <td>{{ $startDate->format('M d, Y') }}</td>
+                                    <td>{{ $endDate->format('M d, Y') }}</td>
+                                    <td><span class="badge bg-{{ $statusClass }}">{{ $status }}</span></td>
+                                    <td>
+                                        <a href="{{ route('mealplanner.show', $plan->id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="{{ route('mealplanner.edit', $plan->id) }}" class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="{{ route('mealplanner.destroy', $plan->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('{{ __('Are you sure you want to delete this meal plan?') }}')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="alert alert-info">
+                    {{ __('You have no meal plans yet.') }}
+                </div>
+            @endif
+        </div>
+    </div>
+    
     <!-- Shopping List Card -->
     <div class="card border-0 shadow-lg rounded-4 slide-in-up" style="animation-delay: 0.3s;">
         <div class="card-header bg-gradient-light py-3 rounded-top-4">
