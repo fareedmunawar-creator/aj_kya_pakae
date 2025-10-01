@@ -40,7 +40,7 @@
                                 <h5 class="card-title">
                                     <span class="meal-type-badge meal-type-breakfast">{{ __('Breakfast') }}</span>
                                 </h5>
-                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => 'breakfast']) }}" 
+                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => 'breakfast']) }}" 
                                    class="meal-edit-btn" title="{{ __('Edit Breakfast') }}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
@@ -75,7 +75,7 @@
                                 <h5 class="card-title">
                                     <span class="meal-type-badge meal-type-lunch">{{ __('Lunch') }}</span>
                                 </h5>
-                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => 'lunch']) }}" 
+                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => 'lunch']) }}" 
                                    class="meal-edit-btn" title="{{ __('Edit Lunch') }}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
@@ -110,7 +110,7 @@
                                 <h5 class="card-title">
                                     <span class="meal-type-badge meal-type-dinner">{{ __('Dinner') }}</span>
                                 </h5>
-                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => 'dinner']) }}" 
+                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => 'dinner']) }}" 
                                    class="meal-edit-btn" title="{{ __('Edit Dinner') }}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
@@ -145,7 +145,7 @@
                                 <h5 class="card-title">
                                     <span class="meal-type-badge meal-type-snack">{{ __('Snack') }}</span>
                                 </h5>
-                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => 'snack']) }}" 
+                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => 'snack']) }}" 
                                    class="meal-edit-btn" title="{{ __('Edit Snack') }}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
