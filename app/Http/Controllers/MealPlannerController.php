@@ -31,7 +31,11 @@ class MealPlannerController extends Controller
         // Check if user has an active meal plan
         $today = Carbon::today();
         $activeMealPlan = $mealPlans->first(function($mealPlan) use ($today) {
-            return $mealPlan->start_date <= $today && $mealPlan->end_date >= $today;
+            // Convert to Carbon if it's a string
+            $startDate = $mealPlan->start_date instanceof Carbon ? $mealPlan->start_date : Carbon::parse($mealPlan->start_date);
+            $endDate = $mealPlan->end_date instanceof Carbon ? $mealPlan->end_date : Carbon::parse($mealPlan->end_date);
+            
+            return $startDate->lte($today) && $endDate->gte($today);
         });
         
         // Define days and meal types
