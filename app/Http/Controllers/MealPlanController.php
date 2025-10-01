@@ -108,7 +108,9 @@ class MealPlanController extends Controller
     public function edit($id, Request $request)
     {
         $mealPlan = MealPlan::findOrFail($id);
-        $this->authorize('update', $mealPlan);
+        if (Auth::id() !== $mealPlan->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
         
         $day = $request->query('day');
         $mealType = $request->query('meal_type');
@@ -144,7 +146,9 @@ class MealPlanController extends Controller
     public function update(Request $request, $id)
     {
         $mealPlan = MealPlan::findOrFail($id);
-        $this->authorize('update', $mealPlan);
+        if (Auth::id() !== $mealPlan->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
         
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
@@ -193,7 +197,9 @@ class MealPlanController extends Controller
     }
     public function destroy(MealPlan $mealPlan)
     {
-        $this->authorize('delete', $mealPlan);
+        if (Auth::id() !== $mealPlan->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
         $mealPlan->delete();
 
         return redirect()->route('mealplanner.index')->with('success', 'Meal plan deleted!');
@@ -201,7 +207,9 @@ class MealPlanController extends Controller
 
     public function generateShoppingList(MealPlan $mealPlan)
     {
-        $this->authorize('view', $mealPlan);
+        if (Auth::id() !== $mealPlan->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
         $mealPlan->load('recipes.ingredients');
         $ingredients = $mealPlan->recipes->flatMap->ingredients->groupBy('id');
 
@@ -210,7 +218,9 @@ class MealPlanController extends Controller
     
     public function show(MealPlan $mealPlan)
     {
-        $this->authorize('view', $mealPlan);
+        if (Auth::id() !== $mealPlan->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
         
         $mealPlan->load(['recipes' => function($query) {
             $query->with('category', 'media');
