@@ -72,7 +72,7 @@
                                                         {{ $mealDays[$day][$mealType]->title }}
                                                     </a>
                                                     <div class="d-flex mt-1">
-                                                        <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => $mealType]) }}" 
+                                                        <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => $mealType]) }}" 
                                                         class="btn btn-sm btn-outline-primary me-1" title="{{ __('Edit') }}">
                                                             <i class="bi bi-pencil-fill"></i>
                                                         </a>
@@ -82,7 +82,7 @@
                                         @else
                                             <div class="d-flex align-items-center">
                                                 <span class="text-muted"><i class="bi bi-dash-circle me-1"></i>{{ __('No recipe') }}</span>
-                                                <a href="{{ route('mealplanner.edit', ['id' => $mealPlan->id, 'day' => $day, 'meal_type' => $mealType]) }}" 
+                                                <a href="{{ route('mealplanner.edit', ['mealPlan' => $mealPlan->id, 'day' => $day, 'meal_type' => $mealType]) }}" 
                                                 class="btn btn-sm btn-outline-primary ms-2" title="{{ __('Add Recipe') }}">
                                                     <i class="bi bi-plus-circle"></i>
                                                 </a>
