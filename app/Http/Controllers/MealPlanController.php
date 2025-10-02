@@ -236,39 +236,23 @@ class MealPlanController extends Controller
             abort(403, 'Unauthorized action.');
         }
         
-        // Ensure dates are properly formatted - do this first
-        $mealPlan->start_date = \Carbon\Carbon::parse($mealPlan->start_date);
-        $mealPlan->end_date = \Carbon\Carbon::parse($mealPlan->end_date);
-        
         $mealPlan->load(['recipes' => function($query) {
             $query->with('category', 'media');
         }]);
         
         // Define days and meal types
-        $days = [
-            'monday' => __('Monday'),
-            'tuesday' => __('Tuesday'),
-            'wednesday' => __('Wednesday'),
-            'thursday' => __('Thursday'),
-            'friday' => __('Friday'),
-            'saturday' => __('Saturday'),
-            'sunday' => __('Sunday')
-        ];
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         $mealTypes = ['breakfast', 'lunch', 'dinner', 'snack'];
         
         // Organize recipes by day and meal type
-        $mealDays = [];
-        foreach ($days as $day => $dayName) {
-            $mealDays[$day] = [];
-        }
-        
+        $organizedRecipes = [];
         foreach ($mealPlan->recipes as $recipe) {
             $pivot = $recipe->pivot;
             if (isset($pivot->day) && isset($pivot->meal_type)) {
-                $mealDays[$pivot->day][$pivot->meal_type] = $recipe;
+                $organizedRecipes[$pivot->day][$pivot->meal_type] = $recipe;
             }
         }
         
-        return view('mealplanner.show', compact('mealPlan', 'mealDays', 'days', 'mealTypes'));
+        return view('mealplanner.show', compact('mealPlan', 'organizedRecipes', 'days', 'mealTypes'));
     }
 }
