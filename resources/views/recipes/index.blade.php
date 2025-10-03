@@ -59,6 +59,17 @@
 
                         <div class="card-img-overlay d-flex flex-column justify-content-between">
                             <div class="d-flex justify-content-end">
+                                @auth
+                                <form action="{{ route('favorites.toggle', $recipe->id) }}" method="POST" class="me-2">
+                                    @csrf
+                                    @php $fav = in_array($recipe->id, $favoriteIds ?? []) @endphp
+                                    <button type="submit" class="btn btn-sm {{ $fav ? 'btn-danger' : 'btn-outline-danger' }} rounded-circle" title="{{ $fav ? __('messages.remove_favorite') : __('messages.add_favorite') }}">
+                                        <i class="bi {{ $fav ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                                    </button>
+                                </form>
+                                @endauth
+                            </div>
+                            <div class="d-flex justify-content-end">
                                 <span class="badge bg-primary-light text-primary">
                                     <i class="bi bi-clock me-1"></i>{{ $recipe->cooking_time ?? '30' }} min
                                 </span>

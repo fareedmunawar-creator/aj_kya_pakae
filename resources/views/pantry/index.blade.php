@@ -94,18 +94,41 @@
                                             @csrf @method('PUT')
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <label for="name{{ $item->id }}" class="form-label">{{ __('messages.item_name') }}</label>
+                                                    <label for="ingredient{{ $item->id }}" class="form-label">{{ __('messages.item_name') }}</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="bi bi-tag"></i></span>
-                                                        <input type="text" class="form-control" id="name{{ $item->id }}" name="name" value="{{ $item->name }}" required>
+                                                        <select class="form-select" id="ingredient{{ $item->id }}" name="ingredient_id" required>
+                                                            <option value="">{{ __('messages.select_ingredient') }}</option>
+                                                            @foreach(\App\Models\Ingredient::all() as $ingredient)
+                                                                <option value="{{ $ingredient->id }}" {{ $item->ingredient_id == $ingredient->id ? 'selected' : '' }}>{{ $ingredient->name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="quantity{{ $item->id }}" class="form-label">{{ __('messages.quantity') }}</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="bi bi-123"></i></span>
-                                                        <input type="number" class="form-control" id="quantity{{ $item->id }}" name="quantity" value="{{ $item->quantity }}" required>
+                                                        <input type="number" class="form-control" id="quantity{{ $item->id }}" name="quantity" value="{{ $item->quantity }}" step="0.01" required>
                                                     </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="unit{{ $item->id }}" class="form-label">{{ __('messages.unit') }}</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+                                                        <input type="text" class="form-control" id="unit{{ $item->id }}" name="unit" value="{{ $item->unit }}" required>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="expiry{{ $item->id }}" class="form-label">{{ __('messages.expiry_date') }}</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="bi bi-calendar-date"></i></span>
+                                                        <input type="date" class="form-control" id="expiry{{ $item->id }}" name="expiry_date" value="{{ $item->expiry_date ? $item->expiry_date->format('Y-m-d') : '' }}">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="notes{{ $item->id }}" class="form-label">{{ __('messages.notes') }}</label>
+                                                    <textarea class="form-control" id="notes{{ $item->id }}" name="notes" rows="2">{{ $item->notes }}</textarea>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

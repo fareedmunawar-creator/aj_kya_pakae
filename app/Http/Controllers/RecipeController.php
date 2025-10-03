@@ -19,7 +19,9 @@ class RecipeController extends Controller
             return redirect()->route('login')->with('error', __('messages.error'));
         }
         
-        $query = Recipe::with('ingredients')->latest();
+        $query = Recipe::with('ingredients')
+            ->withCount('favorites')
+            ->latest();
         
         // Handle search functionality
         if ($request->has('search') && !empty($request->search)) {
@@ -33,7 +35,11 @@ class RecipeController extends Controller
         $recipes = $query->paginate(10);
         $day = $request->query('day');
         $categories = Category::all();
-        return view('recipes.index', compact('recipes', 'day', 'categories'));
+        $favoriteIds = Auth::user()
+            ->favorites()
+            ->pluck('recipes.id')
+            ->toArray();
+        return view('recipes.index', compact('recipes', 'day', 'categories', 'favoriteIds'));
     }
 
     public function create()
@@ -95,7 +101,8 @@ class RecipeController extends Controller
     public function show(Recipe $recipe)
     {
         $recipe->load('ingredients', 'comments.user', 'favorites');
-        return view('recipes.show', compact('recipe'));
+        $isFavorite = Auth::check() && Auth::user()->favorites()->where('recipe_id', $recipe->id)->exists();
+        return view('recipes.show', compact('recipe', 'isFavorite'));
     }
 
     public function edit(Recipe $recipe)

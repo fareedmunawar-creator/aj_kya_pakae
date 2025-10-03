@@ -11,6 +11,10 @@ class PantryItem extends Model
 
     protected $fillable = ['user_id','ingredient_id','quantity','unit','expiry_date','notes'];
 
+    protected $casts = [
+        'expiry_date' => 'date',
+    ];
+
     public function user() {
         return $this->belongsTo(User::class);
     }

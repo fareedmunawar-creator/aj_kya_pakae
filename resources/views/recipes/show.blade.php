@@ -55,7 +55,7 @@
                     <div class="d-flex mt-3 mb-3">
                         <form action="{{ route('recipes.favorite', $recipe->id) }}" method="POST" class="me-2">
                             @csrf
-                            @if(Auth::check() && Auth::user()->favorites->contains('recipe_id', $recipe->id))
+                            @if($isFavorite)
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-gold">
                                     <i class="bi bi-heart-fill me-1"></i> {{ __('Remove from Favorites') }}
