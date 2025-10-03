@@ -192,17 +192,30 @@
                                 <label for="quantity" class="form-label">{{ __('messages.quantity') }}</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-123"></i></span>
-                                    <input type="number" class="form-control" id="quantity" name="quantity" value="1" required>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" value="1" step="0.01" required>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="unit" class="form-label">{{ __('messages.unit') }}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+                                    <input type="text" class="form-control" id="unit" name="unit" placeholder="e.g., g, ml, cup" required>
+                                </div>
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <label for="expiry_date" class="form-label">{{ __('messages.expiry_date') }}</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                                     <input type="date" class="form-control" id="expiry_date" name="expiry_date">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="notes" class="form-label">{{ __('messages.notes') }}</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="2" placeholder="{{ __('messages.optional') }}"></textarea>
                             </div>
                         </div>
                     </div>
