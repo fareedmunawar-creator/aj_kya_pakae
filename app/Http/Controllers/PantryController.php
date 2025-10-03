@@ -30,6 +30,8 @@ class PantryController extends Controller
         $validated = $request->validate([
             'ingredient_id' => 'required|exists:ingredients,id',
             'quantity' => 'required|numeric',
+            'unit' => 'required|string|max:50',
+            'notes' => 'nullable|string|max:1000',
             'expiry_date' => 'nullable|date'
         ]);
         
@@ -46,7 +48,10 @@ class PantryController extends Controller
         }
         
         $ingredients = \App\Models\Ingredient::all();
-        return view('pantry.edit', compact('pantry', 'ingredients'));
+        return view('pantry.edit', [
+            'pantryItem' => $pantry,
+            'ingredients' => $ingredients,
+        ]);
     }
 
     public function update(Request $request, PantryItem $pantry)
@@ -59,6 +64,8 @@ class PantryController extends Controller
         $validated = $request->validate([
             'ingredient_id' => 'required|exists:ingredients,id',
             'quantity' => 'required|numeric',
+            'unit' => 'required|string|max:50',
+            'notes' => 'nullable|string|max:1000',
             'expiry_date' => 'nullable|date'
         ]);
         
